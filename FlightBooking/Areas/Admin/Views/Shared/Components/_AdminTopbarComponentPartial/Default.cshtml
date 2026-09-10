@@ -1,0 +1,62 @@
+﻿<header class="topbar" id="topbar">
+
+    <!-- Search -->
+    <div class="topbar-search">
+        <i class="bi bi-search search-icon"></i>
+        <input type="text" placeholder="Uçuş, yolcu, rezervasyon ara…" />
+    </div>
+
+    <div class="topbar-spacer"></div>
+
+    <!-- Notifications -->
+    <div class="dd-wrapper">
+        <button class="tb-icon-btn" onclick="toggleDD('notif-dd')">
+            <i class="bi bi-bell-fill"></i>
+            <span class="tb-badge count">4</span>
+        </button>
+        <div class="dropdown-menu-custom" id="notif-dd">
+            <div style="padding:8px 12px 6px;font-size:11px;font-weight:700;color:var(--gray-500);letter-spacing:.6px;text-transform:uppercase;">Bildirimler</div>
+            <a href="#" onclick="return false;"><i class="bi bi-exclamation-triangle-fill" style="color:#F59E0B;"></i>TK330 gecikmeli – 45 dk</a>
+            <a href="#" onclick="return false;"><i class="bi bi-x-circle-fill" style="color:#EF4444;"></i>TK450 iptal edildi</a>
+            <a href="#" onclick="return false;"><i class="bi bi-person-check-fill" style="color:#10B981;"></i>38 yeni rezervasyon</a>
+            <a href="#" onclick="return false;"><i class="bi bi-airplane-fill" style="color:var(--accent);"></i>TK102 boarding başladı</a>
+            <div class="divider"></div>
+            <a href="#" onclick="return false;" style="justify-content:center;color:var(--accent);font-weight:600;">Tümünü Gör</a>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="dd-wrapper">
+        <button class="tb-icon-btn" onclick="toggleDD('msg-dd')">
+            <i class="bi bi-chat-fill"></i>
+            <span class="tb-badge"></span>
+        </button>
+        <div class="dropdown-menu-custom" id="msg-dd">
+            <div style="padding:8px 12px 6px;font-size:11px;font-weight:700;color:var(--gray-500);letter-spacing:.6px;text-transform:uppercase;">Mesajlar</div>
+            <a href="#" onclick="return false;"><i class="bi bi-person-fill" style="color:var(--accent);"></i>Operasyon ekibinden mesaj</a>
+            <a href="#" onclick="return false;"><i class="bi bi-headset" style="color:#10B981;"></i>Destek talebi #1024</a>
+            <div class="divider"></div>
+            <a href="#" onclick="return false;" style="justify-content:center;color:var(--accent);font-weight:600;">Tüm Mesajlar</a>
+        </div>
+    </div>
+
+    <!-- User -->
+    <div class="dd-wrapper">
+        <button class="user-pill" onclick="toggleDD('user-dd')">
+            <div class="user-avatar">KYİ</div>
+            <div class="user-info">
+                <span class="user-name">Kemal Yavuz İMER</span>
+                <span class="user-role">Süper Admin</span>
+            </div>
+            <i class="bi bi-chevron-down" style="font-size:11px;color:var(--gray-500);margin-left:4px;"></i>
+        </button>
+        <div class="dropdown-menu-custom" id="user-dd">
+            <a href="#" onclick="return false;"><i class="bi bi-person-fill"></i>Profilim</a>
+            <a href="#" onclick="return false;"><i class="bi bi-shield-lock-fill"></i>Güvenlik</a>
+            <a href="#" onclick="return false;"><i class="bi bi-gear-fill"></i>Ayarlar</a>
+            <div class="divider"></div>
+            <a href="#" onclick="return false;" class="danger"><i class="bi bi-box-arrow-right"></i>Çıkış Yap</a>
+        </div>
+    </div>
+
+</header>

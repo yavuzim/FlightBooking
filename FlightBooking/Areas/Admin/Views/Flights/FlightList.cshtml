@@ -1,0 +1,126 @@
+﻿
+@{
+    Layout = "~/Areas/Admin/Views/Layout/AdminLayout.cshtml";
+}
+
+<main class="main-content" id="main-content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-title-group">
+            <div class="page-breadcrumb">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>Dashboard</span>
+                <i class="bi bi-chevron-right sep"></i>
+                <span style="color:var(--accent);">Flights Management</span>
+            </div>
+            <h1 class="page-title">Flights Management</h1>
+            <p class="page-desc">Sistemde kayıtlı uçuşları görüntüleyebilir, düzenleyebilir veya yeni uçuş ekleyebilirsiniz.</p>
+        </div>
+        <button class="btn-add" onclick="openModal()">
+            <i class="bi bi-plus-lg"></i>
+            <span>Yeni Uçuş Ekle</span>
+        </button>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon blue"><i class="bi bi-airplane-fill"></i></div>
+            <div class="stat-body">
+                <div class="stat-value">248</div>
+                <div class="stat-label">Toplam Uçuş</div>
+                <div class="stat-change up"><i class="bi bi-arrow-up-short"></i>+12 bu hafta</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="bi bi-check-circle-fill"></i></div>
+            <div class="stat-body">
+                <div class="stat-value">192</div>
+                <div class="stat-label">Tamamlanan</div>
+                <div class="stat-change up"><i class="bi bi-arrow-up-short"></i>%77 oran</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon orange"><i class="bi bi-clock-fill"></i></div>
+            <div class="stat-body">
+                <div class="stat-value">31</div>
+                <div class="stat-label">Gecikmeli</div>
+                <div class="stat-change down"><i class="bi bi-arrow-up-short"></i>+3 dün</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon red"><i class="bi bi-x-circle-fill"></i></div>
+            <div class="stat-body">
+                <div class="stat-value">14</div>
+                <div class="stat-label">İptal Edilen</div>
+                <div class="stat-change up"><i class="bi bi-arrow-down-short"></i>-2 geçen ay</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table Card -->
+    <div class="table-card">
+
+        <!-- Header / Filters -->
+        <div class="table-card-header">
+            <div class="tbl-search">
+                <i class="bi bi-search si"></i>
+                <input type="text" id="searchInput" placeholder="Uçuş no, şehir veya durum ara…" oninput="filterTable()" />
+            </div>
+
+            <select class="filter-select" id="statusFilter" onchange="filterTable()">
+                <option value="">Tüm Durumlar</option>
+                <option value="Boarding">Boarding</option>
+                <option value="Planlandı">Planlandı</option>
+                <option value="Gecikmeli">Gecikmeli</option>
+                <option value="İptal">İptal</option>
+            </select>
+
+            <select class="filter-select" id="cityFilter" onchange="filterTable()">
+                <option value="">Tüm Şehirler</option>
+                <option value="İstanbul">İstanbul</option>
+                <option value="Paris">Paris</option>
+                <option value="Roma">Roma</option>
+                <option value="Londra">Londra</option>
+                <option value="Berlin">Berlin</option>
+                <option value="Amsterdam">Amsterdam</option>
+                <option value="Madrid">Madrid</option>
+                <option value="Frankfurt">Frankfurt</option>
+            </select>
+
+            <span class="tbl-count" id="rowCount">10 uçuş gösteriliyor</span>
+        </div>
+
+        <!-- Table -->
+        <div style="overflow-x:auto;">
+            <table class="flights-table" id="flightsTable">
+                <thead>
+                    <tr>
+                        <th>UÇUŞ NO</th>
+                        <th>GÜZERGAH</th>
+                        <th>KALKIŞ</th>
+                        <th>VARIŞ</th>
+                        <th>UÇAK MODELİ</th>
+                        <th>KAPI</th>
+                        <th>DURUM</th>
+                        <th>İŞLEMLER</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Rows injected by JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer / Pagination -->
+        <div class="table-card-footer">
+            <span class="footer-info" id="footerInfo">1–10 / 10 uçuş</span>
+            <ul class="pagination-list" id="paginationList">
+                <!-- Injected by JS -->
+            </ul>
+        </div>
+
+    </div><!-- /table-card -->
+
+</main>
