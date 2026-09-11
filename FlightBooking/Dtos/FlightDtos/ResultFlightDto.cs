@@ -17,5 +17,6 @@
         public decimal BasePrice { get; set; }
         public string Currency { get; set; } // TRY, EUR, USD
         public string Status { get; set; }  // Scheduled, Delayed, Cancelled, Completed
+
     }
 }
