@@ -1,4 +1,5 @@
-﻿@{
+﻿@model FlightBooking.Dtos.BookingDtos.CreateBookingDto
+@{
     ViewData["Title"] = "CreateBooking";
     Layout = "~/Areas/Admin/Views/Layout/AdminLayout.cshtml";
 }
@@ -24,240 +25,245 @@
                 <i class="bi bi-arrow-left me-1"></i> Geri Dön
             </a>
         </div>
+        <form method="post">
+            <div class="row g-4">
 
-        <div class="row g-4">
+                @* ── Sol Kolon ── *@
+                <div class="col-12 col-xl-8">
 
-            @* ── Sol Kolon ── *@
-            <div class="col-12 col-xl-8">
-
-                @* 1. Uçuş Bilgileri *@
-                <div class="card border-0 shadow-sm mb-4" style="border-radius:14px;">
-                    <div class="card-header bg-white border-bottom py-3 px-4" style="border-radius:14px 14px 0 0;">
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="d-flex align-items-center justify-content-center rounded-3"
-                                 style="width:34px;height:34px;background:#eff6ff;">
-                                <i class="bi bi-airplane-fill text-primary" style="font-size:15px;"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold mb-0" style="color:#0f172a;">Uçuş Bilgileri</h6>
-                                <small class="text-muted">Seçilen uçuşa ait bilgiler</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body px-4 py-4">
-                        <div class="row g-3">
-                            <div class="col-md-3 col-6">
-                                <label class="form-label fw-semibold text-muted" style="font-size:11px;letter-spacing:.5px;text-transform:uppercase;">Uçuş No</label>
-                                <input type="text" class="form-control form-control-sm bg-light border-0 fw-bold" value="@ViewBag.FlightNumber" readonly style="border-radius:8px;font-size:14px;color:#0f172a;" />
-                            </div>
-                            <div class="col-md-3 col-6">
-                                <label class="form-label fw-semibold text-muted" style="font-size:11px;letter-spacing:.5px;text-transform:uppercase;">Kalkış</label>
-                                <input type="text" class="form-control form-control-sm bg-light border-0" value="@ViewBag.DepartureAirportCode - @ViewBag.DepartureAirportName" readonly style="border-radius:8px;font-size:13px;color:#0f172a;" />
-                            </div>
-                            <div class="col-md-3 col-6">
-                                <label class="form-label fw-semibold text-muted" style="font-size:11px;letter-spacing:.5px;text-transform:uppercase;">Varış</label>
-                                <input type="text" class="form-control form-control-sm bg-light border-0" value="@ViewBag.ArrivalAirportCode – @ViewBag.ArrivalAirportName" readonly style="border-radius:8px;font-size:13px;color:#0f172a;" />
-                            </div>
-                            <div class="col-md-3 col-6">
-                                <label class="form-label fw-semibold text-muted" style="font-size:11px;letter-spacing:.5px;text-transform:uppercase;">Tarih</label>
-                                <input type="text" class="form-control form-control-sm bg-light border-0" value=@ViewBag.DepartureTime" readonly style="border-radius:8px;font-size:13px;color:#0f172a;" />
-                            </div>
-                        </div>
-
-                        @* Uçuş görsel özet *@
-                        <div class="mt-3 p-3 rounded-3 d-flex align-items-center gap-3 flex-wrap"
-                             style="background:#f8fafc;border:1px solid #f1f5f9;">
-                            <span class="badge fw-bold px-3 py-2 rounded-3" style="background:#1a2e4a;font-size:12px;">TK</span>
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="fw-bold" style="font-size:18px;color:#0f172a;">IST</span>
-                                <div class="d-flex align-items-center gap-1 text-muted">
-                                    <div style="width:28px;height:1px;background:#e2e8f0;"></div>
-                                    <i class="bi bi-airplane-fill" style="font-size:13px;color:#3b82f6;"></i>
-                                    <div style="width:28px;height:1px;background:#e2e8f0;"></div>
-                                </div>
-                                <span class="fw-bold" style="font-size:18px;color:#0f172a;">LHR</span>
-                            </div>
-                            <span class="text-muted" style="font-size:13px;">08:30 → 11:00</span>
-                            <span class="ms-auto badge bg-success-subtle text-success fw-semibold px-3 py-2 rounded-3">
-                                <i class="bi bi-circle-fill me-1" style="font-size:7px;"></i> Planlandı
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                @* 2. İletişim Bilgileri *@
-                <div class="card border-0 shadow-sm mb-4" style="border-radius:14px;">
-                    <div class="card-header bg-white border-bottom py-3 px-4" style="border-radius:14px 14px 0 0;">
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="d-flex align-items-center justify-content-center rounded-3"
-                                 style="width:34px;height:34px;background:#f0fdf4;">
-                                <i class="bi bi-person-lines-fill text-success" style="font-size:15px;"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold mb-0" style="color:#0f172a;">İletişim Bilgileri</h6>
-                                <small class="text-muted">Rezervasyon sahibine ait bilgiler</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body px-4 py-4">
-                        <div class="row g-3">
-                            <div class="col-md-4">
-                                <label class="form-label fw-semibold" style="font-size:12.5px;color:#374151;">
-                                    Ad Soyad <span class="text-danger">*</span>
-                                </label>
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text bg-light border-end-0" style="border-radius:8px 0 0 8px;border-color:#e5e7eb;">
-                                        <i class="bi bi-person text-muted"></i>
-                                    </span>
-                                    <input type="text" class="form-control border-start-0"
-                                           placeholder="Ahmet Yılmaz"
-                                           style="border-radius:0 8px 8px 0;border-color:#e5e7eb;font-size:13.5px;" />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-semibold" style="font-size:12.5px;color:#374151;">
-                                    E-posta <span class="text-danger">*</span>
-                                </label>
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text bg-light border-end-0" style="border-radius:8px 0 0 8px;border-color:#e5e7eb;">
-                                        <i class="bi bi-envelope text-muted"></i>
-                                    </span>
-                                    <input type="email" class="form-control border-start-0"
-                                           placeholder="ornek@email.com"
-                                           style="border-radius:0 8px 8px 0;border-color:#e5e7eb;font-size:13.5px;" />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-semibold" style="font-size:12.5px;color:#374151;">
-                                    Telefon <span class="text-danger">*</span>
-                                </label>
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text bg-light border-end-0" style="border-radius:8px 0 0 8px;border-color:#e5e7eb;">
-                                        <i class="bi bi-telephone text-muted"></i>
-                                    </span>
-                                    <input type="tel" class="form-control border-start-0"
-                                           placeholder="+90 5XX XXX XX XX"
-                                           style="border-radius:0 8px 8px 0;border-color:#e5e7eb;font-size:13.5px;" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                @* 3. Yolcu Bilgileri *@
-                <div class="card border-0 shadow-sm" style="border-radius:14px;">
-                    <div class="card-header bg-white border-bottom py-3 px-4" style="border-radius:14px 14px 0 0;">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="d-flex align-items-center justify-content-center rounded-3"
-                                     style="width:34px;height:34px;background:#fffbeb;">
-                                    <i class="bi bi-people-fill text-warning" style="font-size:15px;"></i>
-                                </div>
-                                <div>
-                                    <h6 class="fw-bold mb-0" style="color:#0f172a;">Yolcu Bilgileri</h6>
-                                    <small class="text-muted">Her yolcu için bilgileri ayrı ayrı girin</small>
-                                </div>
-                            </div>
-                            <button type="button" class="btn btn-primary btn-sm px-3" onclick="addPassenger()" style="border-radius:8px;">
-                                <i class="bi bi-plus-lg me-1"></i> Yolcu Ekle
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body px-4 py-4">
-                        <div id="passengerList">
-                            @* İlk yolcu varsayılan olarak geliyor *@
-                        </div>
-
-                        <div id="emptyState" class="text-center py-4" style="display:none!important;">
-                            <i class="bi bi-person-plus text-muted" style="font-size:32px;opacity:.3;"></i>
-                            <p class="text-muted mt-2 mb-0" style="font-size:13px;">Henüz yolcu eklenmedi.</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            @* ── Sağ Kolon — Özet ── *@
-            <div class="col-12 col-xl-4">
-                <div style="position:sticky;top:80px;">
-
-                    @* Rezervasyon Özeti *@
+                    @* 1. Uçuş Bilgileri *@
                     <div class="card border-0 shadow-sm mb-4" style="border-radius:14px;">
                         <div class="card-header bg-white border-bottom py-3 px-4" style="border-radius:14px 14px 0 0;">
                             <div class="d-flex align-items-center gap-2">
                                 <div class="d-flex align-items-center justify-content-center rounded-3"
-                                     style="width:34px;height:34px;background:#f5f3ff;">
-                                    <i class="bi bi-receipt text-purple" style="font-size:15px;color:#7c3aed;"></i>
+                                     style="width:34px;height:34px;background:#eff6ff;">
+                                    <i class="bi bi-airplane-fill text-primary" style="font-size:15px;"></i>
                                 </div>
-                                <h6 class="fw-bold mb-0" style="color:#0f172a;">Rezervasyon Özeti</h6>
+                                <div>
+                                    <h6 class="fw-bold mb-0" style="color:#0f172a;">Uçuş Bilgileri</h6>
+                                    <small class="text-muted">Seçilen uçuşa ait bilgiler</small>
+                                </div>
                             </div>
                         </div>
-                        <div class="card-body px-4 py-3">
-
-                            @* Uçuş *@
-                            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-                                <span class="text-muted" style="font-size:13px;">Uçuş</span>
-                                <span class="fw-semibold" style="font-size:13px;color:#0f172a;">TK1932</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-                                <span class="text-muted" style="font-size:13px;">Güzergah</span>
-                                <span class="fw-semibold" style="font-size:13px;color:#0f172a;">IST → LHR</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-                                <span class="text-muted" style="font-size:13px;">Tarih</span>
-                                <span class="fw-semibold" style="font-size:13px;color:#0f172a;">06 Nis 2025</span>
-                            </div>
-
-                            @* Yolcu Sayısı *@
-                            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-                                <span class="text-muted" style="font-size:13px;">Toplam Yolcu</span>
-                                <span class="badge bg-primary rounded-pill px-3" id="totalPassengerBadge" style="font-size:12px;">1</span>
-                            </div>
-
-                            @* Fiyat Detayı *@
-                            <div class="mt-3 p-3 rounded-3" style="background:#f8fafc;">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span class="text-muted" style="font-size:12.5px;">Yetişkin (x<span id="adultCount">1</span>)</span>
-                                    <span style="font-size:12.5px;color:#374151;"><span id="adultPrice">246</span> EUR</span>
+                        <div class="card-body px-4 py-4">
+                            <div class="row g-3">
+                                <div class="col-md-3 col-6">
+                                    <label class="form-label fw-semibold text-muted" style="font-size:11px;letter-spacing:.5px;text-transform:uppercase;">Uçuş No</label>
+                                    <input type="text" class="form-control form-control-sm bg-light border-0 fw-bold" value="@ViewBag.FlightNumber" readonly style="border-radius:8px;font-size:14px;color:#0f172a;" />
                                 </div>
-                                <div class="d-flex justify-content-between mb-2" id="childRow" style="display:none!important;">
-                                    <span class="text-muted" style="font-size:12.5px;">Çocuk (x<span id="childCount">0</span>)</span>
-                                    <span style="font-size:12.5px;color:#374151;"><span id="childPrice">0</span> EUR</span>
+                                <div class="col-md-3 col-6">
+                                    <label class="form-label fw-semibold text-muted" style="font-size:11px;letter-spacing:.5px;text-transform:uppercase;">Kalkış</label>
+                                    <input type="text" class="form-control form-control-sm bg-light border-0" value="@ViewBag.DepartureAirportCode - @ViewBag.DepartureAirportName" readonly style="border-radius:8px;font-size:13px;color:#0f172a;" />
                                 </div>
-                                <div class="d-flex justify-content-between mb-2" id="infantRow" style="display:none!important;">
-                                    <span class="text-muted" style="font-size:12.5px;">Bebek (x<span id="infantCount">0</span>)</span>
-                                    <span style="font-size:12.5px;color:#374151;"><span id="infantPrice">0</span> EUR</span>
+                                <div class="col-md-3 col-6">
+                                    <label class="form-label fw-semibold text-muted" style="font-size:11px;letter-spacing:.5px;text-transform:uppercase;">Varış</label>
+                                    <input type="text" class="form-control form-control-sm bg-light border-0" value="@ViewBag.ArrivalAirportCode – @ViewBag.ArrivalAirportName" readonly style="border-radius:8px;font-size:13px;color:#0f172a;" />
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <label class="form-label fw-semibold text-muted" style="font-size:11px;letter-spacing:.5px;text-transform:uppercase;">Tarih</label>
+                                    <input type="text" class="form-control form-control-sm bg-light border-0" value=@ViewBag.DepartureTime" readonly style="border-radius:8px;font-size:13px;color:#0f172a;" />
                                 </div>
                             </div>
 
-                            @* Toplam *@
-                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
-                                <span class="fw-bold" style="font-size:14px;color:#0f172a;">Toplam Tutar</span>
-                                <span class="fw-bold" style="font-size:18px;color:#2563eb;" id="totalPrice">246 EUR</span>
+                            @* Uçuş görsel özet *@
+                            <div class="mt-3 p-3 rounded-3 d-flex align-items-center gap-3 flex-wrap"
+                                 style="background:#f8fafc;border:1px solid #f1f5f9;">
+                                <span class="badge fw-bold px-3 py-2 rounded-3" style="background:#1a2e4a;font-size:12px;">@ViewBag.AirlineCode     </span>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="fw-bold" style="font-size:18px;color:#0f172a;">@ViewBag.DepartureAirportCode</span>
+                                    <div class="d-flex align-items-center gap-1 text-muted">
+                                        <div style="width:28px;height:1px;background:#e2e8f0;"></div>
+                                        <i class="bi bi-airplane-fill" style="font-size:13px;color:#3b82f6;"></i>
+                                        <div style="width:28px;height:1px;background:#e2e8f0;"></div>
+                                    </div>
+                                    <span class="fw-bold" style="font-size:18px;color:#0f172a;">@ViewBag.ArrivalAirportCode</span>
+                                </div>
+                                <span class="text-muted" style="font-size:13px;">@ViewBag.DepartureTime →  @ViewBag.ArrivalTime</span>
+                                <span class="ms-auto badge bg-success-subtle text-success fw-semibold px-3 py-2 rounded-3">
+                                    <i class="bi bi-circle-fill me-1" style="font-size:7px;"></i> Planlandı
+                                </span>
                             </div>
                         </div>
                     </div>
 
-                    @* Butonlar *@
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary fw-semibold" style="border-radius:10px;padding:11px;">
-                            <i class="bi bi-check-circle-fill me-2"></i> Rezervasyonu Oluştur
-                        </button>
-                        <a href="#" class="btn btn-outline-secondary fw-semibold" style="border-radius:10px;padding:11px;">
-                            <i class="bi bi-x-circle me-2"></i> İptal
-                        </a>
+
+                    <input type="hidden" asp-for="FlightId" value="@ViewBag.FlightId" />
+
+
+                    @* 2. İletişim Bilgileri *@
+                    <div class="card border-0 shadow-sm mb-4" style="border-radius:14px;">
+                        <div class="card-header bg-white border-bottom py-3 px-4" style="border-radius:14px 14px 0 0;">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="d-flex align-items-center justify-content-center rounded-3"
+                                     style="width:34px;height:34px;background:#f0fdf4;">
+                                    <i class="bi bi-person-lines-fill text-success" style="font-size:15px;"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-0" style="color:#0f172a;">İletişim Bilgileri</h6>
+                                    <small class="text-muted">Rezervasyon sahibine ait bilgiler</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body px-4 py-4">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold" style="font-size:12.5px;color:#374151;">
+                                        Ad Soyad <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-text bg-light border-end-0" style="border-radius:8px 0 0 8px;border-color:#e5e7eb;">
+                                            <i class="bi bi-person text-muted"></i>
+                                        </span>
+                                        <input type="text" class="form-control border-start-0"
+                                               placeholder="Ahmet Yılmaz"
+                                               style="border-radius:0 8px 8px 0;border-color:#e5e7eb;font-size:13.5px;" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold" style="font-size:12.5px;color:#374151;">
+                                        E-posta <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-text bg-light border-end-0" style="border-radius:8px 0 0 8px;border-color:#e5e7eb;">
+                                            <i class="bi bi-envelope text-muted"></i>
+                                        </span>
+                                        <input type="email" class="form-control border-start-0"
+                                               placeholder="ornek@email.com"
+                                               style="border-radius:0 8px 8px 0;border-color:#e5e7eb;font-size:13.5px;" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold" style="font-size:12.5px;color:#374151;">
+                                        Telefon <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-text bg-light border-end-0" style="border-radius:8px 0 0 8px;border-color:#e5e7eb;">
+                                            <i class="bi bi-telephone text-muted"></i>
+                                        </span>
+                                        <input type="tel" class="form-control border-start-0"
+                                               placeholder="+90 5XX XXX XX XX"
+                                               style="border-radius:0 8px 8px 0;border-color:#e5e7eb;font-size:13.5px;" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    @* Bilgi notu *@
-                    <div class="alert alert-info border-0 mt-3 py-2 px-3" style="border-radius:10px;font-size:12px;background:#eff6ff;color:#1d4ed8;">
-                        <i class="bi bi-info-circle-fill me-1"></i>
-                        Rezervasyon oluşturulduktan sonra iletişim e-postasına onay gönderilecektir.
+                    @* 3. Yolcu Bilgileri *@
+                    <div class="card border-0 shadow-sm" style="border-radius:14px;">
+                        <div class="card-header bg-white border-bottom py-3 px-4" style="border-radius:14px 14px 0 0;">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="d-flex align-items-center justify-content-center rounded-3"
+                                         style="width:34px;height:34px;background:#fffbeb;">
+                                        <i class="bi bi-people-fill text-warning" style="font-size:15px;"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-0" style="color:#0f172a;">Yolcu Bilgileri</h6>
+                                        <small class="text-muted">Her yolcu için bilgileri ayrı ayrı girin</small>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary btn-sm px-3" onclick="addPassenger()" style="border-radius:8px;">
+                                    <i class="bi bi-plus-lg me-1"></i> Yolcu Ekle
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body px-4 py-4">
+                            <div id="passengerList">
+                                @* İlk yolcu varsayılan olarak geliyor *@
+                            </div>
+
+                            <div id="emptyState" class="text-center py-4" style="display:none!important;">
+                                <i class="bi bi-person-plus text-muted" style="font-size:32px;opacity:.3;"></i>
+                                <p class="text-muted mt-2 mb-0" style="font-size:13px;">Henüz yolcu eklenmedi.</p>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
-            </div>
 
-        </div>
+                @* ── Sağ Kolon — Özet ── *@
+                <div class="col-12 col-xl-4">
+                    <div style="position:sticky;top:80px;">
+
+                        @* Rezervasyon Özeti *@
+                        <div class="card border-0 shadow-sm mb-4" style="border-radius:14px;">
+                            <div class="card-header bg-white border-bottom py-3 px-4" style="border-radius:14px 14px 0 0;">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="d-flex align-items-center justify-content-center rounded-3"
+                                         style="width:34px;height:34px;background:#f5f3ff;">
+                                        <i class="bi bi-receipt text-purple" style="font-size:15px;color:#7c3aed;"></i>
+                                    </div>
+                                    <h6 class="fw-bold mb-0" style="color:#0f172a;">Rezervasyon Özeti</h6>
+                                </div>
+                            </div>
+                            <div class="card-body px-4 py-3">
+
+                                @* Uçuş *@
+                                <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                    <span class="text-muted" style="font-size:13px;">Uçuş</span>
+                                    <span class="fw-semibold" style="font-size:13px;color:#0f172a;">@ViewBag.FlightNumber</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                    <span class="text-muted" style="font-size:13px;">Güzergah</span>
+                                    <span class="fw-semibold" style="font-size:13px;color:#0f172a;">@ViewBag.DepartureAirportCode → @ViewBag.ArrivalAirportCode</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                    <span class="text-muted" style="font-size:13px;">Tarih</span>
+                                    <span class="fw-semibold" style="font-size:13px;color:#0f172a;">@ViewBag.DepartureTime</span>
+                                </div>
+
+                                @* Yolcu Sayısı *@
+                                <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                    <span class="text-muted" style="font-size:13px;">Toplam Yolcu</span>
+                                    <span class="badge bg-primary rounded-pill px-3" id="totalPassengerBadge" style="font-size:12px;">1</span>
+                                </div>
+
+                                @* Fiyat Detayı *@
+                                <div class="mt-3 p-3 rounded-3" style="background:#f8fafc;">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="text-muted" style="font-size:12.5px;">Yetişkin (x<span id="adultCount">1</span>)</span>
+                                        <span style="font-size:12.5px;color:#374151;"><span id="adultPrice">246</span> EUR</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2" id="childRow" style="display:none!important;">
+                                        <span class="text-muted" style="font-size:12.5px;">Çocuk (x<span id="childCount">0</span>)</span>
+                                        <span style="font-size:12.5px;color:#374151;"><span id="childPrice">0</span> EUR</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2" id="infantRow" style="display:none!important;">
+                                        <span class="text-muted" style="font-size:12.5px;">Bebek (x<span id="infantCount">0</span>)</span>
+                                        <span style="font-size:12.5px;color:#374151;"><span id="infantPrice">0</span> EUR</span>
+                                    </div>
+                                </div>
+
+                                @* Toplam *@
+                                <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+                                    <span class="fw-bold" style="font-size:14px;color:#0f172a;">Toplam Tutar</span>
+                                    <span class="fw-bold" style="font-size:18px;color:#2563eb;" id="totalPrice">246 EUR</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        @* Butonlar *@
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary fw-semibold" style="border-radius:10px;padding:11px;">
+                                <i class="bi bi-check-circle-fill me-2"></i> Rezervasyonu Oluştur
+                            </button>
+                            <a href="#" class="btn btn-outline-secondary fw-semibold" style="border-radius:10px;padding:11px;">
+                                <i class="bi bi-x-circle me-2"></i> İptal
+                            </a>
+                        </div>
+
+                        @* Bilgi notu *@
+                        <div class="alert alert-info border-0 mt-3 py-2 px-3" style="border-radius:10px;font-size:12px;background:#eff6ff;color:#1d4ed8;">
+                            <i class="bi bi-info-circle-fill me-1"></i>
+                            Rezervasyon oluşturulduktan sonra iletişim e-postasına onay gönderilecektir.
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </form>
     </div>
 
     <script>
