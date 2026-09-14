@@ -44,7 +44,6 @@ public class BookingService : IBookingService
             Gender = x.Gender,
             PassengerType = x.PassengerType
         }).ToList();
-
         // 🔥 5. Fiyat hesaplama
         var totalPrice = passengerCount * flight.BasePrice;
 
@@ -62,7 +61,6 @@ public class BookingService : IBookingService
             BookingDate = DateTime.Now,
             Status = "Confirmed"
         };
-
         await _bookingCollection.InsertOneAsync(booking);
 
         //// 🔥 7. Koltuk düş

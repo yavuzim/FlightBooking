@@ -772,10 +772,7 @@
                                 @* İşlemler *@
                                 <td>
                                     <div class="actions-cell">
-                                        <a asp-area="Admin"
-                                           asp-controller="Flights"
-                                           asp-action="Detail"
-                                           asp-route-id="@flight.FlightId"
+                                        <a href="/Admin/Flights/FlightDetail/@flight.FlightId"
                                            class="act-btn act-view"
                                            title="Görüntüle">
                                             <i class="bi bi-eye-fill"></i>
