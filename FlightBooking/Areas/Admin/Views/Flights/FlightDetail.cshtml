@@ -797,18 +797,18 @@
         var allPassengers = [
             @if (Model != null && Model.Any())
             {
-                    foreach (var p in Model)
-                    {
-                            @:{ name: "@p.Name", surname: "@p.Surname",
-                            @:  email: "@(p.Email ?? "")", phone: "@(p.Phone ?? "")",
-                            @:  gender: "@(p.Gender ?? "")",
-                            @:  type: "@(p.PassengerType ?? "")",
-                           // @:  pnr: "@(p.Pnr ?? "")",
-                            @:  seat: "@(p.SeatNumber ?? "—")",
-                            @:  checkin: "@(p.CheckInStatus ?? "Not Checked")",
-                            @:  payment: "@(p.PaymentStatus ?? "Pending")",
-                            @:  ticket: "@(p.TicketStatus ?? "Not Issued")" },
-                    }
+                        foreach (var p in Model)
+                        {
+                                    @:{ name: "@p.Name", surname: "@p.Surname",
+                                    @:  email: "@(p.Email ?? "")", phone: "@(p.Phone ?? "")",
+                                    @:  gender: "@(p.Gender ?? "")",
+                                    @:  type: "@(p.PassengerType ?? "")",
+                                   // @:  pnr: "@(p.Pnr ?? "")",
+                                    @:  seat: "@(p.SeatNumber ?? "—")",
+                                    @:  checkin: "@(p.CheckInStatus ?? "Not Checked")",
+                                    @:  payment: "@(p.PaymentStatus ?? "Pending")",
+                                    @:  ticket: "@(p.TicketStatus ?? "Not Issued")" },
+                        }
             }
         ];
 
