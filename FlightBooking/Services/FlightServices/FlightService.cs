@@ -59,7 +59,7 @@ namespace FlightBooking.Services.FlightServices
                     Phone = b.ContactPhone,
                     SeatNumber = p.SeatNumber,
                     TicketStatus = p.TicketStatus,
-                    PassengerId = p.PassengerId
+                    PassengerId = p.PassengerId                
                 }))
                 .ToList();
 

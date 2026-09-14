@@ -375,6 +375,20 @@
             letter-spacing: .3px;
         }
 
+        /* Passenger ID badge */
+        .pid-badge {
+            display: inline-block;
+            padding: 3px 9px;
+            border-radius: 7px;
+            font-size: 11.5px;
+            font-weight: 700;
+            background: #f5f3ff;
+            color: #6d28d9;
+            border: 1px solid #ede9fe;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: .3px;
+        }
+
         /* Action buttons */
         .act-wrap {
             display: flex;
@@ -424,6 +438,17 @@
 
             .aib-del:hover {
                 background: #fecaca;
+            }
+
+        /* FIX 4 — Check-in action button */
+        .aib-checkin {
+            background: #f0fdf4;
+            color: #16a34a;
+            border-color: #bbf7d0;
+        }
+
+            .aib-checkin:hover {
+                background: #bbf7d0;
             }
 
         /* Pagination */
@@ -523,7 +548,6 @@
                 grid-template-columns: 1fr;
             }
         }
-
     </style>
 }
 
@@ -765,6 +789,7 @@
                                 <th>CİNSİYET</th>
                                 <th>TİP</th>
                                 <th>PNR</th>
+                                <th>YOLCU ID</th>
                                 <th>KOLTUK</th>
                                 <th>CHECK-IN</th>
                                 <th>ÖDEME</th>
@@ -797,18 +822,19 @@
         var allPassengers = [
             @if (Model != null && Model.Any())
             {
-                        foreach (var p in Model)
-                        {
-                                    @:{ name: "@p.Name", surname: "@p.Surname",
-                                    @:  email: "@(p.Email ?? "")", phone: "@(p.Phone ?? "")",
-                                    @:  gender: "@(p.Gender ?? "")",
-                                    @:  type: "@(p.PassengerType ?? "")",
-                                   // @:  pnr: "@(p.Pnr ?? "")",
-                                    @:  seat: "@(p.SeatNumber ?? "—")",
-                                    @:  checkin: "@(p.CheckInStatus ?? "Not Checked")",
-                                    @:  payment: "@(p.PaymentStatus ?? "Pending")",
-                                    @:  ticket: "@(p.TicketStatus ?? "Not Issued")" },
-                        }
+                            foreach (var p in Model)
+                            {
+                                            @:{ name: "@p.Name", surname: "@p.Surname",
+                                            @:  email: "@(p.Email ?? "")", phone: "@(p.Phone ?? "")",
+                                            @:  gender: "@(p.Gender ?? "")",
+                                            @:  type: "@(p.PassengerType ?? "")",
+                                            @:  pnrNumber: "@(p.PnrNumber ?? "")",
+                                            @:  passengerId: "@p.PassengerId",
+                                            @:  seat: "@(p.SeatNumber ?? "—")",
+                                            @:  checkin: "@(p.CheckInStatus ?? "Not Checked")",
+                                            @:  payment: "@(p.PaymentStatus ?? "Pending")",
+                                            @:  ticket: "@(p.TicketStatus ?? "Not Issued")" },
+                            }
             }
         ];
 
@@ -858,6 +884,18 @@
             return '<span class="bp ' + cls + '">' + (v || '—') + '</span>';
         }
 
+        /* ── FIX 1: Cinsiyet ikonu — Bootstrap Icons'da gender-female yok,
+               gender-venus kullanılır; renk inline style ile verilir ─────── */
+        function genderIcon(g) {
+            if (g === 'Erkek') {
+                return '<i class="bi bi-gender-male me-1" style="color:#2563eb;"></i>';
+            }
+            if (g === 'Kadın') {
+                return '<i class="bi bi-gender-female me-1" style="color:#db2777;"></i>';
+            }
+            return '<i class="bi bi-dash me-1"></i>';
+        }
+
         /* ── Filter ──────────────────────────────────────────── */
         function applyFilter() {
             var name    = (document.getElementById('fName').value    || '').toLowerCase().trim();
@@ -869,7 +907,7 @@
             filtered = allPassengers.filter(function(p) {
                 var fullName = (p.name + ' ' + p.surname).toLowerCase();
                 return (!name    || fullName.includes(name))
-                    && (!pnr     || (p.pnr || '').toLowerCase().includes(pnr))
+                    && (!pnr     || (p.pnrNumber || '').toLowerCase().includes(pnr))
                     && (!checkin || p.checkin === checkin)
                     && (!payment || p.payment === payment)
                     && (!type    || p.type    === type);
@@ -909,7 +947,7 @@
 
             if (slice.length === 0) {
                 tbody.innerHTML =
-                    '<tr><td colspan="10" class="text-center py-5 text-muted">' +
+                    '<tr><td colspan="11" class="text-center py-5 text-muted">' +
                         '<i class="bi bi-person-slash" style="font-size:36px;display:block;margin-bottom:10px;opacity:.2;"></i>' +
                         'Yolcu bulunamadı.' +
                     '</td></tr>';
@@ -934,18 +972,22 @@
                         '</div>' +
                     '</td>' +
 
-                    /* Cinsiyet */
+                    /* FIX 1 — Cinsiyet: genderIcon() helper ile doğru ikon ve renk */
                     '<td><span style="font-size:13px;color:#475569;">' +
-                        '<i class="bi bi-' + (p.gender === 'Erkek' ? 'gender-male text-primary' : p.gender === 'Kadın' ? 'gender-female text-danger' : 'dash') + ' me-1"></i>' +
-                        (p.gender || '—') +
+                        genderIcon(p.gender) + (p.gender || '—') +
                     '</span></td>' +
 
                     /* Tip */
                     '<td>' + typeBadge(p.type) + '</td>' +
 
-                    /* PNR */
+                    /* FIX 2 — PNR: p.pnrNumber (PnrNumber property'sinden) */
                     '<td><span style="font-family:monospace;font-weight:700;font-size:12.5px;color:#0f172a;background:#f8fafc;padding:3px 8px;border-radius:6px;border:1px solid #f1f5f9;">' +
-                        (p.pnr || '—') +
+                        (p.pnrNumber || '—') +
+                    '</span></td>' +
+
+                    /* FIX 3 — Yolcu ID: PassengerId property'sinden */
+                    '<td><span class="pid-badge">' +
+                        '#' + (p.passengerId || '—') +
                     '</span></td>' +
 
                     /* Koltuk */
@@ -965,11 +1007,12 @@
                         (p.phone ? '<i class="bi bi-telephone me-1" style="font-size:11px;"></i>' + p.phone : '—') +
                     '</span></td>' +
 
-                    /* İşlemler */
+                    /* FIX 4 — İşlemler: Check-in Yap butonu eklendi */
                     '<td>' +
                         '<div class="act-wrap">' +
                             '<a href="#" class="aib aib-view" title="Detay"><i class="bi bi-eye-fill"></i></a>' +
                             '<a href="#" class="aib aib-edit" title="Düzenle"><i class="bi bi-pencil-fill"></i></a>' +
+                            '<button class="aib aib-checkin" title="Check-in Yap" style="border:none;cursor:pointer;" onclick="doCheckin(\'' + p.passengerId + '\')"><i class="bi bi-person-check-fill"></i></button>' +
                             '<button class="aib aib-del" title="İptal" style="border:none;cursor:pointer;"><i class="bi bi-trash-fill"></i></button>' +
                         '</div>' +
                     '</td>' +
@@ -978,6 +1021,11 @@
             }).join('');
 
             renderPagination(totalPages);
+        }
+
+        /* ── Check-in action handler ─────────────────────────── */
+        function doCheckin(passengerId) {
+               window.location.href='/Admin/CheckIn/Index/'+passengerId;
         }
 
         /* ── Pagination ──────────────────────────────────────── */
@@ -1033,6 +1081,3 @@
 
     </script>
 }
-
-
-

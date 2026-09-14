@@ -63,6 +63,12 @@ public class BookingService : IBookingService
         //    update
         //);
     }
+    public async Task<Booking> GetBookingByPassengerIdAsync(string passengerId)
+    {
+        return await _bookingCollection.Find(x =>
+            x.Passengers.Any(p => p.PassengerId == passengerId))
+            .FirstOrDefaultAsync();
+    }
     private async Task<string> GenerateUniquePnrAsync()
     {
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
