@@ -20,22 +20,12 @@ public class BookingService : IBookingService
 
     public async Task CreateBookingAsync(CreateBookingDto dto)
     {
-        // 🔥 1. Flight çek
         var flight = await _flightCollection
             .Find(x => x.FlightId == dto.FlightId)
             .FirstOrDefaultAsync();
 
-        //if (flight == null)
-        //    throw new Exception("Uçuş bulunamadı");
-
-        // 🔥 2. Yolcu sayısı
         var passengerCount = dto.Passengers.Count;
 
-        //// 🔥 3. Koltuk kontrol
-        //if (flight.AvailableSeats < passengerCount)
-        //    throw new Exception("Yeterli koltuk yok");
-
-        // 🔥 4. Passenger mapping
         var passengers = dto.Passengers.Select(x => new Passenger
         {
             Name = x.Name,
@@ -44,10 +34,10 @@ public class BookingService : IBookingService
             Gender = x.Gender,
             PassengerType = x.PassengerType
         }).ToList();
-        // 🔥 5. Fiyat hesaplama
-        var totalPrice = passengerCount * flight.BasePrice;
 
-        // 🔥 6. Booking oluştur
+        var totalPrice = passengerCount * flight.BasePrice;
+        var pnr = await GenerateUniquePnrAsync();
+
         var booking = new Booking
         {
             FlightId = dto.FlightId,
@@ -59,7 +49,8 @@ public class BookingService : IBookingService
 
             TotalPrice = totalPrice,
             BookingDate = DateTime.Now,
-            Status = "Confirmed"
+            Status = "Confirmed",
+            PnrNumber= pnr,
         };
         await _bookingCollection.InsertOneAsync(booking);
 
@@ -71,5 +62,27 @@ public class BookingService : IBookingService
         //    x => x.FlightId == dto.FlightId,
         //    update
         //);
+    }
+    private async Task<string> GenerateUniquePnrAsync()
+    {
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        var random = new Random();
+
+        string pnr;
+        bool exists;
+
+        do
+        {
+            pnr = new string(Enumerable.Repeat(chars, 6)
+                .Select(s => s[random.Next(s.Length)])
+                .ToArray());
+
+            exists = await _bookingCollection
+                .Find(x => x.PnrNumber == pnr)
+                .AnyAsync();
+
+        } while (exists);
+
+        return pnr;
     }
 }
