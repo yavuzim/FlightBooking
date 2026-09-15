@@ -1,18 +1,27 @@
-﻿@{
+﻿@* ============================================================
+   Areas/Admin/Views/CheckIn/Index.cshtml
+   CompleteCheckInDto: PassengerId, FlightId, PnrNumber,
+                       SeatNumber, BaggageKg, MealType,
+                       ExtraServices, ExtraTotalPrice
+============================================================ *@
+
+@{
     Layout = "~/Areas/Admin/Views/Layout/AdminLayout.cshtml";
     ViewData["Title"] = "Check-In";
+
+    // Currency sembolünü güvenli şekilde al
+    string currencySymbol = ViewBag.Currency != null ? ViewBag.Currency.ToString() : "₺";
 }
 
 @section Styles {
     <style>
-
         .ci-page {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
 
-        /* ── Flight Banner ────────────────────────────────────── */
+        /* ── Flight Banner ─────────────────────────────────────── */
         .ci-banner {
             background: #0B1B3A;
             border-radius: 14px;
@@ -157,7 +166,7 @@
             }
         }
 
-        /* ── Layout ───────────────────────────────────────────── */
+        /* ── Layout ────────────────────────────────────────────── */
         .ci-layout {
             display: grid;
             grid-template-columns: 1fr 290px;
@@ -179,7 +188,7 @@
             top: 80px;
         }
 
-        /* ── Tab Stepper ──────────────────────────────────────── */
+        /* ── Tab Stepper ───────────────────────────────────────── */
         .tab-stepper {
             display: flex;
             align-items: stretch;
@@ -200,7 +209,6 @@
             border-right: 1px solid #f1f5f9;
             border-bottom: 3px solid transparent;
             transition: all .18s;
-            position: relative;
             background: #f8fafc;
             user-select: none;
         }
@@ -271,7 +279,7 @@
             color: #16a34a;
         }
 
-        /* ── Tab Panels ───────────────────────────────────────── */
+        /* ── Tab Panels ────────────────────────────────────────── */
         .tab-panels {
             background: #fff;
             border: 1px solid #e8edf5;
@@ -315,7 +323,7 @@
             margin-bottom: 20px;
         }
 
-        /* ── Tab Navigation Buttons ───────────────────────────── */
+        /* ── Tab Nav Buttons ───────────────────────────────────── */
         .tab-nav {
             display: flex;
             justify-content: space-between;
@@ -367,7 +375,7 @@
                 box-shadow: none;
             }
 
-        /* ── Bagaj ────────────────────────────────────────────── */
+        /* ── Bagaj ─────────────────────────────────────────────── */
         .baggage-section {
             margin-bottom: 28px;
         }
@@ -507,15 +515,13 @@
             width: 100%;
             height: 6px;
             border-radius: 99px;
-            background: linear-gradient(to right,#2563eb 0%,#2563eb var(--val,50%),#e2e8f0 var(--val,50%));
+            background: linear-gradient(to right,#2563eb 0%,#2563eb var(--val,0%),#e2e8f0 var(--val,0%));
             outline: none;
             cursor: pointer;
-            transition: background .15s;
         }
 
             .kg-slider::-webkit-slider-thumb {
                 -webkit-appearance: none;
-                appearance: none;
                 width: 20px;
                 height: 20px;
                 border-radius: 50%;
@@ -545,9 +551,10 @@
             font-size: 10px;
             color: #94a3b8;
             font-weight: 600;
+            text-align: center;
         }
 
-        /* ── Koltuk ───────────────────────────────────────────── */
+        /* ── Koltuk ────────────────────────────────────────────── */
         .smap-wrap {
             overflow-x: auto;
             padding-bottom: 6px;
@@ -666,21 +673,6 @@
                     border-color: #f1f5f9;
                 }
 
-            .seat.window {
-            }
-
-                .seat.window::after {
-                    content: '';
-                    position: absolute;
-                    right: -1px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    width: 3px;
-                    height: 14px;
-                    background: rgba(59,130,246,.15);
-                    border-radius: 2px;
-                }
-
         .seat-legend {
             display: flex;
             align-items: center;
@@ -729,7 +721,6 @@
             font-size: 12.5px;
             font-weight: 600;
             color: #2563eb;
-            transition: all .15s;
         }
 
             .sel-seat-tag.empty {
@@ -738,7 +729,6 @@
                 color: #94a3b8;
             }
 
-        /* Seat filters */
         .seat-filters {
             display: flex;
             gap: 8px;
@@ -764,7 +754,7 @@
                 color: #2563eb;
             }
 
-        /* ── Yemek ────────────────────────────────────────────── */
+        /* ── Yemek ─────────────────────────────────────────────── */
         .meal-categories {
             display: flex;
             gap: 8px;
@@ -827,7 +817,6 @@
             justify-content: center;
             font-size: 40px;
             border-bottom: 1px solid #f1f5f9;
-            transition: background .15s;
         }
 
         .meal-card.selected .meal-img {
@@ -926,7 +915,7 @@
             color: #16a34a;
         }
 
-        /* ── Ekstra Hizmetler ─────────────────────────────────── */
+        /* ── Ekstra Hizmetler ──────────────────────────────────── */
         .extras-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
@@ -1014,7 +1003,7 @@
             color: #2563eb;
         }
 
-        /* ── Özet & Onay ──────────────────────────────────────── */
+        /* ── Özet ──────────────────────────────────────────────── */
         .summary-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1064,7 +1053,7 @@
             font-style: italic;
         }
 
-        /* ── Price Summary (side) ─────────────────────────────── */
+        /* ── Price Side ────────────────────────────────────────── */
         .pr-row {
             display: flex;
             justify-content: space-between;
@@ -1109,7 +1098,7 @@
             color: #2563eb;
         }
 
-        /* ── Side Card ────────────────────────────────────────── */
+        /* ── Side Card ─────────────────────────────────────────── */
         .ci-side-card {
             background: #fff;
             border: 1px solid #e8edf5;
@@ -1155,7 +1144,7 @@
             padding: 16px 18px;
         }
 
-        /* ── Buttons ──────────────────────────────────────────── */
+        /* ── Buttons ───────────────────────────────────────────── */
         .btn-ci {
             width: 100%;
             padding: 11px;
@@ -1203,7 +1192,7 @@
                 box-shadow: 0 4px 14px rgba(22,163,74,.35);
             }
 
-        /* ── Info Note ────────────────────────────────────────── */
+        /* ── Notes ─────────────────────────────────────────────── */
         .ci-info-note {
             background: #eff6ff;
             border: 1px solid rgba(37,99,235,.15);
@@ -1228,7 +1217,7 @@
             align-items: flex-start;
         }
 
-        /* ── Modal ────────────────────────────────────────────── */
+        /* ── Modal ─────────────────────────────────────────────── */
         .ci-modal-overlay {
             position: fixed;
             inset: 0;
@@ -1305,7 +1294,7 @@
             margin-bottom: 16px;
         }
 
-        /* Boarding pass style */
+        /* Boarding Pass */
         .ci-boarding-pass {
             background: #0B1B3A;
             border-radius: 12px;
@@ -1394,9 +1383,6 @@
             gap: 12px;
         }
 
-        .bp-item {
-        }
-
         .bp-item-key {
             font-size: 9px;
             font-weight: 700;
@@ -1447,7 +1433,7 @@
             gap: 10px;
         }
 
-        /* ── Responsive ───────────────────────────────────────── */
+        /* ── Responsive ────────────────────────────────────────── */
         @@media (max-width:1000px) {
             .ci-layout {
                 grid-template-columns: 1fr;
@@ -1516,7 +1502,6 @@
                 padding: 12px 8px;
             }
         }
-
     </style>
 }
 
@@ -1524,7 +1509,7 @@
     <div class="container-fluid px-4 py-4">
         <div class="ci-page">
 
-            @* ── Başlık ── *@
+            @* Başlık *@
             <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
                 <div>
                     <nav aria-label="breadcrumb">
@@ -1545,7 +1530,7 @@
                 </a>
             </div>
 
-            @* ── Flight Banner ── *@
+            @* Flight Banner *@
             <div class="ci-banner">
                 <div class="ci-banner-top">
                     <div class="ci-route">
@@ -1562,9 +1547,7 @@
                             <div class="ci-apt-name">@ViewBag.ArrivalAirportName</div>
                         </div>
                     </div>
-                    <span class="ci-status-badge">
-                        <span class="dot"></span> Planlandı
-                    </span>
+                    <span class="ci-status-badge"><span class="dot"></span> Planlandı</span>
                 </div>
                 <hr class="ci-bp-divider" />
                 <div class="ci-banner-meta">
@@ -1575,23 +1558,26 @@
                     <div class="ci-meta-item">
                         <span class="ci-meta-key">Tarih</span>
                         <span class="ci-meta-val">
-                            @(ViewBag.DepartureTime != null ? ((DateTime)ViewBag.DepartureTime).ToString("dd MMM yyyy", new System.Globalization.CultureInfo("tr-TR")) : "—")
+                            @(ViewBag.DepartureTime != null
+                                                        ? ((DateTime)ViewBag.DepartureTime).ToString("dd MMM yyyy", new System.Globalization.CultureInfo("tr-TR"))
+                                                        : "—")
                         </span>
                     </div>
                     <div class="ci-meta-item">
                         <span class="ci-meta-key">Saat</span>
                         <span class="ci-meta-val">
-                            @(ViewBag.DepartureTime != null ? ((DateTime)ViewBag.DepartureTime).ToString("HH:mm") : "—") →
+                            @(ViewBag.DepartureTime != null ? ((DateTime)ViewBag.DepartureTime).ToString("HH:mm") : "—")
+                            →
                             @(ViewBag.ArrivalTime != null ? ((DateTime)ViewBag.ArrivalTime).ToString("HH:mm") : "—")
                         </span>
                     </div>
                     <div class="ci-meta-item">
                         <span class="ci-meta-key">Yolcu</span>
-                        <span class="ci-meta-val">@ViewBag.PassengerName @ViewBag.Surname</span>
+                        <span class="ci-meta-val">@ViewBag.Name @ViewBag.Surname</span>
                     </div>
                     <div class="ci-meta-item">
                         <span class="ci-meta-key">PNR</span>
-                        <span class="ci-meta-val" style="font-family:monospace;letter-spacing:.8px;">@ViewBag.Pnr</span>
+                        <span class="ci-meta-val" style="font-family:monospace;letter-spacing:.8px;">@ViewBag.PnrNumber</span>
                     </div>
                     <div class="ci-meta-item">
                         <span class="ci-meta-key">Kapı</span>
@@ -1600,403 +1586,385 @@
                 </div>
             </div>
 
-            @* ── Layout ── *@
-            <div class="ci-layout">
+            @* FORM BAŞLANGICI *@
+            @*
+        CompleteCheckInDto alanları hidden input olarak taşınır.
+        PassengerId, FlightId, PnrNumber: ViewBag'den sabit değer.
+        SeatNumber, BaggageKg, MealType, ExtraServices, ExtraTotalPrice: JS tarafından doldurulur.
+    *@
+            <form id="checkInForm"
+                  action="/Admin/CheckIn/Index"
+                  method="post">
 
-                @* ── Sol: Sekmeli Form ── *@
-                <div class="ci-col-main">
+                @* DTO hidden alanlar *@
+                <input type="hidden" id="hPassengerId" name="PassengerId" value="@ViewBag.PassengerId" />
+                <input type="hidden" id="hFlightId" name="FlightId" value="@ViewBag.FlightId" />
+                <input type="hidden" id="hPnrNumber" name="PnrNumber" value="@ViewBag.PnrNumber" />
+                <input type="hidden" id="hSeatNumber" name="SeatNumber" value="" />
+                <input type="hidden" id="hBaggageKg" name="BaggageKg" value="0" />
+                <input type="hidden" id="hMealType" name="MealType" value="" />
+                @* ExtraServices: JS tarafından dinamik olarak eklenir (List<string> binding için birden fazla name="ExtraServices") *@
+                <input type="hidden" id="hExtraTotalPrice" name="ExtraTotalPrice" value="0" />
 
-                    @* Step Bar *@
-                    <div class="tab-stepper" id="tabStepper">
-                        <div class="tab-step active" id="step-tab-1" onclick="goTab(1)">
-                            <div class="tab-step-num" id="step-num-1">1</div>
-                            <div class="tab-step-text">
-                                <div class="tab-step-title">Bagaj</div>
-                                <div class="tab-step-desc">Ağırlık seçimi</div>
+                <div class="ci-layout">
+
+                    @* Sol: Sekmeli Form *@
+                    <div class="ci-col-main">
+
+                        @* Step Bar *@
+                        <div class="tab-stepper" id="tabStepper">
+                            <div class="tab-step active" id="step-tab-1" onclick="goTab(1)">
+                                <div class="tab-step-num" id="step-num-1">1</div>
+                                <div class="tab-step-text">
+                                    <div class="tab-step-title">Bagaj</div>
+                                    <div class="tab-step-desc">Ağırlık seçimi</div>
+                                </div>
+                            </div>
+                            <div class="tab-step" id="step-tab-2" onclick="goTab(2)">
+                                <div class="tab-step-num" id="step-num-2">2</div>
+                                <div class="tab-step-text">
+                                    <div class="tab-step-title">Koltuk</div>
+                                    <div class="tab-step-desc">Koltuk seç</div>
+                                </div>
+                            </div>
+                            <div class="tab-step" id="step-tab-3" onclick="goTab(3)">
+                                <div class="tab-step-num" id="step-num-3">3</div>
+                                <div class="tab-step-text">
+                                    <div class="tab-step-title">Yemek</div>
+                                    <div class="tab-step-desc">Menü seçimi</div>
+                                </div>
+                            </div>
+                            <div class="tab-step" id="step-tab-4" onclick="goTab(4)">
+                                <div class="tab-step-num" id="step-num-4">4</div>
+                                <div class="tab-step-text">
+                                    <div class="tab-step-title">Hizmetler</div>
+                                    <div class="tab-step-desc">Ekstra seç</div>
+                                </div>
+                            </div>
+                            <div class="tab-step" id="step-tab-5" onclick="goTab(5)">
+                                <div class="tab-step-num" id="step-num-5">5</div>
+                                <div class="tab-step-text">
+                                    <div class="tab-step-title">Onay</div>
+                                    <div class="tab-step-desc">Gözden geçir</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="tab-step" id="step-tab-2" onclick="goTab(2)">
-                            <div class="tab-step-num" id="step-num-2">2</div>
-                            <div class="tab-step-text">
-                                <div class="tab-step-title">Koltuk</div>
-                                <div class="tab-step-desc">Koltuk seç</div>
+
+                        @* Panel Wrapper *@
+                        <div class="tab-panels">
+
+                            @* SEKME 1: BAGAJ *@
+                            <div class="tab-panel active" id="panel-1">
+                                <div class="tab-panel-title">Bagaj Seçimi</div>
+                                <div class="tab-panel-desc">Yolculuğunuz için uygun bagaj seçeneğini belirleyin.</div>
+
+                                @* Kabin Bagajı *@
+                                <div class="baggage-section">
+                                    <div class="baggage-section-title">
+                                        <i class="bi bi-briefcase-fill" style="color:#2563eb;"></i>
+                                        Kabin Bagajı
+                                        <span style="font-size:11px;color:#94a3b8;font-weight:400;">(uçağa alınabilir)</span>
+                                    </div>
+                                    <div class="baggage-cards">
+                                        <div class="baggage-card selected" id="cabin-free" onclick="selectBaggage('free',0,'Kişisel Eşya')">
+                                            <div class="bc-check"><i class="bi bi-check-lg"></i></div>
+                                            <div class="bc-icon">🎒</div>
+                                            <div class="bc-name">Kişisel Eşya</div>
+                                            <div class="bc-sub">Maks. 40×30×15 cm · 6 kg</div>
+                                            <div class="bc-price" style="color:#16a34a;">Ücretsiz</div>
+                                        </div>
+                                        <div class="baggage-card" id="cabin-small" onclick="selectBaggage('small',80,'Kabin Valizi (S)')">
+                                            <div class="bc-check"><i class="bi bi-check-lg"></i></div>
+                                            <div class="bc-icon">💼</div>
+                                            <div class="bc-name">Kabin Valizi (S)</div>
+                                            <div class="bc-sub">Maks. 55×40×20 cm · 8 kg</div>
+                                            <div class="bc-price">+ 80 @currencySymbol</div>
+                                        </div>
+                                        <div class="baggage-card" id="cabin-large" onclick="selectBaggage('large',120,'Kabin Valizi (L)')">
+                                            <div class="bc-check"><i class="bi bi-check-lg"></i></div>
+                                            <div class="bc-icon">🧳</div>
+                                            <div class="bc-name">Kabin Valizi (L)</div>
+                                            <div class="bc-sub">Maks. 55×40×25 cm · 10 kg</div>
+                                            <div class="bc-price">+ 120 @currencySymbol</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @* Uçak Altı Bagaj *@
+                                <div class="baggage-section">
+                                    <div class="baggage-section-title">
+                                        <i class="bi bi-archive-fill" style="color:#7c3aed;"></i>
+                                        Uçak Altı Bagaj
+                                        <span style="font-size:11px;color:#94a3b8;font-weight:400;">(ambar bagajı)</span>
+                                    </div>
+                                    <div class="kg-slider-wrap">
+                                        <div class="kg-slider-header">
+                                            <span class="kg-slider-label">Bagaj Ağırlığı Seçin</span>
+                                            <span class="kg-display" id="holdKgDisplay">0 kg</span>
+                                        </div>
+                                        <input type="range" class="kg-slider" id="holdKgSlider"
+                                               min="0" max="32" step="8" value="0"
+                                               oninput="updateHoldSlider(this.value)" />
+                                        <div class="kg-ticks">
+                                            <span class="kg-tick">0 kg<br><span style="color:#16a34a;font-size:9px;">Ücretsiz</span></span>
+                                            <span class="kg-tick">8 kg<br><span style="font-size:9px;">100 @currencySymbol</span></span>
+                                            <span class="kg-tick">16 kg<br><span style="font-size:9px;">180 @currencySymbol</span></span>
+                                            <span class="kg-tick">24 kg<br><span style="font-size:9px;">240 @currencySymbol</span></span>
+                                            <span class="kg-tick">32 kg<br><span style="font-size:9px;">300 @currencySymbol</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="ci-info-note mt-3">
+                                        <i class="bi bi-info-circle-fill" style="flex-shrink:0;margin-top:1px;"></i>
+                                        <span>Uçak altı bagaj en az 72 saat önceden satın alındığında %20 daha ucuzdur.</span>
+                                    </div>
+                                </div>
+
+                                @* Özel Bagaj *@
+                                <div class="baggage-section">
+                                    <div class="baggage-section-title">
+                                        <i class="bi bi-bicycle" style="color:#d97706;"></i>
+                                        Özel &amp; Fazla Bagaj
+                                    </div>
+                                    <div class="baggage-cards">
+                                        <div class="baggage-card" id="special-sport" onclick="toggleSpecial('sport',150)">
+                                            <div class="bc-check"><i class="bi bi-check-lg"></i></div>
+                                            <div class="bc-icon">🎿</div>
+                                            <div class="bc-name">Spor Ekipmanı</div>
+                                            <div class="bc-sub">Kayak, sörf, bisiklet vb.</div>
+                                            <div class="bc-price">+ 150 @currencySymbol</div>
+                                        </div>
+                                        <div class="baggage-card" id="special-golf" onclick="toggleSpecial('golf',120)">
+                                            <div class="bc-check"><i class="bi bi-check-lg"></i></div>
+                                            <div class="bc-icon">⛳</div>
+                                            <div class="bc-name">Golf Ekipmanı</div>
+                                            <div class="bc-sub">Golf çantası + aksesuarlar</div>
+                                            <div class="bc-price">+ 120 @currencySymbol</div>
+                                        </div>
+                                        <div class="baggage-card" id="special-pet" onclick="toggleSpecial('pet',200)">
+                                            <div class="bc-check"><i class="bi bi-check-lg"></i></div>
+                                            <div class="bc-icon">🐾</div>
+                                            <div class="bc-name">Evcil Hayvan</div>
+                                            <div class="bc-sub">Kabin ya da ambar taşımacılık</div>
+                                            <div class="bc-price">+ 200 @currencySymbol</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-nav">
+                                    <div></div>
+                                    <button type="button" class="btn-tab-nav btn-tab-next" onclick="goTab(2)">
+                                        Koltuk Seçimine Geç <i class="bi bi-arrow-right"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="tab-step" id="step-tab-3" onclick="goTab(3)">
-                            <div class="tab-step-num" id="step-num-3">3</div>
-                            <div class="tab-step-text">
-                                <div class="tab-step-title">Yemek</div>
-                                <div class="tab-step-desc">Menü seçimi</div>
+
+                            @* SEKME 2: KOLTUK *@
+                            <div class="tab-panel" id="panel-2">
+                                <div class="tab-panel-title">Koltuk Seçimi</div>
+                                <div class="tab-panel-desc">Tercih ettiğiniz koltuğu seçin. Gri koltuklar dolu.</div>
+
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                                    <div class="seat-filters">
+                                        <button type="button" class="seat-filter-btn active" onclick="filterSeats('all',this)">Tümü</button>
+                                        <button type="button" class="seat-filter-btn" onclick="filterSeats('window',this)">Pencere</button>
+                                        <button type="button" class="seat-filter-btn" onclick="filterSeats('middle',this)">Orta</button>
+                                        <button type="button" class="seat-filter-btn" onclick="filterSeats('aisle',this)">Koridor</button>
+                                        <button type="button" class="seat-filter-btn" onclick="filterSeats('front',this)">Ön Sıra</button>
+                                        <button type="button" class="seat-filter-btn" onclick="filterSeats('exit',this)">Çıkış Sırası</button>
+                                    </div>
+                                    <span class="sel-seat-tag empty" id="selectedTag">
+                                        <i class="bi bi-geo-alt"></i>
+                                        <span id="selectedLabel">Koltuk seçilmedi</span>
+                                    </span>
+                                </div>
+
+                                <div class="smap-wrap">
+                                    <div class="smap" id="seatMap"></div>
+                                </div>
+
+                                <div class="seat-legend">
+                                    <div class="legend-item"><div class="legend-dot"></div><span>Müsait</span></div>
+                                    <div class="legend-item"><div class="legend-dot ld-sel"></div><span>Seçili</span></div>
+                                    <div class="legend-item"><div class="legend-dot ld-occ"></div><span>Dolu</span></div>
+                                    <div class="legend-item">
+                                        <div class="legend-dot" style="background:#fefce8;border-color:#fde68a;"></div>
+                                        <span>Ücretli</span>
+                                    </div>
+                                </div>
+
+                                <div class="tab-nav">
+                                    <button type="button" class="btn-tab-nav btn-tab-prev" onclick="goTab(1)">
+                                        <i class="bi bi-arrow-left"></i> Geri
+                                    </button>
+                                    <button type="button" class="btn-tab-nav btn-tab-next" onclick="goTab(3)">
+                                        Yemek Seçimine Geç <i class="bi bi-arrow-right"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="tab-step" id="step-tab-4" onclick="goTab(4)">
-                            <div class="tab-step-num" id="step-num-4">4</div>
-                            <div class="tab-step-text">
-                                <div class="tab-step-title">Hizmetler</div>
-                                <div class="tab-step-desc">Ekstra seç</div>
+
+                            @* SEKME 3: YEMEK *@
+                            <div class="tab-panel" id="panel-3">
+                                <div class="tab-panel-title">Yemek Seçimi</div>
+                                <div class="tab-panel-desc">Uçuşunuz için özel menünüzü seçin. Bir seçim yapılabilir.</div>
+
+                                <div class="meal-categories">
+                                    <button type="button" class="meal-cat-btn active" onclick="filterMeals('all',this)"><i class="bi bi-grid-fill"></i> Tümü</button>
+                                    <button type="button" class="meal-cat-btn" onclick="filterMeals('hot',this)"><i class="bi bi-fire"></i> Sıcak</button>
+                                    <button type="button" class="meal-cat-btn" onclick="filterMeals('cold',this)"><i class="bi bi-snow"></i> Soğuk</button>
+                                    <button type="button" class="meal-cat-btn" onclick="filterMeals('veg',this)"><i class="bi bi-leaf-fill"></i> Vejetaryen</button>
+                                    <button type="button" class="meal-cat-btn" onclick="filterMeals('hal',this)">Helal</button>
+                                    <button type="button" class="meal-cat-btn" onclick="filterMeals('snack',this)"><i class="bi bi-cup-straw"></i> Atıştırmalık</button>
+                                </div>
+
+                                <div class="meal-grid" id="mealGrid"></div>
+
+                                <div class="tab-nav">
+                                    <button type="button" class="btn-tab-nav btn-tab-prev" onclick="goTab(2)">
+                                        <i class="bi bi-arrow-left"></i> Geri
+                                    </button>
+                                    <button type="button" class="btn-tab-nav btn-tab-next" onclick="goTab(4)">
+                                        Hizmetlere Geç <i class="bi bi-arrow-right"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="tab-step" id="step-tab-5" onclick="goTab(5)">
-                            <div class="tab-step-num" id="step-num-5">5</div>
-                            <div class="tab-step-text">
-                                <div class="tab-step-title">Onay</div>
-                                <div class="tab-step-desc">Gözden geçir</div>
+
+                            @* SEKME 4: EK HİZMETLER *@
+                            <div class="tab-panel" id="panel-4">
+                                <div class="tab-panel-title">Ek Hizmetler</div>
+                                <div class="tab-panel-desc">Yolculuğunuzu konforlu hale getirecek hizmetleri seçin.</div>
+
+                                <div class="extras-grid" id="extrasGrid"></div>
+
+                                <div class="tab-nav">
+                                    <button type="button" class="btn-tab-nav btn-tab-prev" onclick="goTab(3)">
+                                        <i class="bi bi-arrow-left"></i> Geri
+                                    </button>
+                                    <button type="button" class="btn-tab-nav btn-tab-next" onclick="goTab(5)">
+                                        Özete Geç <i class="bi bi-arrow-right"></i>
+                                    </button>
+                                </div>
                             </div>
+
+                            @* SEKME 5: ÖZET & ONAY *@
+                            <div class="tab-panel" id="panel-5">
+                                <div class="tab-panel-title">Gözden Geçir &amp; Onayla</div>
+                                <div class="tab-panel-desc">Seçimlerinizi kontrol edin ve check-in işlemini tamamlayın.</div>
+
+                                <div class="summary-grid" id="summaryGrid"></div>
+
+                                <div class="ci-warn-note mt-3">
+                                    <i class="bi bi-exclamation-triangle-fill" style="flex-shrink:0;margin-top:1px;"></i>
+                                    <span>Check-in onaylandıktan sonra koltuk ve bagaj değişikliği yapılamaz. Lütfen bilgileri dikkatlice kontrol edin.</span>
+                                </div>
+
+                                <div class="tab-nav">
+                                    <button type="button" class="btn-tab-nav btn-tab-prev" onclick="goTab(4)">
+                                        <i class="bi bi-arrow-left"></i> Geri
+                                    </button>
+                                    <button type="button" class="btn-tab-nav btn-tab-next" onclick="completeCheckin()"
+                                            style="background:#16a34a;">
+                                        <i class="bi bi-check-circle-fill"></i> Check-In Tamamla
+                                    </button>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
-                    @* Panel Wrapper *@
-                    <div class="tab-panels">
+                    @* Sağ: Fiyat + Hızlı Özet *@
+                    <div class="ci-col-side">
 
-                        @* ══════════════════════════════════════════════
-                   SEKME 1: BAGAJ
-                ══════════════════════════════════════════════ *@
-                        <div class="tab-panel active" id="panel-1">
-                            <div class="tab-panel-title">Bagaj Seçimi</div>
-                            <div class="tab-panel-desc">Yolculuğunuz için uygun bagaj seçeneğini belirleyin.</div>
-
-                            @* Kabin Bagajı *@
-                            <div class="baggage-section">
-                                <div class="baggage-section-title">
-                                    <i class="bi bi-briefcase-fill" style="color:#2563eb;"></i>
-                                    Kabin Bagajı
-                                    <span style="font-size:11px;color:#94a3b8;font-weight:400;">(uçağa alınabilir)</span>
+                        @* Fiyat Özeti *@
+                        <div class="ci-side-card">
+                            <div class="ci-side-card-head">
+                                <div class="ci-side-ico" style="background:#f5f3ff;color:#7c3aed;">
+                                    <i class="bi bi-receipt-cutoff"></i>
                                 </div>
-                                <div class="baggage-cards">
-                                    <label class="baggage-card selected" id="cabin-free" onclick="selectBaggage('cabin','free',0)">
-                                        <input type="radio" name="cabin_bag" />
-                                        <div class="bc-check"><i class="bi bi-check-lg"></i></div>
-                                        <div class="bc-icon">🎒</div>
-                                        <div class="bc-name">Kişisel Eşya</div>
-                                        <div class="bc-sub">Maks. 40×30×15 cm · 6 kg</div>
-                                        <div class="bc-price" style="color:#16a34a;">Ücretsiz</div>
-                                    </label>
-                                    <label class="baggage-card" id="cabin-small" onclick="selectBaggage('cabin','small',80)">
-                                        <input type="radio" name="cabin_bag" />
-                                        <div class="bc-check"><i class="bi bi-check-lg"></i></div>
-                                        <div class="bc-icon">💼</div>
-                                        <div class="bc-name">Kabin Valizi (S)</div>
-                                        <div class="bc-sub">Maks. 55×40×20 cm · 8 kg</div>
-                                        <div class="bc-price">+ 80 @ViewBag.Currency</div>
-                                    </label>
-                                    <label class="baggage-card" id="cabin-large" onclick="selectBaggage('cabin','large',120)">
-                                        <input type="radio" name="cabin_bag" />
-                                        <div class="bc-check"><i class="bi bi-check-lg"></i></div>
-                                        <div class="bc-icon">🧳</div>
-                                        <div class="bc-name">Kabin Valizi (L)</div>
-                                        <div class="bc-sub">Maks. 55×40×25 cm · 10 kg</div>
-                                        <div class="bc-price">+ 120 @ViewBag.Currency</div>
-                                    </label>
+                                <div>
+                                    <div class="ci-side-title">Fiyat Özeti</div>
+                                    <div class="ci-side-desc">Anlık güncellenir</div>
                                 </div>
                             </div>
-
-                            @* Uçak Altı Bagaj + Slider *@
-                            <div class="baggage-section">
-                                <div class="baggage-section-title">
-                                    <i class="bi bi-archive-fill" style="color:#7c3aed;"></i>
-                                    Uçak Altı Bagaj
-                                    <span style="font-size:11px;color:#94a3b8;font-weight:400;">(ambar bagajı)</span>
+                            <div class="ci-side-body">
+                                <div class="pr-row">
+                                    <span class="pr-lbl">Bilet</span>
+                                    <span class="pr-val" id="baseTicketPrice">— @currencySymbol</span>
                                 </div>
-
-                                <div class="kg-slider-wrap" id="hold-slider-wrap">
-                                    <div class="kg-slider-header">
-                                        <span class="kg-slider-label">Bagaj Ağırlığı Seçin</span>
-                                        <span class="kg-display" id="holdKgDisplay">0 kg</span>
-                                    </div>
-                                    <input type="range" class="kg-slider" id="holdKgSlider"
-                                           min="0" max="32" step="8" value="0"
-                                           oninput="updateHoldSlider(this.value)" />
-                                    <div class="kg-ticks">
-                                        <span class="kg-tick">0 kg<br><span style="color:#16a34a;font-size:9px;">Ücretsiz</span></span>
-                                        <span class="kg-tick">8 kg<br><span style="font-size:9px;">100 @ViewBag.Currency</span></span>
-                                        <span class="kg-tick">16 kg<br><span style="font-size:9px;">180 @ViewBag.Currency</span></span>
-                                        <span class="kg-tick">24 kg<br><span style="font-size:9px;">240 @ViewBag.Currency</span></span>
-                                        <span class="kg-tick">32 kg<br><span style="font-size:9px;">300 @ViewBag.Currency</span></span>
-                                    </div>
+                                <div id="priceBreakdown"></div>
+                                <div class="pr-total">
+                                    <span class="pr-total-lbl">Toplam</span>
+                                    <span class="pr-total-val" id="totalPrice">— @currencySymbol</span>
                                 </div>
-
-                                <div class="ci-info-note mt-3">
-                                    <i class="bi bi-info-circle-fill" style="flex-shrink:0;margin-top:1px;"></i>
-                                    <span>Uçak altı bagaj en az 72 saat önceden satın alındığında %20 daha ucuzdur. Check-in'de ek ücret uygulanabilir.</span>
-                                </div>
-                            </div>
-
-                            @* Özel Bagaj *@
-                            <div class="baggage-section">
-                                <div class="baggage-section-title">
-                                    <i class="bi bi-bicycle" style="color:#d97706;"></i>
-                                    Özel & Fazla Bagaj
-                                </div>
-                                <div class="baggage-cards">
-                                    <label class="baggage-card" id="special-sport" onclick="toggleSpecial('sport',150)">
-                                        <input type="checkbox" />
-                                        <div class="bc-check"><i class="bi bi-check-lg"></i></div>
-                                        <div class="bc-icon">🎿</div>
-                                        <div class="bc-name">Spor Ekipmanı</div>
-                                        <div class="bc-sub">Kayak, sörf, bisiklet vb.</div>
-                                        <div class="bc-price">+ 150 @ViewBag.Currency</div>
-                                    </label>
-                                    <label class="baggage-card" id="special-golf" onclick="toggleSpecial('golf',120)">
-                                        <input type="checkbox" />
-                                        <div class="bc-check"><i class="bi bi-check-lg"></i></div>
-                                        <div class="bc-icon">⛳</div>
-                                        <div class="bc-name">Golf Ekipmanı</div>
-                                        <div class="bc-sub">Golf çantası + aksesuarlar</div>
-                                        <div class="bc-price">+ 120 @ViewBag.Currency</div>
-                                    </label>
-                                    <label class="baggage-card" id="special-pet" onclick="toggleSpecial('pet',200)">
-                                        <input type="checkbox" />
-                                        <div class="bc-check"><i class="bi bi-check-lg"></i></div>
-                                        <div class="bc-icon">🐾</div>
-                                        <div class="bc-name">Evcil Hayvan</div>
-                                        <div class="bc-sub">Kabin ya da ambar taşımacılık</div>
-                                        <div class="bc-price">+ 200 @ViewBag.Currency</div>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="tab-nav">
-                                <div></div>
-                                <button class="btn-tab-nav btn-tab-next" onclick="goTab(2)">
-                                    Koltuk Seçimine Geç <i class="bi bi-arrow-right"></i>
-                                </button>
                             </div>
                         </div>
 
-                        @* ══════════════════════════════════════════════
-                   SEKME 2: KOLTUK
-                ══════════════════════════════════════════════ *@
-                        <div class="tab-panel" id="panel-2">
-                            <div class="tab-panel-title">Koltuk Seçimi</div>
-                            <div class="tab-panel-desc">Tercih ettiğiniz koltuğu seçin. Gri koltuklar dolu.</div>
-
-                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
-                                <div class="seat-filters">
-                                    <button class="seat-filter-btn active" onclick="filterSeats('all',this)">Tümü</button>
-                                    <button class="seat-filter-btn" onclick="filterSeats('window',this)">
-                                        <i class="bi bi-square" style="font-size:10px;"></i> Pencere
-                                    </button>
-                                    <button class="seat-filter-btn" onclick="filterSeats('middle',this)">Orta</button>
-                                    <button class="seat-filter-btn" onclick="filterSeats('aisle',this)">Koridor</button>
-                                    <button class="seat-filter-btn" onclick="filterSeats('front',this)">Ön Sıra</button>
-                                    <button class="seat-filter-btn" onclick="filterSeats('exit',this)">
-                                        <i class="bi bi-door-open" style="font-size:10px;"></i> Çıkış Sırası
-                                    </button>
+                        @* Seçim Özeti *@
+                        <div class="ci-side-card">
+                            <div class="ci-side-card-head">
+                                <div class="ci-side-ico" style="background:#f0fdf4;color:#16a34a;">
+                                    <i class="bi bi-clipboard-check-fill"></i>
                                 </div>
-                                <span class="sel-seat-tag empty" id="selectedTag">
-                                    <i class="bi bi-geo-alt"></i>
-                                    <span id="selectedLabel">Koltuk seçilmedi</span>
-                                </span>
+                                <div><div class="ci-side-title">Seçimleriniz</div></div>
                             </div>
-
-                            <div class="smap-wrap">
-                                <div class="smap" id="seatMap"></div>
-                            </div>
-
-                            <div class="seat-legend">
-                                <div class="legend-item"><div class="legend-dot"></div><span>Müsait</span></div>
-                                <div class="legend-item"><div class="legend-dot ld-sel"></div><span>Seçili</span></div>
-                                <div class="legend-item"><div class="legend-dot ld-occ"></div><span>Dolu</span></div>
-                                <div class="legend-item">
-                                    <div class="legend-dot" style="background:#fefce8;border-color:#fde68a;"></div>
-                                    <span>Ücretli</span>
+                            <div class="ci-side-body" style="font-size:12.5px;">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span style="color:#94a3b8;">Koltuk</span>
+                                    <span class="fw-semibold" id="sideSeat" style="color:#0f172a;">—</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span style="color:#94a3b8;">Kabin Bagaj</span>
+                                    <span class="fw-semibold" id="sideCabin" style="color:#0f172a;">Kişisel Eşya</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span style="color:#94a3b8;">Uçak Altı</span>
+                                    <span class="fw-semibold" id="sideHold" style="color:#0f172a;">—</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span style="color:#94a3b8;">Yemek</span>
+                                    <span class="fw-semibold" id="sideMeal" style="color:#0f172a;">—</span>
                                 </div>
                             </div>
-
-                            <div class="tab-nav">
-                                <button class="btn-tab-nav btn-tab-prev" onclick="goTab(1)">
-                                    <i class="bi bi-arrow-left"></i> Geri
-                                </button>
-                                <button class="btn-tab-nav btn-tab-next" onclick="goTab(3)">
-                                    Yemek Seçimine Geç <i class="bi bi-arrow-right"></i>
-                                </button>
-                            </div>
                         </div>
 
-                        @* ══════════════════════════════════════════════
-                   SEKME 3: YEMEK
-                ══════════════════════════════════════════════ *@
-                        <div class="tab-panel" id="panel-3">
-                            <div class="tab-panel-title">Yemek Seçimi</div>
-                            <div class="tab-panel-desc">Uçuşunuz için özel menünüzü seçin. Bir seçim yapılabilir.</div>
-
-                            <div class="meal-categories" id="mealCats">
-                                <button class="meal-cat-btn active" onclick="filterMeals('all',this)">
-                                    <i class="bi bi-grid-fill"></i> Tümü
-                                </button>
-                                <button class="meal-cat-btn" onclick="filterMeals('hot',this)">
-                                    <i class="bi bi-fire"></i> Sıcak
-                                </button>
-                                <button class="meal-cat-btn" onclick="filterMeals('cold',this)">
-                                    <i class="bi bi-snow"></i> Soğuk
-                                </button>
-                                <button class="meal-cat-btn" onclick="filterMeals('veg',this)">
-                                    <i class="bi bi-leaf-fill"></i> Vejetaryen
-                                </button>
-                                <button class="meal-cat-btn" onclick="filterMeals('hal',this)">
-                                    Helal
-                                </button>
-                                <button class="meal-cat-btn" onclick="filterMeals('snack',this)">
-                                    <i class="bi bi-cup-straw"></i> Atıştırmalık
-                                </button>
+                        @* Progress *@
+                        <div class="ci-side-card">
+                            <div class="ci-side-card-head">
+                                <div class="ci-side-ico" style="background:#eff6ff;color:#2563eb;">
+                                    <i class="bi bi-bar-chart-steps"></i>
+                                </div>
+                                <div><div class="ci-side-title">İlerleme</div></div>
                             </div>
-
-                            <div class="meal-grid" id="mealGrid"></div>
-
-                            <div class="tab-nav">
-                                <button class="btn-tab-nav btn-tab-prev" onclick="goTab(2)">
-                                    <i class="bi bi-arrow-left"></i> Geri
-                                </button>
-                                <button class="btn-tab-nav btn-tab-next" onclick="goTab(4)">
-                                    Hizmetlere Geç <i class="bi bi-arrow-right"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        @* ══════════════════════════════════════════════
-                   SEKME 4: EK HİZMETLER
-                ══════════════════════════════════════════════ *@
-                        <div class="tab-panel" id="panel-4">
-                            <div class="tab-panel-title">Ek Hizmetler</div>
-                            <div class="tab-panel-desc">Yolculuğunuzu konforlu hale getirecek hizmetleri seçin.</div>
-
-                            <div class="extras-grid" id="extrasGrid"></div>
-
-                            <div class="tab-nav">
-                                <button class="btn-tab-nav btn-tab-prev" onclick="goTab(3)">
-                                    <i class="bi bi-arrow-left"></i> Geri
-                                </button>
-                                <button class="btn-tab-nav btn-tab-next" onclick="goTab(5)">
-                                    Özete Geç <i class="bi bi-arrow-right"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        @* ══════════════════════════════════════════════
-                   SEKME 5: ÖZET & ONAY
-                ══════════════════════════════════════════════ *@
-                        <div class="tab-panel" id="panel-5">
-                            <div class="tab-panel-title">Gözden Geçir & Onayla</div>
-                            <div class="tab-panel-desc">Seçimlerinizi kontrol edin ve check-in işlemini tamamlayın.</div>
-
-                            <div class="summary-grid" id="summaryGrid">
-                                @* JS tarafından doldurulur *@
-                            </div>
-
-                            <div class="ci-warn-note mt-3">
-                                <i class="bi bi-exclamation-triangle-fill" style="flex-shrink:0;margin-top:1px;"></i>
-                                <span>Check-in onaylandıktan sonra koltuk ve bagaj değişikliği yapılamaz. Lütfen bilgileri dikkatlice kontrol edin.</span>
-                            </div>
-
-                            <div class="tab-nav">
-                                <button class="btn-tab-nav btn-tab-prev" onclick="goTab(4)">
-                                    <i class="bi bi-arrow-left"></i> Geri
-                                </button>
-                                <button class="btn-tab-nav btn-tab-next" onclick="completeCheckin()"
-                                        style="background:#16a34a;">
-                                    <i class="bi bi-check-circle-fill"></i> Check-In Tamamla
-                                </button>
+                            <div class="ci-side-body">
+                                <div style="height:6px;background:#f1f5f9;border-radius:99px;overflow:hidden;margin-bottom:8px;">
+                                    <div id="progressBar" style="height:100%;background:linear-gradient(90deg,#2563eb,#3b82f6);border-radius:99px;width:20%;transition:width .4s ease;"></div>
+                                </div>
+                                <div style="display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;">
+                                    <span id="progressLabel">Adım 1 / 5</span>
+                                    <span id="progressPct">%20</span>
+                                </div>
                             </div>
                         </div>
 
                     </div>
                 </div>
 
-                @* ── Sağ: Fiyat + Hızlı Özet ── *@
-                <div class="ci-col-side">
-
-                    @* Fiyat Özeti *@
-                    <div class="ci-side-card">
-                        <div class="ci-side-card-head">
-                            <div class="ci-side-ico" style="background:#f5f3ff;color:#7c3aed;">
-                                <i class="bi bi-receipt-cutoff"></i>
-                            </div>
-                            <div>
-                                <div class="ci-side-title">Fiyat Özeti</div>
-                                <div class="ci-side-desc">Anlık güncellenir</div>
-                            </div>
-                        </div>
-                        <div class="ci-side-body">
-                            <div class="pr-row">
-                                <span class="pr-lbl">Bilet</span>
-                                <span class="pr-val">@ViewBag.BasePrice @ViewBag.Currency</span>
-                            </div>
-                            <div id="priceBreakdown"></div>
-                            <div class="pr-total">
-                                <span class="pr-total-lbl">Toplam</span>
-                                <span class="pr-total-val" id="totalPrice">@ViewBag.BasePrice @ViewBag.Currency</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    @* Seçim Özeti *@
-                    <div class="ci-side-card">
-                        <div class="ci-side-card-head">
-                            <div class="ci-side-ico" style="background:#f0fdf4;color:#16a34a;">
-                                <i class="bi bi-clipboard-check-fill"></i>
-                            </div>
-                            <div>
-                                <div class="ci-side-title">Seçimleriniz</div>
-                            </div>
-                        </div>
-                        <div class="ci-side-body" style="font-size:12.5px;">
-                            <div class="d-flex justify-content-between mb-2">
-                                <span style="color:#94a3b8;">Koltuk</span>
-                                <span class="fw-semibold" id="sideSeat" style="color:#0f172a;">—</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span style="color:#94a3b8;">Kabin Bagaj</span>
-                                <span class="fw-semibold" id="sideCabin" style="color:#0f172a;">Kişisel Eşya</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span style="color:#94a3b8;">Uçak Altı</span>
-                                <span class="fw-semibold" id="sideHold" style="color:#0f172a;">—</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span style="color:#94a3b8;">Yemek</span>
-                                <span class="fw-semibold" id="sideMeal" style="color:#0f172a;">—</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    @* Progress *@
-                    <div class="ci-side-card">
-                        <div class="ci-side-card-head">
-                            <div class="ci-side-ico" style="background:#eff6ff;color:#2563eb;">
-                                <i class="bi bi-bar-chart-steps"></i>
-                            </div>
-                            <div>
-                                <div class="ci-side-title">İlerleme</div>
-                            </div>
-                        </div>
-                        <div class="ci-side-body">
-                            <div style="height:6px;background:#f1f5f9;border-radius:99px;overflow:hidden;margin-bottom:8px;">
-                                <div id="progressBar" style="height:100%;background:linear-gradient(90deg,#2563eb,#3b82f6);border-radius:99px;width:20%;transition:width .4s ease;"></div>
-                            </div>
-                            <div style="display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;">
-                                <span id="progressLabel">Adım 1 / 5</span>
-                                <span id="progressPct">%20</span>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+            </form>
+            @* FORM SONU *@
 
         </div>
     </div>
 </main>
 
-@* ── Başarı Modalı ── *@
+@* Başarı Modalı *@
 <div class="ci-modal-overlay" id="ciModal">
     <div class="ci-modal-box">
         <div class="ci-modal-ico"><i class="bi bi-check-lg"></i></div>
         <div class="ci-modal-title">Check-In Tamamlandı! 🎉</div>
         <div class="ci-modal-desc">
-            Başarıyla check-in yapıldı. Biniş kartınız aşağıda yer almaktadır.
+            Başarıyla check-in yapıldı. Biniş kartınız aşağıda yer almaktadır.<br>
+            Onaylamak için <strong>Onayla &amp; Kaydet</strong> butonuna tıklayın.
         </div>
 
-        @* Boarding Pass *@
         <div class="ci-boarding-pass">
             <div class="bp-header">
                 <div>
@@ -2050,25 +2018,28 @@
                 <div class="bp-item">
                     <div class="bp-item-key">Tarih</div>
                     <div class="bp-item-val">
-                        @(ViewBag.DepartureTime != null ? ((DateTime)ViewBag.DepartureTime).ToString("dd MMM", new System.Globalization.CultureInfo("tr-TR")) : "—")
+                        @(ViewBag.DepartureTime != null
+                                                ? ((DateTime)ViewBag.DepartureTime).ToString("dd MMM", new System.Globalization.CultureInfo("tr-TR"))
+                                                : "—")
                     </div>
                 </div>
             </div>
 
-            <div class="bp-barcode" id="barcodeArea">
+            <div class="bp-barcode">submitCheckIn
                 <div class="bp-barcode-bars" id="barcodeBars"></div>
-                <div class="bp-pnr">@ViewBag.Pnr</div>
+                <div class="bp-pnr">@ViewBag.PnrNumber</div>
             </div>
         </div>
 
         <div class="modal-btn-row">
-            <button class="btn-ci btn-ci-primary flex-fill" onclick="downloadTicket()">
-                <i class="bi bi-download"></i> Bileti İndir
+            @* Asıl form submit *@
+            <button type="button" class="btn-ci btn-ci-success flex-fill" onclick="submitCheckIn()">
+                <i class="bi bi-check-circle-fill"></i> Onayla &amp; Kaydet
             </button>
-            <button class="btn-ci btn-ci-success" onclick="printTicket()" style="width:auto;padding:11px 16px;">
+            <button type="button" class="btn-ci btn-ci-secondary" onclick="printTicket()" style="width:auto;padding:11px 16px;" title="Yazdır">
                 <i class="bi bi-printer-fill"></i>
             </button>
-            <button class="btn-ci btn-ci-secondary" onclick="closeModal()" style="width:auto;padding:11px 16px;">
+            <button type="button" class="btn-ci btn-ci-secondary" onclick="closeModal()" style="width:auto;padding:11px 16px;" title="Kapat">
                 <i class="bi bi-x-lg"></i>
             </button>
         </div>
@@ -2077,75 +2048,75 @@
 
 @section Scripts {
     <script>
+        /* ═══════════════════════════════════════════════════════════
+           CONFIG
+           BASE_PRICE ve CURRENCY Razor'dan güvenli şekilde alınır.
+           innerHTML üzerinden render edilmez — doğrudan JS değişkeni.
+        ═══════════════════════════════════════════════════════════ */
+        var BASE_PRICE = @(ViewBag.BasePrice != null ? ViewBag.BasePrice.ToString().Replace(',', '.') : "0");
+    
+        var CURRENCY   = '@Html.Raw(currencySymbol)';
 
-        /* ── Config ──────────────────────────────────────────── */
-        var BASE_PRICE = parseFloat('@(ViewBag.BasePrice ?? 0)') || 0;
-        var CURRENCY   = '@(ViewBag.Currency ?? "₺")';
-        var ROWS = 20;
-        var COLS = ['A','B','C','D','E','F'];
-
+        var ROWS     = 20;
+        var COLS     = ['A','B','C','D','E','F'];
         var OCCUPIED = [
             '1A','1B','2C','3D','4A','4F','5B','5E',
             '6C','7A','7D','8B','8F','9C','10A','10E',
             '11B','12D','13A','13C','14F','15B','15E',
             '16A','17C','18D','19B','20F','3B','6E'
         ];
-
-        /* Premium koltuklar (ücretli) */
         var PREMIUM = ['1C','1D','2A','2F','3A','3F','4C','4D'];
 
-        /* ── State ───────────────────────────────────────────── */
-        var currentTab  = 1;
-        var selectedSeat = null;
-        var selectedMeal = null;
+        /* ── State ────────────────────────────────────────────── */
+        var currentTab    = 1;
+        var selectedSeat  = null;
+        var selectedMeal  = null;
         var selectedExtras = [];
-        var specialBags  = {};
-        var cabinChoice  = { id:'free', price:0, name:'Kişisel Eşya' };
-        var holdKg       = 0;
-        var holdPrice    = 0;
+        var specialBags   = {};
+        var cabinChoice   = { id:'free', price:0, name:'Kişisel Eşya' };
+        var holdKg        = 0;
+        var holdPrice     = 0;
+        var mealPrice     = 0;
 
         var HOLD_PRICES = { 0:0, 8:100, 16:180, 24:240, 32:300 };
 
-        /* ── Meals Data ──────────────────────────────────────── */
+        /* ── Meals Data ───────────────────────────────────────── */
         var meals = [
-            { id:'pasta', name:'Fırın Makarna',     desc:'Domates soslu, peynirli fırın makarnası', emoji:'🍝', tags:['hot','veg'], price:0,   free:true,  cat:'hot' },
-            { id:'chicken', name:'Izgara Tavuk',    desc:'Sebzeli pirinç pilavı ve mevsim salatası', emoji:'🍗', tags:['hot','hal'], price:0,   free:true,  cat:'hot' },
-            { id:'beef',  name:'Et Sote',           desc:'Mantar soslu biftek, patates püresiyle',  emoji:'🥩', tags:['hot','hal'], price:30,  free:false, cat:'hot' },
-            { id:'salad', name:'Akdeniz Salatası',  desc:'Taze sebzeler, zeytinyağı, limon',        emoji:'🥗', tags:['cold','veg'], price:0,  free:true,  cat:'cold' },
-            { id:'wrap',  name:'Tavuklu Wrap',      desc:'Marul, domates, özel sos ile wrap',       emoji:'🌯', tags:['cold','hal'], price:0,  free:true,  cat:'cold' },
-            { id:'sushi', name:'Sushi Tabağı',      desc:'8 parça sushi, wasabi ve soya sosu',      emoji:'🍱', tags:['cold'],        price:50,  free:false, cat:'cold' },
-            { id:'veg',   name:'Vejetaryen Köfte',  desc:'Mercimek ve sebze köftesi, yoğurt sosu',  emoji:'🧆', tags:['hot','veg'],   price:0,   free:true,  cat:'veg' },
-            { id:'fruit', name:'Meyve Tabağı',      desc:'Mevsim meyveleri, bal, granola',          emoji:'🍓', tags:['cold','veg'],  price:0,   free:true,  cat:'snack' },
-            { id:'sand',  name:'Sandviç Menü',      desc:'Peynirli sandviç + çips + içecek',        emoji:'🥪', tags:['cold'],         price:25,  free:false, cat:'snack' },
-            { id:'cake',  name:'Çikolatalı Kek',    desc:'Fındıklı çikolata sos ile servis edilir', emoji:'🍰', tags:['cold'],         price:20,  free:false, cat:'snack' },
-            { id:'halal', name:'Helal Tabak',       desc:'Helal sertifikalı et + pilav + salata',   emoji:'🍛', tags:['hot','hal'],    price:0,   free:true,  cat:'hal' },
-            { id:'kid',   name:'Çocuk Menüsü',      desc:'Nugget, patates, meyve suyu',             emoji:'🍟', tags:['hot'],           price:0,   free:true,  cat:'hot' },
+            { id:'pasta',   name:'Fırın Makarna',    desc:'Domates soslu, peynirli fırın makarnası',    emoji:'🍝', tags:['hot','veg'],  price:0,  free:true,  cat:'hot'   },
+            { id:'chicken', name:'Izgara Tavuk',     desc:'Sebzeli pirinç pilavı ve mevsim salatası',   emoji:'🍗', tags:['hot','hal'],  price:0,  free:true,  cat:'hot'   },
+            { id:'beef',    name:'Et Sote',          desc:'Mantar soslu biftek, patates püresiyle',     emoji:'🥩', tags:['hot','hal'],  price:30, free:false, cat:'hot'   },
+            { id:'salad',   name:'Akdeniz Salatası', desc:'Taze sebzeler, zeytinyağı, limon',           emoji:'🥗', tags:['cold','veg'], price:0,  free:true,  cat:'cold'  },
+            { id:'wrap',    name:'Tavuklu Wrap',     desc:'Marul, domates, özel sos ile wrap',          emoji:'🌯', tags:['cold','hal'], price:0,  free:true,  cat:'cold'  },
+            { id:'sushi',   name:'Sushi Tabağı',     desc:'8 parça sushi, wasabi ve soya sosu',         emoji:'🍱', tags:['cold'],       price:50, free:false, cat:'cold'  },
+            { id:'veg',     name:'Vejetaryen Köfte', desc:'Mercimek ve sebze köftesi, yoğurt sosu',     emoji:'🧆', tags:['hot','veg'],  price:0,  free:true,  cat:'veg'   },
+            { id:'fruit',   name:'Meyve Tabağı',     desc:'Mevsim meyveleri, bal, granola',             emoji:'🍓', tags:['cold','veg'], price:0,  free:true,  cat:'snack' },
+            { id:'sand',    name:'Sandviç Menü',     desc:'Peynirli sandviç + çips + içecek',           emoji:'🥪', tags:['cold'],       price:25, free:false, cat:'snack' },
+            { id:'cake',    name:'Çikolatalı Kek',   desc:'Fındıklı çikolata sos ile servis edilir',    emoji:'🍰', tags:['cold'],       price:20, free:false, cat:'snack' },
+            { id:'halal',   name:'Helal Tabak',      desc:'Helal sertifikalı et + pilav + salata',      emoji:'🍛', tags:['hot','hal'],  price:0,  free:true,  cat:'hal'   },
+            { id:'kid',     name:'Çocuk Menüsü',     desc:'Nugget, patates, meyve suyu',                emoji:'🍟', tags:['hot'],        price:0,  free:true,  cat:'hot'   },
         ];
 
-        /* ── Extras Data ─────────────────────────────────────── */
+        /* ── Extras Data ──────────────────────────────────────── */
         var extras = [
-            { id:'priority', name:'Öncelikli Biniş',   desc:'İlk binen yolcu',       price:120, icon:'bi-lightning-charge-fill', bg:'#fefce8', fg:'#ca8a04' },
-            { id:'comfort',  name:'Konfor Paketi',      desc:'Battaniye + yastık + maske', price:90, icon:'bi-stars',            bg:'#f5f3ff', fg:'#7c3aed' },
-            { id:'insurance',name:'Seyahat Sigortası',  desc:'Tam kapsamlı sigorta',  price:200, icon:'bi-shield-check-fill',   bg:'#f0fdf4', fg:'#16a34a' },
-            { id:'lounge',   name:'Lounge Erişimi',     desc:'VIP bekleme salonu',    price:350, icon:'bi-gem',                  bg:'#fff1f2', fg:'#e11d48' },
-            { id:'wifi',     name:'Uçuş içi Wi-Fi',     desc:'Tüm uçuş boyunca',      price:80,  icon:'bi-wifi',                bg:'#eff6ff', fg:'#2563eb' },
-            { id:'assist',   name:'Özel Yardım',        desc:'Tekerlekli sandalye vb.',price:0,   icon:'bi-person-heart',        bg:'#f0fdf4', fg:'#16a34a' },
+            { id:'priority',  name:'Öncelikli Biniş',   desc:'İlk binen yolcu',            price:120, icon:'bi-lightning-charge-fill', bg:'#fefce8', fg:'#ca8a04' },
+            { id:'comfort',   name:'Konfor Paketi',      desc:'Battaniye + yastık + maske', price:90,  icon:'bi-stars',                bg:'#f5f3ff', fg:'#7c3aed' },
+            { id:'insurance', name:'Seyahat Sigortası',  desc:'Tam kapsamlı sigorta',       price:200, icon:'bi-shield-check-fill',    bg:'#f0fdf4', fg:'#16a34a' },
+            { id:'lounge',    name:'Lounge Erişimi',     desc:'VIP bekleme salonu',         price:350, icon:'bi-gem',                  bg:'#fff1f2', fg:'#e11d48' },
+            { id:'wifi',      name:'Uçuş içi Wi-Fi',    desc:'Tüm uçuş boyunca',           price:80,  icon:'bi-wifi',                 bg:'#eff6ff', fg:'#2563eb' },
+            { id:'assist',    name:'Özel Yardım',        desc:'Tekerlekli sandalye vb.',    price:0,   icon:'bi-person-heart',         bg:'#f0fdf4', fg:'#16a34a' },
         ];
 
-        /* ══════════════════════════════════════════════════════
+        /* ═══════════════════════════════════════════════════════
            TAB NAVIGATION
-        ══════════════════════════════════════════════════════ */
+        ═══════════════════════════════════════════════════════ */
         function goTab(n) {
-            /* Önceki paneli kapat */
             document.getElementById('panel-' + currentTab).classList.remove('active');
             document.getElementById('step-tab-' + currentTab).classList.remove('active');
 
-            /* Done işaretle */
             if (n > currentTab) {
                 document.getElementById('step-tab-' + currentTab).classList.add('done');
                 document.getElementById('step-num-' + currentTab).innerHTML = '<i class="bi bi-check-lg" style="font-size:11px;"></i>';
             } else {
-                /* Geri gidince done kaldır */
                 for (var i = n; i <= 5; i++) {
                     document.getElementById('step-tab-' + i).classList.remove('done');
                     document.getElementById('step-num-' + i).textContent = i;
@@ -2156,28 +2127,23 @@
             document.getElementById('panel-' + n).classList.add('active');
             document.getElementById('step-tab-' + n).classList.add('active');
 
-            /* Progress bar */
             var pct = Math.round(n / 5 * 100);
-            document.getElementById('progressBar').style.width = pct + '%';
-            document.getElementById('progressLabel').textContent = 'Adım ' + n + ' / 5';
-            document.getElementById('progressPct').textContent   = '%' + pct;
+            document.getElementById('progressBar').style.width     = pct + '%';
+            document.getElementById('progressLabel').textContent   = 'Adım ' + n + ' / 5';
+            document.getElementById('progressPct').textContent     = '%' + pct;
 
-            /* Özet paneli güncelle */
             if (n === 5) buildSummary();
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top:0, behavior:'smooth' });
         }
 
-        /* ══════════════════════════════════════════════════════
+        /* ═══════════════════════════════════════════════════════
            BAGAJ
-        ══════════════════════════════════════════════════════ */
-        function selectBaggage(group, id, price) {
-            /* Önceki seçimi kaldır */
+        ═══════════════════════════════════════════════════════ */
+        function selectBaggage(id, price, name) {
             document.querySelectorAll('[id^="cabin-"]').forEach(function(el){ el.classList.remove('selected'); });
             document.getElementById('cabin-' + id).classList.add('selected');
-            var names = { free:'Kişisel Eşya', small:'Kabin (S)', large:'Kabin (L)' };
-            cabinChoice = { id:id, price:price, name:names[id] };
-            document.getElementById('sideCabin').textContent = names[id];
+            cabinChoice = { id:id, price:price, name:name };
+            document.getElementById('sideCabin').textContent = name;
             updatePrice();
         }
 
@@ -2198,7 +2164,6 @@
                 display.textContent = val + ' kg';
                 document.getElementById('sideHold').textContent = val + ' kg · ' + holdPrice + ' ' + CURRENCY;
             }
-
             updatePrice();
         }
 
@@ -2214,9 +2179,9 @@
             updatePrice();
         }
 
-        /* ══════════════════════════════════════════════════════
+        /* ═══════════════════════════════════════════════════════
            KOLTUK HARİTASI
-        ══════════════════════════════════════════════════════ */
+        ═══════════════════════════════════════════════════════ */
         function buildSeatMap() {
             var map  = document.getElementById('seatMap');
             var html = '';
@@ -2229,40 +2194,21 @@
 
             for (var r = 1; r <= ROWS; r++) {
                 html += '<div class="smap-row"><div class="smap-row-num">' + r + '</div>';
-
-                for (var i = 0; i < 3; i++) {
-                    var sid = r + COLS[i];
-                    html += makeSeatBtn(sid, i);
-                }
-
+                for (var i = 0; i < 3; i++) { html += makeSeatBtn(r + COLS[i], i); }
                 html += '<div></div>';
-
-                for (var j = 3; j < 6; j++) {
-                    var sid2 = r + COLS[j];
-                    html += makeSeatBtn(sid2, j);
-                }
-
+                for (var j = 3; j < 6; j++) { html += makeSeatBtn(r + COLS[j], j); }
                 html += '</div>';
             }
-
             map.innerHTML = html;
-
-            /* Slider başlangıç rengi */
-            updateHoldSlider(0);
         }
 
         function makeSeatBtn(sid, colIdx) {
             var occ  = OCCUPIED.indexOf(sid) !== -1;
             var prem = PREMIUM.indexOf(sid)  !== -1;
-            var cls  = 'seat';
-            if (occ)  cls += ' occupied';
-            if (prem && !occ) cls += ' window'; /* sarı arka plan ipucu */
-
-            var style = (prem && !occ) ? 'style="background:#fefce8;border-color:#fde68a;"' : '';
-
-            return '<button class="' + cls + '" id="s-' + sid + '"' +
-                (occ ? ' disabled' : ' onclick="pickSeat(\'' + sid + '\'' + (prem ? ',true' : ',false') + ')"') +
-                ' ' + style + '>' + sid + '</button>';
+            var cls  = 'seat' + (occ ? ' occupied' : '') + (prem && !occ ? ' window' : '');
+            var style= (prem && !occ) ? 'style="background:#fefce8;border-color:#fde68a;"' : '';
+            var click= occ ? '' : ' onclick="pickSeat(\'' + sid + '\',' + (prem ? 'true' : 'false') + ')"';
+            return '<button type="button" class="' + cls + '" id="s-' + sid + '"' + (occ ? ' disabled' : '') + click + ' ' + style + '>' + sid + '</button>';
         }
 
         function pickSeat(id, premium) {
@@ -2275,7 +2221,6 @@
                     }
                 }
             }
-
             selectedSeat = (selectedSeat === id) ? null : id;
 
             var tag   = document.getElementById('selectedTag');
@@ -2298,64 +2243,49 @@
         function filterSeats(type, btn) {
             document.querySelectorAll('.seat-filter-btn').forEach(function(b){ b.classList.remove('active'); });
             btn.classList.add('active');
-
             for (var r = 1; r <= ROWS; r++) {
                 for (var ci = 0; ci < COLS.length; ci++) {
-                    var sid = r + COLS[ci];
-                    var el  = document.getElementById('s-' + sid);
+                    var el = document.getElementById('s-' + r + COLS[ci]);
                     if (!el || el.classList.contains('occupied')) continue;
-
                     var show = true;
-                    if (type === 'window') show = (ci === 0 || ci === 5);
+                    if      (type === 'window') show = (ci === 0 || ci === 5);
                     else if (type === 'middle') show = (ci === 1 || ci === 4);
                     else if (type === 'aisle')  show = (ci === 2 || ci === 3);
                     else if (type === 'front')  show = r <= 5;
                     else if (type === 'exit')   show = (r === 10 || r === 11);
-
-                    el.style.opacity = show ? '1' : '.25';
+                    el.style.opacity       = show ? '1' : '.25';
                     el.style.pointerEvents = show ? '' : 'none';
                 }
             }
         }
 
-        /* ══════════════════════════════════════════════════════
+        /* ═══════════════════════════════════════════════════════
            YEMEK
-        ══════════════════════════════════════════════════════ */
+        ═══════════════════════════════════════════════════════ */
         function buildMeals(cat) {
             cat = cat || 'all';
             var list = meals.filter(function(m){ return cat === 'all' || m.cat === cat; });
-
             document.getElementById('mealGrid').innerHTML = list.map(function(m) {
-                var tagHtml = m.tags.map(function(t) {
-                    var labels = { hot:'Sıcak', cold:'Soğuk', veg:'Vejetaryen', hal:'Helal' };
-                    return '<span class="meal-tag ' + t + '">' + (labels[t] || t) + '</span>';
+                var tagLabels = { hot:'Sıcak', cold:'Soğuk', veg:'Vejetaryen', hal:'Helal' };
+                var tagHtml   = m.tags.map(function(t){
+                    return '<span class="meal-tag ' + t + '">' + (tagLabels[t] || t) + '</span>';
                 }).join('');
-
-                return '<div class="meal-card' + (selectedMeal === m.id ? ' selected' : '') + '"' +
-                    ' id="meal-' + m.id + '" onclick="pickMeal(\'' + m.id + '\',' + m.price + ')">' +
+                return '<div class="meal-card' + (selectedMeal === m.id ? ' selected' : '') + '" id="meal-' + m.id + '" onclick="pickMeal(\'' + m.id + '\',' + m.price + ')">' +
                     '<div class="meal-check"><i class="bi bi-check-lg"></i></div>' +
                     '<div class="meal-img">' + m.emoji + '</div>' +
                     '<div class="meal-info">' +
                         '<div class="meal-name">' + m.name + '</div>' +
                         '<div class="meal-desc">' + m.desc + '</div>' +
                         '<div class="meal-tags">' + tagHtml + '</div>' +
-                        (m.free
-                            ? '<div class="meal-free">Ücretsiz</div>'
-                            : '<div class="meal-price">+ ' + m.price + ' ' + CURRENCY + '</div>') +
+                        (m.free ? '<div class="meal-free">Ücretsiz</div>' : '<div class="meal-price">+ ' + m.price + ' ' + CURRENCY + '</div>') +
                     '</div>' +
                 '</div>';
             }).join('');
         }
 
-        var mealPrice = 0;
-
         function pickMeal(id, price) {
-            if (selectedMeal === id) {
-                selectedMeal = null; mealPrice = 0;
-            } else {
-                selectedMeal = id; mealPrice = price;
-            }
-
+            if (selectedMeal === id) { selectedMeal = null; mealPrice = 0; }
+            else                     { selectedMeal = id;   mealPrice = price; }
             document.querySelectorAll('.meal-card').forEach(function(c){ c.classList.remove('selected'); });
             if (selectedMeal) {
                 var el = document.getElementById('meal-' + selectedMeal);
@@ -2365,7 +2295,6 @@
             } else {
                 document.getElementById('sideMeal').textContent = '—';
             }
-
             updatePrice();
         }
 
@@ -2375,125 +2304,113 @@
             buildMeals(cat);
         }
 
-        /* ══════════════════════════════════════════════════════
+        /* ═══════════════════════════════════════════════════════
            EK HİZMETLER
-        ══════════════════════════════════════════════════════ */
+        ═══════════════════════════════════════════════════════ */
         function buildExtras() {
             document.getElementById('extrasGrid').innerHTML = extras.map(function(e) {
                 var freeTag = e.price === 0
                     ? '<div class="ec-price" style="color:#16a34a;">Ücretsiz</div>'
                     : '<div class="ec-price">+ ' + e.price + ' ' + CURRENCY + '</div>';
-
-                return '<label class="extra-card' + (selectedExtras.indexOf(e.id) !== -1 ? ' selected' : '') + '"' +
-                    ' id="ex-' + e.id + '" onclick="toggleExtra(\'' + e.id + '\',' + e.price + ')">' +
-                    '<input type="checkbox" />' +
+                return '<div class="extra-card' + (selectedExtras.indexOf(e.id) !== -1 ? ' selected' : '') + '" id="ex-' + e.id + '" onclick="toggleExtra(\'' + e.id + '\',' + e.price + ')">' +
                     '<div class="ec-check"><i class="bi bi-check-lg"></i></div>' +
                     '<div class="ec-ico" style="background:' + e.bg + ';color:' + e.fg + ';"><i class="bi ' + e.icon + '"></i></div>' +
                     '<div class="ec-name">' + e.name + '</div>' +
                     '<div class="ec-desc">' + e.desc + '</div>' +
                     freeTag +
-                '</label>';
+                '</div>';
             }).join('');
         }
 
         function toggleExtra(id, price) {
             var idx  = selectedExtras.indexOf(id);
             var card = document.getElementById('ex-' + id);
-
             if (idx === -1) { selectedExtras.push(id); card.classList.add('selected'); }
             else            { selectedExtras.splice(idx, 1); card.classList.remove('selected'); }
-
             updatePrice();
         }
 
-        /* ══════════════════════════════════════════════════════
-           PRICE
-        ══════════════════════════════════════════════════════ */
+        /* ═══════════════════════════════════════════════════════
+           PRICE  —  Toplam hesap + DOM güncelle
+        ═══════════════════════════════════════════════════════ */
         function updatePrice() {
             var total     = BASE_PRICE;
             var breakdown = '';
 
-            /* Kabin */
             if (cabinChoice.price > 0) {
                 total += cabinChoice.price;
-                breakdown += '<div class="pr-row"><span class="pr-lbl">' + cabinChoice.name + '</span><span class="pr-val">+ ' + cabinChoice.price + ' ' + CURRENCY + '</span></div>';
+                breakdown += row(cabinChoice.name, cabinChoice.price);
             }
-
-            /* Hold bagaj */
             if (holdPrice > 0) {
                 total += holdPrice;
-                breakdown += '<div class="pr-row"><span class="pr-lbl">Ambar bagaj ' + holdKg + ' kg</span><span class="pr-val">+ ' + holdPrice + ' ' + CURRENCY + '</span></div>';
+                breakdown += row('Ambar bagaj ' + holdKg + ' kg', holdPrice);
             }
-
-            /* Özel bagaj */
             Object.keys(specialBags).forEach(function(k) {
                 total += specialBags[k];
                 var n = { sport:'Spor Ekipmanı', golf:'Golf Ekipmanı', pet:'Evcil Hayvan' };
-                breakdown += '<div class="pr-row"><span class="pr-lbl">' + n[k] + '</span><span class="pr-val">+ ' + specialBags[k] + ' ' + CURRENCY + '</span></div>';
+                breakdown += row(n[k], specialBags[k]);
             });
-
-            /* Yemek */
             if (mealPrice > 0) {
                 total += mealPrice;
-                breakdown += '<div class="pr-row"><span class="pr-lbl">Yemek</span><span class="pr-val">+ ' + mealPrice + ' ' + CURRENCY + '</span></div>';
+                breakdown += row('Yemek', mealPrice);
             }
-
-            /* Ekstralar */
             selectedExtras.forEach(function(id) {
                 var ex = extras.find(function(e){ return e.id === id; });
                 if (!ex || ex.price === 0) return;
                 total += ex.price;
-                breakdown += '<div class="pr-row"><span class="pr-lbl">' + ex.name + '</span><span class="pr-val">+ ' + ex.price + ' ' + CURRENCY + '</span></div>';
+                breakdown += row(ex.name, ex.price);
             });
 
             document.getElementById('priceBreakdown').innerHTML = breakdown;
-            document.getElementById('totalPrice').textContent   = total + ' ' + CURRENCY;
+            // Bilet satırını da güncelle
+            document.getElementById('baseTicketPrice').textContent = BASE_PRICE + ' ' + CURRENCY;
+            // ⭐ Toplam — burada CURRENCY JS değişkeni, HTML entity sorunu yok
+            document.getElementById('totalPrice').textContent = total + ' ' + CURRENCY;
 
             return total;
         }
 
-        /* ══════════════════════════════════════════════════════
+        function row(label, price) {
+            return '<div class="pr-row"><span class="pr-lbl">' + label + '</span><span class="pr-val">+ ' + price + ' ' + CURRENCY + '</span></div>';
+        }
+
+        /* ═══════════════════════════════════════════════════════
            ÖZET (Tab 5)
-        ══════════════════════════════════════════════════════ */
+        ═══════════════════════════════════════════════════════ */
         function buildSummary() {
             var mealObj = meals.find(function(m){ return m.id === selectedMeal; });
             var extList = selectedExtras.map(function(id){ return extras.find(function(e){ return e.id === id; }); }).filter(Boolean);
 
-            var html =
-                /* Koltuk */
-                '<div class="summary-block">' +
-                    '<div class="sb-title"><i class="bi bi-grid-3x3-gap me-1"></i> Koltuk</div>' +
-                    '<div class="sb-row"><span class="sb-lbl">Seçilen Koltuk</span><span class="sb-val">' + (selectedSeat || '—') + '</span></div>' +
-                '</div>' +
-
-                /* Bagaj */
-                '<div class="summary-block">' +
-                    '<div class="sb-title"><i class="bi bi-luggage me-1"></i> Bagaj</div>' +
-                    '<div class="sb-row"><span class="sb-lbl">Kabin</span><span class="sb-val">' + cabinChoice.name + '</span></div>' +
-                    '<div class="sb-row"><span class="sb-lbl">Uçak Altı</span><span class="sb-val">' + (holdKg > 0 ? holdKg + ' kg' : 'Yok') + '</span></div>' +
-                    '<div class="sb-row"><span class="sb-lbl">Özel</span><span class="sb-val">' + (Object.keys(specialBags).length > 0 ? Object.keys(specialBags).length + ' kalem' : 'Yok') + '</span></div>' +
-                '</div>' +
-
-                /* Yemek */
-                '<div class="summary-block">' +
-                    '<div class="sb-title"><i class="bi bi-cup-hot me-1"></i> Yemek</div>' +
-                    '<div class="sb-row"><span class="sb-lbl">Seçilen</span><span class="sb-val">' + (mealObj ? mealObj.name : '—') + '</span></div>' +
-                '</div>' +
-
-                /* Ekstralar */
+            document.getElementById('summaryGrid').innerHTML =
+                block('bi-grid-3x3-gap', 'Koltuk', [
+                    { l:'Seçilen Koltuk', v: selectedSeat || '—' }
+                ]) +
+                block('bi-luggage', 'Bagaj', [
+                    { l:'Kabin',    v: cabinChoice.name },
+                    { l:'Uçak Altı', v: holdKg > 0 ? holdKg + ' kg' : 'Yok' },
+                    { l:'Özel',     v: Object.keys(specialBags).length > 0 ? Object.keys(specialBags).length + ' kalem' : 'Yok' }
+                ]) +
+                block('bi-cup-hot', 'Yemek', [
+                    { l:'Seçilen', v: mealObj ? mealObj.name : '—' }
+                ]) +
                 '<div class="summary-block">' +
                     '<div class="sb-title"><i class="bi bi-bag-check me-1"></i> Ek Hizmetler</div>' +
                     (extList.length > 0
                         ? extList.map(function(e){ return '<div class="sb-row"><span class="sb-lbl">' + e.name + '</span><span class="sb-val">' + (e.price > 0 ? e.price + ' ' + CURRENCY : 'Ücretsiz') + '</span></div>'; }).join('')
                         : '<div class="sb-empty">Seçilmedi</div>') +
                 '</div>';
-
-            document.getElementById('summaryGrid').innerHTML = html;
         }
 
-        /* ══════════════════════════════════════════════════════
-           CHECK-IN
-        ══════════════════════════════════════════════════════ */
+        function block(icon, title, rows) {
+            return '<div class="summary-block">' +
+                '<div class="sb-title"><i class="bi ' + icon + ' me-1"></i> ' + title + '</div>' +
+                rows.map(function(r){ return '<div class="sb-row"><span class="sb-lbl">' + r.l + '</span><span class="sb-val">' + r.v + '</span></div>'; }).join('') +
+            '</div>';
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           CHECK-IN  —  Modalı aç, hidden field'ları doldur
+        ═══════════════════════════════════════════════════════ */
         function completeCheckin() {
             if (!selectedSeat) {
                 alert('Lütfen önce koltuk seçin (Adım 2).');
@@ -2501,58 +2418,71 @@
                 return;
             }
 
-            var total = updatePrice();
+            var total      = updatePrice();
+            var extraTotal = total - BASE_PRICE; // sadece ekstra toplam
+
+            // Hidden field'ları doldur
+            document.getElementById('hSeatNumber').value       = selectedSeat;
+            document.getElementById('hBaggageKg').value        = holdKg;
+            document.getElementById('hMealType').value         = selectedMeal || '';
+            document.getElementById('hExtraTotalPrice').value  = extraTotal;
+
+            // ExtraServices — List<string> için her biri ayrı hidden input
+            // Önce varsa eskilerini temizle
+            document.querySelectorAll('.extra-hidden').forEach(function(el){ el.remove(); });
+            var form = document.getElementById('checkInForm');
+            selectedExtras.forEach(function(id) {
+                var inp = document.createElement('input');
+                inp.type  = 'hidden';
+                inp.name  = 'ExtraServices';
+                inp.value = id;
+                inp.classList.add('extra-hidden');
+                form.appendChild(inp);
+            });
+
+            // Modal bilgilerini güncelle
             document.getElementById('modalSeat').textContent  = selectedSeat;
             document.getElementById('modalTotal').textContent = total + ' ' + CURRENCY;
 
-            /* Barkod animasyonu */
             generateBarcode();
-
             document.getElementById('ciModal').classList.add('open');
         }
 
+        /* ═══════════════════════════════════════════════════════
+           SUBMIT  —  Kullanıcı modalda onayladıktan sonra POST
+        ═══════════════════════════════════════════════════════ */
+        function submitCheckIn() {
+            console.log("SUBMIT ÇALIŞTI");
+            document.getElementById('checkInForm').submit();
+        }
+
+        /* ── Barcode ─────────────────────────────────────────── */
         function generateBarcode() {
-            var bars   = document.getElementById('barcodeBars');
-            var html   = '';
-            var widths = [2,1,3,1,2,4,1,2,1,3,2,1,4,1,2,1,3,2,1,4,2,1,3,1,2,4,1,2,3,1,2,1];
+            var bars    = document.getElementById('barcodeBars');
+            var widths  = [2,1,3,1,2,4,1,2,1,3,2,1,4,1,2,1,3,2,1,4,2,1,3,1,2,4,1,2,3,1,2,1];
             var heights = [36,28,36,20,36,32,24,36,20,36,28,36,24,36,20,36,32,28,36,24,36,20,36,28,32,20,36,28,24,36,20,36];
-
-            widths.forEach(function(w, i) {
-                html += '<div class="bp-bar" style="width:' + w + 'px;height:' + heights[i] + 'px;"></div>';
-            });
-
-            bars.innerHTML = html;
+            bars.innerHTML = widths.map(function(w,i){
+                return '<div class="bp-bar" style="width:' + w + 'px;height:' + heights[i] + 'px;"></div>';
+            }).join('');
         }
 
-        function downloadTicket() {
-            alert('Biniş kartı PDF formatında indirilecek. (Demo)');
-        }
-
-        function printTicket() {
-            window.print();
-        }
-
-        function closeModal() {
-            document.getElementById('ciModal').classList.remove('open');
-        }
+        /* ── Modal ───────────────────────────────────────────── */
+        function closeModal() { document.getElementById('ciModal').classList.remove('open'); }
+        function printTicket() { window.print(); }
 
         document.getElementById('ciModal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
 
-        /* ══════════════════════════════════════════════════════
+        /* ═══════════════════════════════════════════════════════
            INIT
-        ══════════════════════════════════════════════════════ */
+        ═══════════════════════════════════════════════════════ */
         document.addEventListener('DOMContentLoaded', function() {
             buildSeatMap();
             buildMeals('all');
             buildExtras();
             updatePrice();
-
-            /* Slider başlangıç değeri */
-            var s = document.getElementById('holdKgSlider');
-            s.style.setProperty('--val', '0%');
+            document.getElementById('holdKgSlider').style.setProperty('--val', '0%');
         });
-
     </script>
 }

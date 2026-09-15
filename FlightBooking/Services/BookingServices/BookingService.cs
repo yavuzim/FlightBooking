@@ -63,12 +63,47 @@ public class BookingService : IBookingService
         //    update
         //);
     }
-    public async Task<Booking> GetBookingByPassengerIdAsync(string passengerId)
+
+    public async Task<string> GetGateByPassengerIdAsync(string passengerId)
     {
-        return await _bookingCollection.Find(x =>
-            x.Passengers.Any(p => p.PassengerId == passengerId))
+        var booking = await _bookingCollection
+            .Find(x => x.Passengers.Any(p => p.PassengerId == passengerId))
             .FirstOrDefaultAsync();
+
+        if (booking == null)
+            return null;
+
+        var passenger = booking.Passengers.FirstOrDefault(p=>p.PassengerId==passengerId);
+
+        return passenger.Gate;
     }
+
+    public async Task<(string Name, string Surname)> GetPassengerByIdAsync(string passengerId)
+    {
+       
+        var booking = await _bookingCollection
+            .Find(x => x.Passengers.Any(p => p.PassengerId == passengerId))
+            .FirstOrDefaultAsync();
+
+        if (booking == null)
+            return (null, null);
+
+        var passenger = booking.Passengers.FirstOrDefault(p => p.PassengerId == passengerId);
+        return passenger == null ? (null, null) : (passenger.Name, passenger.Surname);
+    }
+
+    public async Task<string> GetPnrByPassengerIdAsync(string passengerId)
+    {
+        var booking = await _bookingCollection
+             .Find(x => x.Passengers.Any(p => p.PassengerId == passengerId))
+             .FirstOrDefaultAsync();
+
+        if (booking == null)
+            return null;
+
+        return booking.PnrNumber;
+    }
+
     private async Task<string> GenerateUniquePnrAsync()
     {
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
