@@ -36,7 +36,6 @@ namespace FlightBooking.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(string id)
         {
-            Console.WriteLine("**********Index1 başladı");
             ViewBag.FlightNumber = TempData["FlightNumber"];
             ViewBag.DepartureTime = TempData["DepartureTime"];
             ViewBag.ArrivalTime = TempData["ArrivalTime"];
@@ -70,7 +69,6 @@ namespace FlightBooking.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(CompleteCheckInDto completeCheckInDto)
         {
-            Console.WriteLine("**********Index2 başladı");
             await _checkInService.CompleteCheckInAsync(completeCheckInDto);
             return RedirectToAction("Test");
         }
