@@ -1,0 +1,24 @@
+﻿@model List<string>
+@{
+    ViewData["Title"] = "January2027Forecast";
+    Layout = "~/Areas/Admin/Views/Layout/AdminLayout.cshtml";
+}
+<main class="main-content" id="main-content">
+    <h2>2027 Ocak Uçuş Tahminleri</h2>
+
+    <table class="table table-bordered">
+
+        <tr>
+            <th>Tahmin</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item</td>
+            </tr>
+        }
+
+    </table>
+</main>
+

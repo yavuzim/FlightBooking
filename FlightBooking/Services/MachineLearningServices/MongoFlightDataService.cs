@@ -1,4 +1,5 @@
 ﻿using FlightBooking.MachineLearningModels;
+using FlightBooking.MachineLearningRegressionModels;
 using FlightBooking.Settings;
 using MongoDB.Driver;
 
@@ -33,6 +34,24 @@ namespace FlightBooking.Services.MachineLearningServices
             }).ToList();
 
             return mlData;
+        }
+
+        public async Task<List<FlightRegressionData>> ConvertToRegressionDataAsync()
+        {
+            var rawData = await GetAllAsync();
+
+            var regressionData = rawData.Select(x => new FlightRegressionData
+            {
+                Month = DateTime.Parse(x.FlightDate).Month,
+
+                DayOfWeek = (float)DateTime.Parse(x.FlightDate).DayOfWeek,
+
+                FlightType = x.FlightType == "Morning" ? 0 : 1,
+
+                PassengerCount = x.PassengerCount
+            }).ToList();
+
+            return regressionData;
         }
     }
 }
