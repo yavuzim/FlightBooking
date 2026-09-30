@@ -6,7 +6,8 @@
 
         public string FlightSlot { get; set; }
 
-        public int ForecastPassengerCount { get; set; }
+        public int? ForecastPassengerCount { get; set; }
+        public int ActualPassengerCount { get; set; }
 
         public int Capacity { get; set; }
 

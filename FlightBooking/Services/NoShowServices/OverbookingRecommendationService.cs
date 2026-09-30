@@ -13,7 +13,7 @@ namespace FlightBooking.Services
             _noShowService = noShowService;
         }
 
-        public async Task<OverbookingRecommendationResult> GenerateRecommendationAsync(string flightDate, string flightSlot, int forecastPassenger, int capacity)
+        public async Task<OverbookingRecommendationResult> GenerateRecommendationAsync(string flightDate, string flightSlot, int passengerCount, int capacity)
         {
             var slotRates =
                 await _noShowService.GetSlotBasedNoShowRateAsync();
@@ -27,7 +27,7 @@ namespace FlightBooking.Services
 
             int expectedNoShowPassenger =
                 (int)Math.Round(
-                    forecastPassenger * (noShowRate / 100));
+                    passengerCount * (noShowRate / 100));
 
             int recommendedMaxSale =
                 capacity + expectedNoShowPassenger;
@@ -60,7 +60,7 @@ namespace FlightBooking.Services
             {
                 FlightDate = flightDate,
                 FlightSlot = flightSlot,
-                ForecastPassengerCount = forecastPassenger,
+                ForecastPassengerCount = passengerCount,
                 Capacity = capacity,
                 ExpectedNoShowRate = noShowRate,
                 ExpectedNoShowPassenger =
