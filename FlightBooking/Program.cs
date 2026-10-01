@@ -8,6 +8,9 @@ using FlightBooking.Services.MachineLearningServices;
 using FlightBooking.Services;
 using FlightBooking.Services.NoShowServices;
 using FlightBooking.Services.OverBookingNoShowServices;
+using FlightBooking.AgentServices;
+using FlightBooking.AgentServices.OpenAIServices;
+using FlightBooking.AgentSettings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,8 +26,12 @@ builder.Services.AddScoped<MongoFlightDataService>();
 builder.Services.AddScoped<OverbookingRecommendationService>();
 builder.Services.AddScoped<NoShowService>();
 builder.Services.AddScoped<NoShowPredictionService>();
+builder.Services.AddScoped<ITravelAgentService, TravelAgentService>();
+builder.Services.AddScoped<IOpenAIService, OpenAIService>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettingsKey"));
+builder.Services.Configure<OpenAISettings>(builder.Configuration.GetSection("OpenAI"));
+builder.Services.AddHttpClient();
 builder.Services.AddScoped<IDatabaseSettings>(sp =>
 {
     return sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
