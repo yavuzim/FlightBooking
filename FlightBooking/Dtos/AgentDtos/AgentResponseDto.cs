@@ -6,5 +6,6 @@
         public string Response { get; set; }
         public string Model { get; set; }
         public DateTime ResponseTime { get; set; }
+        public string Intent { get; set; }
     }
 }
