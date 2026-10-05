@@ -24,7 +24,7 @@ namespace FlightBooking.Services.FlightSearchServices
             var travelClass = MapCabin(cabin);
 
             var url =
-                $"https://google-flights2.p.rapidapi.com/api/v1/searchFlights" +
+                $"API_URL" +
                 $"?departure_id={Uri.EscapeDataString(fromIata)}" +
                 $"&arrival_id={Uri.EscapeDataString(toIata)}" +
                 $"&outbound_date={Uri.EscapeDataString(outboundDate)}" +
@@ -40,7 +40,7 @@ namespace FlightBooking.Services.FlightSearchServices
                 RequestUri = new Uri(url),
                 Headers =
                 {
-                    { "x-rapidapi-key", "630ce9cc86msh271c60cffe62d5ep1b514djsn0fe292593744" },
+                    { "x-rapidapi-key", "API_KEY" },
                     { "x-rapidapi-host", "google-flights2.p.rapidapi.com" },
                 },
             };
