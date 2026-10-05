@@ -10,6 +10,5 @@
         public string ToAirport { get; set; } = "";
         public string Currency { get; set; } = "TRY";
         public List<FlightCardDto> Flights { get; set; } = new();
-
     }
 }

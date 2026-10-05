@@ -6,6 +6,5 @@ namespace FlightBooking.Models.FlightBookingModels
     {
         [JsonPropertyName("text")]
         public string? Text { get; set; }
-
     }
 }

@@ -25,10 +25,14 @@ namespace FlightBooking.Models.FlightBookingModels
         [JsonPropertyName("airline_logo")]
         public string? AirlineLogo { get; set; }
 
-        // price bazen sayı (1410), bazen "unavailable" string geliyor.
-        // Bu yüzden JsonElement olarak alıp sonra normalize ediyoruz.
         [JsonPropertyName("price")]
         public System.Text.Json.JsonElement Price { get; set; }
 
+        // ---- YENİ: bagaj + karbon ----
+        [JsonPropertyName("bags")]
+        public FlightApiBags? Bags { get; set; }
+
+        [JsonPropertyName("carbon_emissions")]
+        public FlightApiCarbon? CarbonEmissions { get; set; }
     }
 }

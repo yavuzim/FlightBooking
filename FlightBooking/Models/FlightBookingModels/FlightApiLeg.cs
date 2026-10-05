@@ -16,5 +16,17 @@ namespace FlightBooking.Models.FlightBookingModels
         [JsonPropertyName("airline_logo")]
         public string? AirlineLogo { get; set; }
 
+        [JsonPropertyName("flight_number")]
+        public string? FlightNumber { get; set; }
+
+        [JsonPropertyName("aircraft")]
+        public string? Aircraft { get; set; }
+
+        [JsonPropertyName("legroom")]
+        public string? Legroom { get; set; }
+
+        [JsonPropertyName("duration")]
+        public FlightApiDuration? Duration { get; set; }
+
     }
 }

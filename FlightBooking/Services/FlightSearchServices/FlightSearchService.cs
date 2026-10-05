@@ -13,18 +13,23 @@ namespace FlightBooking.Services.FlightSearchServices
             _client = client;
         }
 
-        public async Task<List<FlightCardDto>> SearchAsync(string fromIata, string toIata, string outboundDate, int adults, string cabin, string currency)
+        public async Task<List<FlightCardDto>> SearchAsync(
+            string fromIata,
+            string toIata,
+            string outboundDate,
+            int adults,
+            string cabin,
+            string currency)
         {
             var cards = new List<FlightCardDto>();
 
             if (string.IsNullOrWhiteSpace(fromIata) || string.IsNullOrWhiteSpace(toIata))
                 return cards;
 
-            // API travel_class büyük harf bekliyor (ECONOMY, BUSINESS...)
             var travelClass = MapCabin(cabin);
 
             var url =
-                $"API_URL" +
+                $"https://google-flights2.p.rapidapi.com/api/v1/searchFlights" +
                 $"?departure_id={Uri.EscapeDataString(fromIata)}" +
                 $"&arrival_id={Uri.EscapeDataString(toIata)}" +
                 $"&outbound_date={Uri.EscapeDataString(outboundDate)}" +
@@ -40,7 +45,7 @@ namespace FlightBooking.Services.FlightSearchServices
                 RequestUri = new Uri(url),
                 Headers =
                 {
-                    { "x-rapidapi-key", "API_KEY" },
+                    { "x-rapidapi-key", "630ce9cc86msh271c60cffe62d5ep1b514djsn0fe292593744" },
                     { "x-rapidapi-host", "google-flights2.p.rapidapi.com" },
                 },
             };
@@ -53,7 +58,6 @@ namespace FlightBooking.Services.FlightSearchServices
             var itin = parsed?.Data?.Itineraries;
             if (itin == null) return cards;
 
-            // topFlights + otherFlights hepsini birleştir
             var all = new List<FlightApiItinerary>();
             if (itin.TopFlights != null) all.AddRange(itin.TopFlights);
             if (itin.OtherFlights != null) all.AddRange(itin.OtherFlights);
@@ -63,8 +67,9 @@ namespace FlightBooking.Services.FlightSearchServices
                 var firstLeg = it.Flights?.FirstOrDefault();
                 var lastLeg = it.Flights?.LastOrDefault();
 
-                cards.Add(new FlightCardDto
+                var card = new FlightCardDto
                 {
+                    // ---- özet ----
                     Airline = firstLeg?.Airline ?? "",
                     AirlineLogo = it.AirlineLogo ?? firstLeg?.AirlineLogo ?? "",
                     DepartureTime = ExtractClock(it.DepartureTime),
@@ -77,19 +82,63 @@ namespace FlightBooking.Services.FlightSearchServices
                         .Where(l => !string.IsNullOrWhiteSpace(l.City))
                         .Select(l => l.City!)
                         .ToList() ?? new List<string>(),
-                    Price = NormalizePrice(it.Price)
-                });
+                    Price = NormalizePrice(it.Price),
+
+                    // ---- detay: segmentler ----
+                    Segments = it.Flights?.Select(leg => new FlightSegmentDto
+                    {
+                        Airline = leg.Airline ?? "",
+                        AirlineLogo = leg.AirlineLogo ?? "",
+                        FlightNumber = leg.FlightNumber ?? "",
+                        Aircraft = leg.Aircraft ?? "",
+                        Legroom = leg.Legroom ?? "",
+                        DurationText = leg.Duration?.Text ?? "",
+                        DepartureTime = leg.DepartureAirport?.Time ?? "",
+                        DepartureCode = leg.DepartureAirport?.AirportCode ?? "",
+                        DepartureName = leg.DepartureAirport?.AirportName ?? "",
+                        ArrivalTime = leg.ArrivalAirport?.Time ?? "",
+                        ArrivalCode = leg.ArrivalAirport?.AirportCode ?? "",
+                        ArrivalName = leg.ArrivalAirport?.AirportName ?? ""
+                    }).ToList() ?? new List<FlightSegmentDto>(),
+
+                    // ---- detay: aktarmalar ----
+                    Layovers = it.Layovers?.Select(l => new LayoverDto
+                    {
+                        AirportCode = l.AirportCode ?? "",
+                        AirportName = l.AirportName ?? "",
+                        City = l.City ?? "",
+                        DurationLabel = l.DurationLabel ?? ""
+                    }).ToList() ?? new List<LayoverDto>(),
+
+                    // ---- detay: bagaj ----
+                    Bags = it.Bags == null ? null : new BagsDto
+                    {
+                        CarryOn = it.Bags.CarryOn,
+                        Checked = it.Bags.Checked
+                    },
+
+                    // ---- detay: karbon (gram -> kg) ----
+                    Carbon = it.CarbonEmissions == null ? null : new CarbonDto
+                    {
+                        Co2eKg = it.CarbonEmissions.Co2e / 1000,
+                        DifferencePercent = it.CarbonEmissions.DifferencePercent
+                    }
+                };
+
+                cards.Add(card);
             }
 
             return cards;
         }
 
+        // "25-08-2026 07:30 AM" -> "07:30 AM"
         private static string ExtractClock(string? raw)
         {
             if (string.IsNullOrWhiteSpace(raw)) return "";
             var parts = raw.Split(' ', 2);
             return parts.Length == 2 ? parts[1] : raw;
         }
+
         private static string NormalizePrice(JsonElement price)
         {
             return price.ValueKind switch
@@ -99,6 +148,7 @@ namespace FlightBooking.Services.FlightSearchServices
                 _ => "unavailable"
             };
         }
+
         private static string MapCabin(string cabin) => cabin?.ToLower() switch
         {
             "business" => "BUSINESS",
@@ -107,6 +157,5 @@ namespace FlightBooking.Services.FlightSearchServices
             _ => "ECONOMY"
         };
     }
-
 }
 

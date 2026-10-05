@@ -7,5 +7,10 @@ namespace FlightBooking.Models.FlightBookingModels
         [JsonPropertyName("airport_code")]
         public string? AirportCode { get; set; }
 
+        [JsonPropertyName("airport_name")]
+        public string? AirportName { get; set; }
+
+        [JsonPropertyName("time")]
+        public string? Time { get; set; }
     }
 }

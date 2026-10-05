@@ -10,7 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Uçuş Sonuçları — SkyRoute</title>
 
-    <!-- Bootstrap Icons (yalnızca ikon için) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,6 +30,8 @@
             --sf-card: #ffffff;
             --sf-radius: 16px;
             --sf-shadow: 0 6px 24px rgba(16, 35, 59, .08);
+            --sf-green: #157347;
+            --sf-red: #c0392b;
         }
 
         * {
@@ -46,7 +47,7 @@
         }
 
         .sf-container {
-            max-width: 1080px;
+            max-width: 1180px;
             margin: 0 auto;
             padding: 0 16px;
         }
@@ -62,7 +63,7 @@
             border-bottom: 1px solid var(--sf-line);
             position: sticky;
             top: 0;
-            z-index: 20;
+            z-index: 30;
         }
 
         .sf-topbar-inner {
@@ -161,11 +162,162 @@
                 opacity: .8;
             }
 
-        /* ---------- Sonuç alanı ---------- */
-        .sf-results {
-            padding: 26px 0 60px;
+        /* ---------- Ana düzen ---------- */
+        .sf-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 22px;
+            padding: 24px 0 60px;
+            align-items: start;
         }
 
+        /* ---------- Filtre paneli ---------- */
+        .sf-filters {
+            background: var(--sf-card);
+            border: 1px solid var(--sf-line);
+            border-radius: var(--sf-radius);
+            box-shadow: var(--sf-shadow);
+            padding: 18px 18px 8px;
+            position: sticky;
+            top: 78px;
+        }
+
+        .sf-filters-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .sf-filters-title {
+            font-weight: 800;
+            font-size: 1.05rem;
+        }
+
+        .sf-clear-btn {
+            background: none;
+            border: none;
+            color: var(--sf-primary);
+            font-weight: 600;
+            font-size: .82rem;
+            cursor: pointer;
+            padding: 4px 6px;
+        }
+
+            .sf-clear-btn:hover {
+                text-decoration: underline;
+            }
+
+        .sf-fgroup {
+            padding: 14px 0;
+            border-top: 1px solid var(--sf-line);
+        }
+
+            .sf-fgroup:first-of-type {
+                border-top: none;
+            }
+
+        .sf-fgroup-title {
+            font-weight: 700;
+            font-size: .9rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+            .sf-fgroup-title i {
+                color: var(--sf-primary);
+            }
+
+        .sf-check {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 5px 0;
+            cursor: pointer;
+            font-size: .88rem;
+        }
+
+            .sf-check input {
+                width: 16px;
+                height: 16px;
+                accent-color: var(--sf-primary);
+                cursor: pointer;
+            }
+
+        .sf-check-label {
+            flex: 1;
+        }
+
+        .sf-check-count {
+            color: var(--sf-muted);
+            font-size: .78rem;
+        }
+
+        .sf-range-wrap {
+            padding-top: 4px;
+        }
+
+        .sf-range {
+            width: 100%;
+            accent-color: var(--sf-primary);
+            cursor: pointer;
+        }
+
+        .sf-range-vals {
+            display: flex;
+            justify-content: space-between;
+            font-size: .82rem;
+            color: var(--sf-muted);
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+            .sf-range-vals strong {
+                color: var(--sf-ink);
+            }
+
+        .sf-time-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .sf-time-chip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            padding: 8px 4px;
+            border: 1.5px solid var(--sf-line);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: .78rem;
+            transition: all .15s;
+            background: #fff;
+        }
+
+            .sf-time-chip i {
+                font-size: 1.1rem;
+                color: var(--sf-muted);
+            }
+
+            .sf-time-chip small {
+                color: var(--sf-muted);
+                font-size: .68rem;
+            }
+
+            .sf-time-chip.active {
+                border-color: var(--sf-primary);
+                background: #eaf1fc;
+            }
+
+                .sf-time-chip.active i, .sf-time-chip.active small {
+                    color: var(--sf-primary);
+                }
+
+        /* ---------- Sonuç alanı ---------- */
         .sf-results-head {
             display: flex;
             align-items: center;
@@ -184,6 +336,43 @@
         .sf-results-count {
             font-size: .88rem;
             color: var(--sf-muted);
+        }
+
+        .sf-sort {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .sf-sort label {
+                font-size: .85rem;
+                color: var(--sf-muted);
+                font-weight: 600;
+            }
+
+            .sf-sort select {
+                border: 1px solid var(--sf-line);
+                border-radius: 10px;
+                padding: 8px 12px;
+                font-size: .88rem;
+                font-weight: 600;
+                color: var(--sf-ink);
+                background: #fff;
+                cursor: pointer;
+            }
+
+        .sf-mobile-filter-btn {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            background: var(--sf-primary);
+            color: #fff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 16px;
         }
 
         /* ---------- Uçuş kartı ---------- */
@@ -206,7 +395,6 @@
                 box-shadow: 0 10px 30px rgba(16,35,59,.12);
             }
 
-        /* havayolu */
         .sf-airline {
             display: flex;
             align-items: center;
@@ -239,7 +427,6 @@
             line-height: 1.2;
         }
 
-        /* saat + rota */
         .sf-times {
             display: flex;
             align-items: center;
@@ -288,7 +475,7 @@
         }
 
             .sf-path-line::after {
-                content: '\F1E6'; /* airplane */
+                content: '\F1E6';
                 font-family: 'bootstrap-icons';
                 position: absolute;
                 right: -4px;
@@ -309,7 +496,7 @@
 
         .sf-stops-direct {
             background: #e6f6ec;
-            color: #157347;
+            color: var(--sf-green);
         }
 
         .sf-stops-1 {
@@ -319,7 +506,7 @@
 
         .sf-stops-more {
             background: #fdeaea;
-            color: #c0392b;
+            color: var(--sf-red);
         }
 
         .sf-layover {
@@ -328,7 +515,6 @@
             margin-top: 1px;
         }
 
-        /* fiyat */
         .sf-price-block {
             text-align: right;
         }
@@ -370,7 +556,7 @@
                 background: var(--sf-primary-dark);
             }
 
-        /* ---------- Durumlar (loading / hata / boş) ---------- */
+        /* ---------- Durumlar ---------- */
         .sf-state {
             text-align: center;
             padding: 60px 20px;
@@ -382,22 +568,6 @@
                 display: block;
                 margin-bottom: 12px;
             }
-
-        .sf-spinner {
-            width: 42px;
-            height: 42px;
-            margin: 0 auto 16px;
-            border: 4px solid var(--sf-line);
-            border-top-color: var(--sf-primary);
-            border-radius: 50%;
-            animation: sf-spin .8s linear infinite;
-        }
-
-        @@keyframes sf-spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
 
         .sf-skeleton {
             background: var(--sf-card);
@@ -438,7 +608,390 @@
             cursor: pointer;
         }
 
+        /* ---------- Mobil filtre drawer ---------- */
+        .sf-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.4);
+            z-index: 40;
+        }
+
+            .sf-backdrop.open {
+                display: block;
+            }
+
+        .sf-drawer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 300px;
+            max-width: 85vw;
+            background: #fff;
+            z-index: 50;
+            transform: translateX(-100%);
+            transition: transform .25s;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+            .sf-drawer.open {
+                transform: translateX(0);
+            }
+
+        .sf-drawer-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 800;
+            font-size: 1.05rem;
+        }
+
+        .sf-drawer-close {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--sf-muted);
+        }
+
+        .sf-drawer-apply {
+            width: 100%;
+            background: var(--sf-primary);
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        /* =========================================================
+                   DETAY MODALI
+                ========================================================= */
+        .sf-modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(16,35,59,.55);
+            z-index: 60;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+            .sf-modal-backdrop.open {
+                display: flex;
+            }
+
+        .sf-modal {
+            background: #fff;
+            border-radius: var(--sf-radius);
+            width: 100%;
+            max-width: 620px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(16,35,59,.3);
+            animation: sf-modal-in .2s ease;
+        }
+
+        @@keyframes sf-modal-in {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .sf-modal-head {
+            padding: 18px 22px;
+            border-bottom: 1px solid var(--sf-line);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .sf-modal-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .sf-modal-sub {
+            font-size: .85rem;
+            color: var(--sf-muted);
+            margin-top: 3px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .sf-modal-close {
+            background: none;
+            border: none;
+            font-size: 1.6rem;
+            line-height: 1;
+            cursor: pointer;
+            color: var(--sf-muted);
+        }
+
+            .sf-modal-close:hover {
+                color: var(--sf-ink);
+            }
+
+        .sf-modal-body {
+            padding: 20px 22px;
+            overflow-y: auto;
+        }
+
+        /* timeline */
+        .sf-seg {
+            display: grid;
+            grid-template-columns: 90px 1fr;
+            gap: 14px;
+            position: relative;
+        }
+
+        .sf-seg-times {
+            text-align: right;
+        }
+
+        .sf-seg-time {
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .sf-seg-airport-code {
+            font-size: .78rem;
+            color: var(--sf-muted);
+            font-weight: 700;
+        }
+
+        .sf-seg-mid {
+            position: relative;
+            padding-left: 22px;
+            padding-bottom: 6px;
+        }
+
+            .sf-seg-mid::before {
+                content: '';
+                position: absolute;
+                left: 4px;
+                top: 6px;
+                bottom: -6px;
+                width: 2px;
+                background: var(--sf-line);
+            }
+
+        .sf-seg:last-child .sf-seg-mid::before {
+            bottom: 8px;
+        }
+
+        .sf-dot {
+            position: absolute;
+            left: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #fff;
+            border: 2px solid var(--sf-primary);
+        }
+
+        .sf-dot-dep {
+            top: 4px;
+        }
+
+        .sf-dot-arr {
+            top: auto;
+            bottom: 8px;
+        }
+
+        .sf-seg-airport-name {
+            font-size: .82rem;
+            color: var(--sf-ink);
+            font-weight: 600;
+        }
+
+        .sf-seg-info {
+            margin: 8px 0;
+            padding: 10px 12px;
+            background: var(--sf-bg);
+            border-radius: 10px;
+            font-size: .8rem;
+            color: var(--sf-muted);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 14px;
+        }
+
+            .sf-seg-info span {
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+            }
+
+            .sf-seg-info i {
+                color: var(--sf-primary);
+            }
+
+            .sf-seg-info b {
+                color: var(--sf-ink);
+                font-weight: 600;
+            }
+
+        /* aktarma şeridi */
+        .sf-layover-strip {
+            margin: 6px 0 6px 104px;
+            padding: 8px 12px;
+            background: #fff7ec;
+            border: 1px dashed #f0c690;
+            border-radius: 10px;
+            font-size: .8rem;
+            color: #a56a1a;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* alt bilgi (bagaj + karbon) */
+        .sf-modal-facts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .sf-fact {
+            border: 1px solid var(--sf-line);
+            border-radius: 12px;
+            padding: 12px 14px;
+        }
+
+        .sf-fact-title {
+            font-size: .76rem;
+            color: var(--sf-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+            .sf-fact-title i {
+                color: var(--sf-primary);
+            }
+
+        .sf-fact-val {
+            font-size: .95rem;
+            font-weight: 700;
+            margin-top: 6px;
+        }
+
+        .sf-carbon-diff {
+            font-size: .78rem;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        .sf-carbon-low {
+            color: var(--sf-green);
+        }
+
+        .sf-carbon-high {
+            color: var(--sf-red);
+        }
+
+        /* footer */
+        .sf-modal-foot {
+            padding: 16px 22px;
+            border-top: 1px solid var(--sf-line);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .sf-modal-price {
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+            .sf-modal-price small {
+                font-size: .82rem;
+                color: var(--sf-muted);
+                font-weight: 700;
+            }
+
+        .sf-continue-btn {
+            background: var(--sf-primary);
+            color: #fff;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: .95rem;
+            cursor: pointer;
+        }
+
+            .sf-continue-btn:hover {
+                background: var(--sf-primary-dark);
+            }
+
+            .sf-continue-btn:disabled {
+                opacity: .5;
+                cursor: not-allowed;
+            }
+
+        /* toast */
+        .sf-toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--sf-ink);
+            color: #fff;
+            padding: 12px 22px;
+            border-radius: 12px;
+            font-size: .9rem;
+            font-weight: 600;
+            z-index: 80;
+            opacity: 0;
+            transition: opacity .2s, transform .2s;
+            pointer-events: none;
+        }
+
+            .sf-toast.show {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+
         /* ---------- Responsive ---------- */
+        @@media (max-width: 900px) {
+            .sf-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sf-filters {
+                display: none;
+            }
+
+            .sf-mobile-filter-btn {
+                display: inline-flex;
+            }
+        }
+
         @@media (max-width: 768px) {
             .sf-card {
                 grid-template-columns: 1fr;
@@ -462,6 +1015,24 @@
             .sf-summary-meta {
                 justify-content: center;
             }
+
+            .sf-results-head {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .sf-modal-facts {
+                grid-template-columns: 1fr;
+            }
+
+            .sf-modal-foot {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .sf-continue-btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -474,49 +1045,87 @@
                 <span class="sf-logo-mark"><i class="bi bi-send-fill"></i></span>
                 Sky<span class="sf-logo-accent">Route</span>
             </a>
-            <a href="/Flight/Index" class="sf-back">
-                <i class="bi bi-arrow-left"></i> Aramayı Değiştir
-            </a>
+            <a href="/Flight/Index" class="sf-back"><i class="bi bi-arrow-left"></i> Aramayı Değiştir</a>
         </div>
     </header>
 
     <!-- ---------- Özet çubuğu ---------- -->
     <section class="sf-summary">
         <div class="sf-container">
-            <div class="sf-summary-route" id="sfRoute">
-                <!-- JS dolduracak -->
-            </div>
-            <div class="sf-summary-meta" id="sfMeta">
-                <!-- JS dolduracak -->
-            </div>
+            <div class="sf-summary-route" id="sfRoute"></div>
+            <div class="sf-summary-meta" id="sfMeta"></div>
         </div>
     </section>
 
-    <!-- ---------- Sonuçlar ---------- -->
-    <main class="sf-results">
-        <div class="sf-container">
-            <div class="sf-results-head">
-                <h1 class="sf-results-title" id="sfResultTitle">Uçuşlar</h1>
-                <span class="sf-results-count" id="sfResultCount"></span>
-            </div>
+    <!-- ---------- Ana düzen ---------- -->
+    <div class="sf-container">
+        <div class="sf-layout">
+            <aside class="sf-filters" id="sfFilters"></aside>
+            <main>
+                <button class="sf-mobile-filter-btn" id="sfMobileFilterBtn"><i class="bi bi-sliders"></i> Filtrele</button>
+                <div class="sf-results-head">
+                    <div>
+                        <h1 class="sf-results-title" id="sfResultTitle">Uçuşlar</h1>
+                        <span class="sf-results-count" id="sfResultCount"></span>
+                    </div>
+                    <div class="sf-sort">
+                        <label for="sfSort">Sırala:</label>
+                        <select id="sfSort">
+                            <option value="cheapest">En Ucuz</option>
+                            <option value="fastest">En Kısa Süre</option>
+                            <option value="earliest">En Erken Kalkış</option>
+                            <option value="latest">En Geç Kalkış</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="sfList"></div>
+            </main>
+        </div>
+    </div>
 
-            <div id="sfList">
-                <!-- JS: skeleton / kartlar / durum mesajları -->
+    <!-- ---------- Mobil filtre drawer ---------- -->
+    <div class="sf-backdrop" id="sfBackdrop"></div>
+    <div class="sf-drawer" id="sfDrawer">
+        <div class="sf-drawer-head">
+            <span>Filtreler</span>
+            <button class="sf-drawer-close" id="sfDrawerClose">&times;</button>
+        </div>
+        <div id="sfFiltersMobile"></div>
+        <button class="sf-drawer-apply" id="sfDrawerApply">Sonuçları Göster</button>
+    </div>
+
+    <!-- ---------- Detay modalı ---------- -->
+    <div class="sf-modal-backdrop" id="sfModalBackdrop">
+        <div class="sf-modal" role="dialog" aria-modal="true">
+            <div class="sf-modal-head">
+                <div>
+                    <h2 class="sf-modal-title" id="sfModalTitle"></h2>
+                    <div class="sf-modal-sub" id="sfModalSub"></div>
+                </div>
+                <button class="sf-modal-close" id="sfModalClose" aria-label="Kapat">&times;</button>
+            </div>
+            <div class="sf-modal-body" id="sfModalBody"></div>
+            <div class="sf-modal-foot">
+                <div class="sf-modal-price" id="sfModalPrice"></div>
+                <button class="sf-continue-btn" id="sfContinueBtn">Devam Et</button>
             </div>
         </div>
-    </main>
+    </div>
+
+    <!-- toast -->
+    <div class="sf-toast" id="sfToast"></div>
 
     <script>
         (function () {
             'use strict';
 
-            /* ---------- 0. Query parametrelerini oku ---------- */
+            /* ---------- 0. Query parametreleri ---------- */
             const p = new URLSearchParams(window.location.search);
             const g = (k, d = '') => p.get(k) || d;
 
             const fromCity = g('fromCity');
             const toCity   = g('toCity');
-            const fromIata = g('fromIata');   // Index'ten gelen tahmini IATA (özet için)
+            const fromIata = g('fromIata');
             const toIata   = g('toIata');
             const depart   = g('depart');
             const ret      = g('return');
@@ -527,13 +1136,11 @@
             const currency = g('currency', 'TRY');
             const tripType = g('tripType', 'round');
 
-            /* ---------- Etiketler ---------- */
-            const cabinLabels = {
-                economy: 'Ekonomi', premium: 'Premium Ekonomi',
-                business: 'Business', first: 'First Class'
-            };
-            const tripLabels = { round: 'Gidiş-Dönüş', oneway: 'Tek Yön', multi: 'Çoklu Uçuş' };
+            const cabinLabels = { economy:'Ekonomi', premium:'Premium Ekonomi', business:'Business', first:'First Class' };
+            const tripLabels  = { round:'Gidiş-Dönüş', oneway:'Tek Yön', multi:'Çoklu Uçuş' };
             const aylar = ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
+
+            const esc = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
             function fmtDate(iso) {
                 if (!iso) return '';
@@ -541,7 +1148,6 @@
                 if (isNaN(d)) return iso;
                 return `${d.getDate()} ${aylar[d.getMonth()]} ${d.getFullYear()}`;
             }
-
             function paxText() {
                 const parts = [];
                 if (adults)   parts.push(`${adults} Yetişkin`);
@@ -550,10 +1156,49 @@
                 return parts.join(', ') || '1 Yetişkin';
             }
 
-            const esc = s => String(s ?? '')
-                .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            /* ---------- veri normalize ---------- */
+            function durationToMinutes(text) {
+                if (!text) return 0;
+                let h = 0, m = 0;
+                const hMatch = text.match(/(\d+)\s*hr/);
+                const mMatch = text.match(/(\d+)\s*min/);
+                if (hMatch) h = parseInt(hMatch[1], 10);
+                if (mMatch) m = parseInt(mMatch[1], 10);
+                return h * 60 + m;
+            }
+            function timeToHour(text) {
+                if (!text) return -1;
+                const m = text.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+                if (!m) return -1;
+                let h = parseInt(m[1], 10);
+                const min = parseInt(m[2], 10);
+                const ap = (m[3] || '').toUpperCase();
+                if (ap === 'PM' && h < 12) h += 12;
+                if (ap === 'AM' && h === 12) h = 0;
+                return h + min / 60;
+            }
+            function priceNum(price) {
+                if (price === null || price === undefined) return null;
+                const raw = price.toString().toLowerCase();
+                if (raw === 'unavailable') return null;
+                const n = Number(price);
+                return isNaN(n) ? null : n;
+            }
+            function timeSlot(hour) {
+                if (hour < 0) return null;
+                if (hour >= 5 && hour < 11)  return 'morning';
+                if (hour >= 11 && hour < 17) return 'noon';
+                if (hour >= 17 && hour < 22) return 'evening';
+                return 'night';
+            }
+            // ham segment saatini kısalt: "2026-8-25 07:30" -> "07:30"
+            function segClock(raw) {
+                if (!raw) return '';
+                const parts = raw.split(' ');
+                return parts.length >= 2 ? parts[1] : raw;
+            }
 
-            /* ---------- 1. Özet çubuğunu doldur ---------- */
+            /* ---------- 1. Özet çubuğu ---------- */
             const routeEl = document.getElementById('sfRoute');
             routeEl.innerHTML =
                 `<span>${esc(fromCity)}${fromIata ? `<span class="sf-iata">${esc(fromIata)}</span>` : ''}</span>` +
@@ -572,45 +1217,33 @@
             document.getElementById('sfResultTitle').textContent =
                 `${fromCity || 'Kalkış'} – ${toCity || 'Varış'} Uçuşları`;
 
-            /* ---------- 2. Yardımcı: kart HTML'i ---------- */
-            function airlineLogo(flight) {
-                if (flight.airlineLogo) {
-                    return `<img src="${esc(flight.airlineLogo)}" alt="${esc(flight.airline)}"
-                                 class="sf-airline-logo"
+            /* ---------- 2. Kart HTML ---------- */
+            function airlineLogo(f, cls) {
+                if (f.airlineLogo) {
+                    return `<img src="${esc(f.airlineLogo)}" alt="${esc(f.airline)}" class="${cls}"
                                  onerror="this.outerHTML='<span class=\\'sf-airline-logo-fallback\\'><i class=\\'bi bi-airplane\\'></i></span>'">`;
                 }
                 return `<span class="sf-airline-logo-fallback"><i class="bi bi-airplane"></i></span>`;
             }
-
-            function stopsBadge(flight) {
-                if (flight.stops === 0) {
-                    return `<span class="sf-stops sf-stops-direct">Direkt</span>`;
-                }
-                const cls = flight.stops === 1 ? 'sf-stops-1' : 'sf-stops-more';
-                const layo = (flight.layoverCities && flight.layoverCities.length)
-                    ? `<span class="sf-layover">${esc(flight.layoverCities.join(', '))}</span>`
-                    : '';
-                return `<span class="sf-stops ${cls}">${flight.stops} Aktarma</span>${layo}`;
+            function stopsBadge(f) {
+                if (f.stops === 0) return `<span class="sf-stops sf-stops-direct">Direkt</span>`;
+                const cls = f.stops === 1 ? 'sf-stops-1' : 'sf-stops-more';
+                const layo = (f.layoverCities && f.layoverCities.length)
+                    ? `<span class="sf-layover">${esc(f.layoverCities.join(', '))}</span>` : '';
+                return `<span class="sf-stops ${cls}">${f.stops} Aktarma</span>${layo}`;
             }
-
-            function priceBlock(flight) {
-                const raw = (flight.price || '').toString().toLowerCase();
-                if (!flight.price || raw === 'unavailable') {
-                    return `<div class="sf-price-unavailable">Fiyat bulunamadı</div>`;
-                }
-                // sayıyı binlik ayraçla göster
-                const num = Number(flight.price);
-                const shown = isNaN(num) ? esc(flight.price) : num.toLocaleString('tr-TR');
+            function priceBlock(f) {
+                const n = priceNum(f.price);
+                if (n === null) return `<div class="sf-price-unavailable">Fiyat bulunamadı</div>`;
                 return `
-                    <div class="sf-price">${shown} <span class="sf-price-cur">${esc(currency)}</span></div>
-                    <button class="sf-select-btn">Seç</button>`;
+                    <div class="sf-price">${n.toLocaleString('tr-TR')} <span class="sf-price-cur">${esc(currency)}</span></div>
+                    <button class="sf-select-btn" data-idx="${f._idx}">Seç</button>`;
             }
-
             function cardHtml(f) {
                 return `
                     <article class="sf-card">
                         <div class="sf-airline">
-                            ${airlineLogo(f)}
+                            ${airlineLogo(f, 'sf-airline-logo')}
                             <div class="sf-airline-name">${esc(f.airline) || 'Havayolu'}</div>
                         </div>
                         <div class="sf-times">
@@ -628,19 +1261,15 @@
                                 <div class="sf-time-airport">${esc(f.arrivalAirport)}</div>
                             </div>
                         </div>
-                        <div class="sf-price-block">
-                            ${priceBlock(f)}
-                        </div>
+                        <div class="sf-price-block">${priceBlock(f)}</div>
                     </article>`;
             }
 
             /* ---------- 3. Durum gösterimleri ---------- */
-            const listEl = document.getElementById('sfList');
+            const listEl  = document.getElementById('sfList');
             const countEl = document.getElementById('sfResultCount');
 
-            function showSkeleton() {
-                listEl.innerHTML = Array(4).fill('<div class="sf-skeleton"></div>').join('');
-            }
+            function showSkeleton() { listEl.innerHTML = Array(5).fill('<div class="sf-skeleton"></div>').join(''); }
             function showError(msg) {
                 listEl.innerHTML = `
                     <div class="sf-state">
@@ -651,60 +1280,372 @@
                 const btn = document.getElementById('sfRetry');
                 if (btn) btn.addEventListener('click', loadFlights);
             }
-            function showEmpty() {
+            function showEmpty(msg) {
                 listEl.innerHTML = `
                     <div class="sf-state">
                         <i class="bi bi-airplane"></i>
-                        <div>Bu arama için uygun uçuş bulunamadı.</div>
+                        <div>${esc(msg || 'Bu arama için uygun uçuş bulunamadı.')}</div>
                     </div>`;
             }
 
-            /* ---------- 4. Backend'den uçuşları çek ---------- */
-            async function loadFlights() {
-                if (!fromCity || !toCity || !depart) {
-                    showError('Arama bilgileri eksik. Lütfen aramayı yeniden yapın.');
+            /* ---------- 4. State ---------- */
+            let allFlights = [];
+            let priceMin = 0, priceMax = 0;
+            const state = { stops:new Set(), airlines:new Set(), maxPrice:null, timeSlots:new Set(), sort:'cheapest' };
+
+            /* ---------- 5. Filtre paneli ---------- */
+            function buildFilters() {
+                const airlineCounts = {};
+                allFlights.forEach(f => { const a = f.airline || 'Bilinmiyor'; airlineCounts[a] = (airlineCounts[a] || 0) + 1; });
+                const airlines = Object.keys(airlineCounts).sort();
+
+                const stopCounts = { direct:0, one:0, more:0 };
+                allFlights.forEach(f => {
+                    if (f.stops === 0) stopCounts.direct++;
+                    else if (f.stops === 1) stopCounts.one++;
+                    else stopCounts.more++;
+                });
+
+                const timeSlotLabels = {
+                    morning: { label:'Sabah', sub:'05–11', icon:'bi-sunrise' },
+                    noon:    { label:'Öğle',  sub:'11–17', icon:'bi-sun' },
+                    evening: { label:'Akşam', sub:'17–22', icon:'bi-sunset' },
+                    night:   { label:'Gece',  sub:'22–05', icon:'bi-moon-stars' }
+                };
+
+                const html = `
+                    <div class="sf-filters-head">
+                        <span class="sf-filters-title">Filtreler</span>
+                        <button class="sf-clear-btn" data-role="clear">Temizle</button>
+                    </div>
+                    <div class="sf-fgroup">
+                        <div class="sf-fgroup-title"><i class="bi bi-signpost-split"></i> Aktarma</div>
+                        <label class="sf-check"><input type="checkbox" data-filter="stops" value="direct"><span class="sf-check-label">Direkt</span><span class="sf-check-count">${stopCounts.direct}</span></label>
+                        <label class="sf-check"><input type="checkbox" data-filter="stops" value="1"><span class="sf-check-label">1 Aktarma</span><span class="sf-check-count">${stopCounts.one}</span></label>
+                        <label class="sf-check"><input type="checkbox" data-filter="stops" value="2plus"><span class="sf-check-label">2+ Aktarma</span><span class="sf-check-count">${stopCounts.more}</span></label>
+                    </div>
+                    <div class="sf-fgroup">
+                        <div class="sf-fgroup-title"><i class="bi bi-clock"></i> Kalkış Saati</div>
+                        <div class="sf-time-grid">
+                            ${Object.entries(timeSlotLabels).map(([key, v]) => `
+                                <div class="sf-time-chip" data-filter="time" data-value="${key}">
+                                    <i class="bi ${v.icon}"></i><span>${v.label}</span><small>${v.sub}</small>
+                                </div>`).join('')}
+                        </div>
+                    </div>
+                    <div class="sf-fgroup">
+                        <div class="sf-fgroup-title"><i class="bi bi-cash-coin"></i> Maksimum Fiyat</div>
+                        <div class="sf-range-wrap">
+                            <input type="range" class="sf-range" data-filter="price" min="${priceMin}" max="${priceMax}" value="${priceMax}" step="1">
+                            <div class="sf-range-vals">
+                                <span>${priceMin.toLocaleString('tr-TR')} ${esc(currency)}</span>
+                                <strong data-role="price-current">${priceMax.toLocaleString('tr-TR')} ${esc(currency)}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sf-fgroup">
+                        <div class="sf-fgroup-title"><i class="bi bi-airplane-engines"></i> Havayolu</div>
+                        ${airlines.map(a => `
+                            <label class="sf-check"><input type="checkbox" data-filter="airline" value="${esc(a)}"><span class="sf-check-label">${esc(a)}</span><span class="sf-check-count">${airlineCounts[a]}</span></label>`).join('')}
+                    </div>`;
+
+                document.getElementById('sfFilters').innerHTML = html;
+                document.getElementById('sfFiltersMobile').innerHTML = html;
+                bindFilterEvents(document.getElementById('sfFilters'));
+                bindFilterEvents(document.getElementById('sfFiltersMobile'));
+            }
+
+            function bindFilterEvents(root) {
+                root.querySelectorAll('input[type="checkbox"][data-filter]').forEach(cb => {
+                    cb.addEventListener('change', () => {
+                        const type = cb.dataset.filter, val = cb.value;
+                        const set = type === 'stops' ? state.stops : state.airlines;
+                        if (cb.checked) set.add(val); else set.delete(val);
+                        syncCheckboxes(type, val, cb.checked);
+                        applyFilters();
+                    });
+                });
+                root.querySelectorAll('.sf-time-chip').forEach(chip => {
+                    chip.addEventListener('click', () => {
+                        const val = chip.dataset.value;
+                        if (state.timeSlots.has(val)) state.timeSlots.delete(val); else state.timeSlots.add(val);
+                        syncTimeChips();
+                        applyFilters();
+                    });
+                });
+                const range = root.querySelector('input[data-filter="price"]');
+                if (range) range.addEventListener('input', () => {
+                    state.maxPrice = Number(range.value);
+                    syncPriceLabel(state.maxPrice);
+                    applyFilters();
+                });
+                const clearBtn = root.querySelector('[data-role="clear"]');
+                if (clearBtn) clearBtn.addEventListener('click', clearFilters);
+            }
+
+            function syncCheckboxes(type, val, checked) {
+                document.querySelectorAll(`input[data-filter="${type}"][value="${CSS.escape(val)}"]`).forEach(el => el.checked = checked);
+            }
+            function syncTimeChips() {
+                document.querySelectorAll('.sf-time-chip').forEach(chip => chip.classList.toggle('active', state.timeSlots.has(chip.dataset.value)));
+            }
+            function syncPriceLabel(val) {
+                document.querySelectorAll('input[data-filter="price"]').forEach(r => r.value = val);
+                document.querySelectorAll('[data-role="price-current"]').forEach(el => el.textContent = `${Number(val).toLocaleString('tr-TR')} ${currency}`);
+            }
+            function clearFilters() {
+                state.stops.clear(); state.airlines.clear(); state.timeSlots.clear(); state.maxPrice = priceMax;
+                document.querySelectorAll('input[type="checkbox"][data-filter]').forEach(cb => cb.checked = false);
+                syncTimeChips(); syncPriceLabel(priceMax); applyFilters();
+            }
+
+            /* ---------- 6. Filtre + sıralama ---------- */
+            function applyFilters() {
+                let list = allFlights.slice();
+                if (state.stops.size) list = list.filter(f => {
+                    if (f.stops === 0) return state.stops.has('direct');
+                    if (f.stops === 1) return state.stops.has('1');
+                    return state.stops.has('2plus');
+                });
+                if (state.airlines.size) list = list.filter(f => state.airlines.has(f.airline || 'Bilinmiyor'));
+                if (state.timeSlots.size) list = list.filter(f => f._slot && state.timeSlots.has(f._slot));
+                if (state.maxPrice !== null) list = list.filter(f => f._price === null || f._price <= state.maxPrice);
+
+                list.sort((a, b) => {
+                    switch (state.sort) {
+                        case 'fastest':  return a._dur - b._dur;
+                        case 'earliest': return a._depHour - b._depHour;
+                        case 'latest':   return b._depHour - a._depHour;
+                        default:
+                            if (a._price === null) return 1;
+                            if (b._price === null) return -1;
+                            return a._price - b._price;
+                    }
+                });
+                renderList(list);
+            }
+
+            function renderList(list) {
+                if (!list.length) {
+                    showEmpty('Seçtiğiniz filtrelere uygun uçuş bulunamadı.');
+                    countEl.textContent = `0 / ${allFlights.length} uçuş`;
                     return;
                 }
+                listEl.innerHTML = list.map(cardHtml).join('');
+                countEl.textContent = (list.length === allFlights.length)
+                    ? `${list.length} uçuş bulundu`
+                    : `${list.length} / ${allFlights.length} uçuş gösteriliyor`;
+                // "Seç" butonlarına detay modalı bağla
+                listEl.querySelectorAll('.sf-select-btn').forEach(btn => {
+                    btn.addEventListener('click', () => openModal(parseInt(btn.dataset.idx, 10)));
+                });
+            }
 
+            document.getElementById('sfSort').addEventListener('change', e => { state.sort = e.target.value; applyFilters(); });
+
+            /* ---------- 7. Mobil drawer ---------- */
+            const backdrop = document.getElementById('sfBackdrop');
+            const drawer   = document.getElementById('sfDrawer');
+            function openDrawer() { backdrop.classList.add('open'); drawer.classList.add('open'); }
+            function closeDrawer() { backdrop.classList.remove('open'); drawer.classList.remove('open'); }
+            document.getElementById('sfMobileFilterBtn').addEventListener('click', openDrawer);
+            document.getElementById('sfDrawerClose').addEventListener('click', closeDrawer);
+            document.getElementById('sfDrawerApply').addEventListener('click', closeDrawer);
+            backdrop.addEventListener('click', closeDrawer);
+
+            /* ---------- 8. DETAY MODALI ---------- */
+            const modalBackdrop = document.getElementById('sfModalBackdrop');
+            const modalTitle = document.getElementById('sfModalTitle');
+            const modalSub   = document.getElementById('sfModalSub');
+            const modalBody  = document.getElementById('sfModalBody');
+            const modalPrice = document.getElementById('sfModalPrice');
+            const continueBtn = document.getElementById('sfContinueBtn');
+
+            function segmentHtml(seg, layover) {
+                const info = [];
+                if (seg.airline)      info.push(`<span><i class="bi bi-airplane"></i> ${esc(seg.airline)} ${esc(seg.flightNumber)}</span>`);
+                if (seg.aircraft)     info.push(`<span><i class="bi bi-airplane-engines"></i> ${esc(seg.aircraft)}</span>`);
+                if (seg.legroom)      info.push(`<span><i class="bi bi-arrows-vertical"></i> Koltuk: <b>${esc(seg.legroom)}</b></span>`);
+                if (seg.durationText) info.push(`<span><i class="bi bi-clock"></i> ${esc(seg.durationText)}</span>`);
+
+                let html = `
+                    <div class="sf-seg">
+                        <div class="sf-seg-times">
+                            <div class="sf-seg-time">${esc(segClock(seg.departureTime))}</div>
+                            <div class="sf-seg-airport-code">${esc(seg.departureCode)}</div>
+                        </div>
+                        <div class="sf-seg-mid">
+                            <span class="sf-dot sf-dot-dep"></span>
+                            <div class="sf-seg-airport-name">${esc(seg.departureName) || esc(seg.departureCode)}</div>
+                            <div class="sf-seg-info">${info.join('')}</div>
+                            <div class="sf-seg-airport-name">${esc(seg.arrivalName) || esc(seg.arrivalCode)}</div>
+                            <span class="sf-dot sf-dot-arr"></span>
+                        </div>
+                    </div>
+                    <div class="sf-seg" style="grid-template-columns:90px 1fr;">
+                        <div class="sf-seg-times">
+                            <div class="sf-seg-time">${esc(segClock(seg.arrivalTime))}</div>
+                            <div class="sf-seg-airport-code">${esc(seg.arrivalCode)}</div>
+                        </div>
+                        <div></div>
+                    </div>`;
+
+                if (layover) {
+                    html += `
+                        <div class="sf-layover-strip">
+                            <i class="bi bi-hourglass-split"></i>
+                            ${esc(layover.city || layover.airportName || layover.airportCode)} — ${esc(layover.durationLabel)} bekleme
+                        </div>`;
+                }
+                return html;
+            }
+
+            function factsHtml(f) {
+                let bags = '—';
+                if (f.bags) {
+                    const parts = [];
+                    if (f.bags.carryOn != null)  parts.push(`${f.bags.carryOn} kabin`);
+                    if (f.bags.checked != null)  parts.push(`${f.bags.checked} bagaj`);
+                    bags = parts.length ? parts.join(', ') : 'Bilgi yok';
+                }
+
+                let carbon = '';
+                if (f.carbon) {
+                    const diff = f.carbon.differencePercent;
+                    const diffCls = diff <= 0 ? 'sf-carbon-low' : 'sf-carbon-high';
+                    const diffTxt = diff === 0 ? 'Ortalama' : (diff > 0 ? `Ortalamanın %${diff} üstü` : `Ortalamanın %${Math.abs(diff)} altı`);
+                    carbon = `
+                        <div class="sf-fact">
+                            <div class="sf-fact-title"><i class="bi bi-cloud"></i> Karbon Emisyonu</div>
+                            <div class="sf-fact-val">${f.carbon.co2eKg} kg CO₂</div>
+                            <div class="sf-carbon-diff ${diffCls}">${diffTxt}</div>
+                        </div>`;
+                }
+
+                return `
+                    <div class="sf-modal-facts">
+                        <div class="sf-fact">
+                            <div class="sf-fact-title"><i class="bi bi-bag"></i> Bagaj</div>
+                            <div class="sf-fact-val">${esc(bags)}</div>
+                        </div>
+                        ${carbon}
+                    </div>`;
+            }
+
+            function openModal(idx) {
+                const f = allFlights[idx];
+                if (!f) return;
+
+                modalTitle.textContent = `${esc(f.departureAirport)} → ${esc(f.arrivalAirport)}`;
+
+                const stopTxt = f.stops === 0 ? 'Direkt uçuş' : `${f.stops} aktarma`;
+                modalSub.innerHTML =
+                    `<span><i class="bi bi-clock"></i> ${esc(f.durationText)}</span>` +
+                    `<span><i class="bi bi-signpost-split"></i> ${stopTxt}</span>` +
+                    `<span><i class="bi bi-airplane"></i> ${esc(f.airline)}</span>`;
+
+                // timeline: segmentler + aralarına aktarmalar
+                const segs = f.segments || [];
+                const lays = f.layovers || [];
+                let bodyHtml = '';
+                segs.forEach((seg, i) => {
+                    // i. segmentten sonra i. aktarma gelir (son segment hariç)
+                    const layover = (i < segs.length - 1) ? lays[i] : null;
+                    bodyHtml += segmentHtml(seg, layover);
+                });
+
+                // segment yoksa (beklenmedik) özet göster
+                if (!segs.length) {
+                    bodyHtml = `<div class="sf-state" style="padding:20px;"><div>Bu uçuş için detay bilgisi bulunmuyor.</div></div>`;
+                }
+
+                bodyHtml += factsHtml(f);
+                modalBody.innerHTML = bodyHtml;
+
+                // fiyat + devam
+                const n = priceNum(f.price);
+                if (n === null) {
+                    modalPrice.innerHTML = `<span style="color:var(--sf-muted);font-size:1rem;">Fiyat bulunamadı</span>`;
+                    continueBtn.disabled = true;
+                } else {
+                    modalPrice.innerHTML = `${n.toLocaleString('tr-TR')} <small>${esc(currency)}</small>`;
+                    continueBtn.disabled = false;
+                }
+
+                modalBackdrop.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                modalBackdrop.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+            document.getElementById('sfModalClose').addEventListener('click', closeModal);
+            modalBackdrop.addEventListener('click', e => { if (e.target === modalBackdrop) closeModal(); });
+            document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+            // "Devam Et" — şimdilik toast
+            continueBtn.addEventListener('click', () => {
+                showToast('Rezervasyon adımı yakında eklenecek.');
+            });
+
+            /* ---------- toast ---------- */
+            let toastTimer = null;
+            function showToast(msg) {
+                const t = document.getElementById('sfToast');
+                t.textContent = msg;
+                t.classList.add('show');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+            }
+
+            /* ---------- 9. Backend'den çek ---------- */
+            async function loadFlights() {
+                if (!fromCity || !toCity || !depart) { showError('Arama bilgileri eksik. Lütfen aramayı yeniden yapın.'); return; }
                 showSkeleton();
                 countEl.textContent = '';
 
-                const qs = new URLSearchParams({
-                    fromCity, toCity, depart,
-                    adults: String(adults),
-                    cabin, currency
-                });
-
+                const qs = new URLSearchParams({ fromCity, toCity, depart, adults:String(adults), cabin, currency });
                 try {
                     const res = await fetch('/Flight/SearchFlights?' + qs.toString());
                     if (!res.ok) throw new Error('Sunucu hatası (' + res.status + ')');
-
                     const data = await res.json();
+                    if (!data.success) { showError(data.error || 'Uçuşlar getirilemedi.'); return; }
 
-                    if (!data.success) {
-                        showError(data.error || 'Uçuşlar getirilemedi.');
-                        return;
-                    }
-
-                    // Özet çubuğundaki IATA'ları backend'in çözdüğü kesin değerle güncelle
                     if (data.fromIata) {
                         const iataEls = routeEl.querySelectorAll('.sf-iata');
-                        if (iataEls[0]) iataEls[0].textContent = data.fromIata;
-                        if (iataEls[1]) iataEls[1].textContent = data.toIata;
+                        if (!iataEls.length) {
+                            const spans = routeEl.querySelectorAll('span');
+                            if (spans[0]) spans[0].insertAdjacentHTML('beforeend', `<span class="sf-iata">${esc(data.fromIata)}</span>`);
+                            if (spans[1]) spans[1].insertAdjacentHTML('beforeend', `<span class="sf-iata">${esc(data.toIata)}</span>`);
+                        } else {
+                            if (iataEls[0]) iataEls[0].textContent = data.fromIata;
+                            if (iataEls[1]) iataEls[1].textContent = data.toIata;
+                        }
                     }
 
                     const flights = data.flights || [];
-                    if (!flights.length) { showEmpty(); return; }
+                    if (!flights.length) { showEmpty(); countEl.textContent = '0 uçuş'; return; }
 
-                    listEl.innerHTML = flights.map(cardHtml).join('');
-                    countEl.textContent = `${flights.length} uçuş bulundu`;
+                    allFlights = flights.map((f, i) => {
+                        const pn = priceNum(f.price);
+                        const dh = timeToHour(f.departureTime);
+                        return { ...f, _idx: i, _price: pn, _dur: durationToMinutes(f.durationText), _depHour: dh < 0 ? 999 : dh, _slot: timeSlot(dh) };
+                    });
 
+                    const prices = allFlights.map(f => f._price).filter(v => v !== null);
+                    priceMin = prices.length ? Math.floor(Math.min(...prices)) : 0;
+                    priceMax = prices.length ? Math.ceil(Math.max(...prices)) : 0;
+                    state.maxPrice = priceMax;
+
+                    buildFilters();
+                    applyFilters();
                 } catch (err) {
                     showError(err.message);
                 }
             }
 
-            /* ---------- 5. Başlat ---------- */
+            /* ---------- 10. Başlat ---------- */
             loadFlights();
 
         })();
