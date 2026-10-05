@@ -16,6 +16,8 @@ using FlightBooking.AgentServices.IntentDetectors;
 using FlightBooking.Tools.WeatherTool;
 using FlightBooking.AgentServices.CityDetectors;
 using FlightBooking.AgentServices.GooglePlacesServices;
+using FlightBooking.Services.AirportServices;
+using FlightBooking.Services.FlightSearchServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +40,8 @@ builder.Services.AddScoped<IIntentDetector, TravelIntentDetector>();
 builder.Services.AddScoped<IWeatherTool, WeatherTool>();
 builder.Services.AddScoped<ICityExtractor, OpenAICityExtractor>();
 builder.Services.AddScoped<IGooglePlaceService, GooglePlacesService>();
+builder.Services.AddScoped<IAirportService, AirportService>();
+builder.Services.AddScoped<IFlightSearchService, FlightSearchService>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettingsKey"));
 builder.Services.Configure<OpenAISettings>(builder.Configuration.GetSection("OpenAI"));

@@ -1,21 +1,46 @@
 /* =========================================================
    SkyRoute — script.js
-   Index sayfası etkileşimleri (autocomplete YOK, serbest metin girişi)
+   Tüm arayüz etkileşimleri
    ========================================================= */
 
 (function () {
     'use strict';
 
     /* ---------------------------------------------------------
-       1. POPÜLER ROTALAR VERİSİ (yalnızca görsel kart + forma doldurma)
+       0. HAVALİMANI VERİSİ (autocomplete için)
+    --------------------------------------------------------- */
+    const AIRPORTS = [
+        { city: 'İstanbul', country: 'Türkiye', name: 'İstanbul Havalimanı', iata: 'IST' },
+        { city: 'İstanbul', country: 'Türkiye', name: 'Sabiha Gökçen Havalimanı', iata: 'SAW' },
+        { city: 'Ankara', country: 'Türkiye', name: 'Esenboğa Havalimanı', iata: 'ESB' },
+        { city: 'İzmir', country: 'Türkiye', name: 'Adnan Menderes Havalimanı', iata: 'ADB' },
+        { city: 'Antalya', country: 'Türkiye', name: 'Antalya Havalimanı', iata: 'AYT' },
+        { city: 'Adana', country: 'Türkiye', name: 'Çukurova Uluslararası Havalimanı', iata: 'COV' },
+        { city: 'Amsterdam', country: 'Hollanda', name: 'Amsterdam Schiphol Havalimanı', iata: 'AMS' },
+        { city: 'Milano', country: 'İtalya', name: 'Milano Malpensa Havalimanı', iata: 'MXP' },
+        { city: 'Milano', country: 'İtalya', name: 'Milano Linate Havalimanı', iata: 'LIN' },
+        { city: 'Milano', country: 'İtalya', name: 'Milano Bergamo Havalimanı', iata: 'BGY' },
+        { city: 'Paris', country: 'Fransa', name: 'Charles de Gaulle Havalimanı', iata: 'CDG' },
+        { city: 'Roma', country: 'İtalya', name: 'Roma Fiumicino Havalimanı', iata: 'FCO' },
+        { city: 'Berlin', country: 'Almanya', name: 'Berlin Brandenburg Havalimanı', iata: 'BER' },
+        { city: 'Londra', country: 'İngiltere', name: 'Londra Heathrow Havalimanı', iata: 'LHR' },
+        { city: 'Londra', country: 'İngiltere', name: 'Londra Gatwick Havalimanı', iata: 'LGW' },
+        { city: 'Barselona', country: 'İspanya', name: 'Barselona El Prat Havalimanı', iata: 'BCN' },
+        { city: 'Madrid', country: 'İspanya', name: 'Madrid Barajas Havalimanı', iata: 'MAD' },
+        { city: 'Viyana', country: 'Avusturya', name: 'Viyana Uluslararası Havalimanı', iata: 'VIE' },
+        { city: 'Münih', country: 'Almanya', name: 'Münih Havalimanı', iata: 'MUC' }
+    ];
+
+    /* ---------------------------------------------------------
+       1. POPÜLER ROTALAR VERİSİ
     --------------------------------------------------------- */
     const ROUTES = [
-        { fromCity: 'İstanbul', toCity: 'Amsterdam', dur: '3 sa 35 dk', price: '4.799', img: 'https://images.unsplash.com/photo-1534351590666-13e3e96b5017?auto=format&fit=crop&w=800&q=80' },
-        { fromCity: 'İstanbul', toCity: 'Milano', dur: '3 sa 05 dk', price: '4.299', img: 'https://images.unsplash.com/photo-1520440229-6469a149ac59?auto=format&fit=crop&w=800&q=80' },
-        { fromCity: 'İstanbul', toCity: 'Paris', dur: '3 sa 55 dk', price: '5.150', img: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80' },
-        { fromCity: 'İstanbul', toCity: 'Roma', dur: '2 sa 55 dk', price: '3.999', img: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80' },
-        { fromCity: 'İstanbul', toCity: 'Berlin', dur: '3 sa 10 dk', price: '4.450', img: 'https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=800&q=80' },
-        { fromCity: 'İstanbul', toCity: 'Londra', dur: '4 sa 05 dk', price: '5.650', img: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80' }
+        { fromCity: 'İstanbul', fromIata: 'IST', toCity: 'Amsterdam', toIata: 'AMS', dur: '3 sa 35 dk', price: '4.799', img: 'https://images.unsplash.com/photo-1534351590666-13e3e96b5017?auto=format&fit=crop&w=800&q=80' },
+        { fromCity: 'İstanbul', fromIata: 'IST', toCity: 'Milano', toIata: 'MXP', dur: '3 sa 05 dk', price: '4.299', img: 'https://images.unsplash.com/photo-1520440229-6469a149ac59?auto=format&fit=crop&w=800&q=80' },
+        { fromCity: 'İstanbul', fromIata: 'IST', toCity: 'Paris', toIata: 'CDG', dur: '3 sa 55 dk', price: '5.150', img: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80' },
+        { fromCity: 'İstanbul', fromIata: 'IST', toCity: 'Roma', toIata: 'FCO', dur: '2 sa 55 dk', price: '3.999', img: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80' },
+        { fromCity: 'İstanbul', fromIata: 'IST', toCity: 'Berlin', toIata: 'BER', dur: '3 sa 10 dk', price: '4.450', img: 'https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=800&q=80' },
+        { fromCity: 'İstanbul', fromIata: 'IST', toCity: 'Londra', toIata: 'LHR', dur: '4 sa 05 dk', price: '5.650', img: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80' }
     ];
 
     /* ---------------------------------------------------------
@@ -29,29 +54,93 @@
     ========================================================= */
     const navbar = $('#mainNavbar');
     function handleNavbarScroll() {
-        if (window.scrollY > 40) navbar.classList.add('sr-scrolled');
-        else navbar.classList.remove('sr-scrolled');
+        if (window.scrollY > 40) {
+            navbar.classList.add('sr-scrolled');
+        } else {
+            navbar.classList.remove('sr-scrolled');
+        }
     }
     window.addEventListener('scroll', handleNavbarScroll, { passive: true });
     handleNavbarScroll();
 
     /* =========================================================
-       3. YÖN DEĞİŞTİRME (kalkış <-> varış)
+       3. AUTOCOMPLETE (kalkış / varış)
+    ========================================================= */
+    function setupAutocomplete(inputId, resultsId) {
+        const input = $('#' + inputId);
+        const results = $('#' + resultsId);
+
+        // Sonuçları çiz
+        function render(list) {
+            if (!list.length) { results.classList.remove('show'); results.innerHTML = ''; return; }
+            results.innerHTML = list.map(a => `
+                <div class="sr-ac-item" data-city="${a.city}" data-country="${a.country}" data-iata="${a.iata}">
+                    <i class="bi bi-airplane sr-ac-icon"></i>
+                    <div class="sr-ac-main">
+                        <div class="sr-ac-city">${a.city}, ${a.country}</div>
+                        <div class="sr-ac-airport">${a.name}</div>
+                    </div>
+                    <span class="sr-ac-iata">${a.iata}</span>
+                </div>`).join('');
+            results.classList.add('show');
+
+            // Seçim olayları
+            $$('.sr-ac-item', results).forEach(item => {
+                item.addEventListener('mousedown', function (e) {
+                    e.preventDefault(); // input blur'unu engelle
+                    input.value = `${this.dataset.city}, ${this.dataset.country} — ${this.dataset.iata}`;
+                    input.dataset.iata = this.dataset.iata;
+                    input.dataset.city = this.dataset.city;
+                    results.classList.remove('show');
+                    clearError(input);
+                });
+            });
+        }
+
+        // Filtreleme (şehir, havalimanı adı, IATA, ülke)
+        function filter(q) {
+            q = q.trim().toLocaleLowerCase('tr');
+            if (!q) return AIRPORTS.slice(0, 6);
+            return AIRPORTS.filter(a =>
+                a.city.toLocaleLowerCase('tr').includes(q) ||
+                a.name.toLocaleLowerCase('tr').includes(q) ||
+                a.country.toLocaleLowerCase('tr').includes(q) ||
+                a.iata.toLowerCase().includes(q)
+            ).slice(0, 7);
+        }
+
+        input.addEventListener('input', () => { input.dataset.iata = ''; input.dataset.city = ''; render(filter(input.value)); });
+        input.addEventListener('focus', () => render(filter(input.value)));
+        input.addEventListener('blur', () => setTimeout(() => results.classList.remove('show'), 150));
+    }
+    setupAutocomplete('fromInput', 'fromResults');
+    setupAutocomplete('toInput', 'toResults');
+
+    /* =========================================================
+       4. YÖN DEĞİŞTİRME (kalkış <-> varış)
     ========================================================= */
     const fromInput = $('#fromInput');
     const toInput = $('#toInput');
     const swapBtn = $('#swapBtn');
 
     swapBtn.addEventListener('click', () => {
-        const tmp = fromInput.value;
+        // Değerleri değiştir
+        const tmpVal = fromInput.value;
+        const tmpIata = fromInput.dataset.iata || '';
+        const tmpCity = fromInput.dataset.city || '';
         fromInput.value = toInput.value;
-        toInput.value = tmp;
+        fromInput.dataset.iata = toInput.dataset.iata || '';
+        fromInput.dataset.city = toInput.dataset.city || '';
+        toInput.value = tmpVal;
+        toInput.dataset.iata = tmpIata;
+        toInput.dataset.city = tmpCity;
+        // Kısa dönme animasyonu
         swapBtn.classList.toggle('sr-rotate');
         clearError(fromInput); clearError(toInput);
     });
 
     /* =========================================================
-       4. SEYAHAT TİPİ — dönüş tarihi göster/gizle
+       5. SEYAHAT TİPİ — dönüş tarihi göster/gizle
     ========================================================= */
     const returnWrap = $('#returnWrap');
     const returnDate = $('#returnDate');
@@ -59,23 +148,24 @@
     function updateTripType() {
         const type = $('input[name="tripType"]:checked').value;
         if (type === 'oneway') {
-            returnWrap.style.display = 'none';
+            returnWrap.style.display = 'none';   // tek yön: dönüş gizli
             returnDate.value = '';
         } else {
-            returnWrap.style.display = '';
+            returnWrap.style.display = '';        // gidiş-dönüş / çoklu: dönüş açık
         }
     }
     $$('input[name="tripType"]').forEach(r => r.addEventListener('change', updateTripType));
     updateTripType();
 
     /* =========================================================
-       5. TARİH KISITLAMALARI
+       6. TARİH KISITLAMALARI
     ========================================================= */
     const departDate = $('#departDate');
     const today = new Date().toISOString().split('T')[0];
-    departDate.min = today;
+    departDate.min = today;      // geçmiş tarih seçilemez
     returnDate.min = today;
 
+    // Gidiş değişince dönüşün alt sınırı güncellensin
     departDate.addEventListener('change', () => {
         returnDate.min = departDate.value || today;
         if (returnDate.value && returnDate.value < departDate.value) {
@@ -85,7 +175,7 @@
     });
 
     /* =========================================================
-       6. YOLCU SAYACI
+       7. YOLCU SAYACI
     ========================================================= */
     const counts = { adult: 1, child: 0, infant: 0 };
     const MAX_TOTAL = 9;
@@ -100,27 +190,33 @@
     function totalPassengers() { return counts.adult + counts.child + counts.infant; }
 
     function updatePassengerUI() {
+        // Rakamları yaz
         els.adult.textContent = counts.adult;
         els.child.textContent = counts.child;
         els.infant.textContent = counts.infant;
 
+        // Özet metni (toplam yolcu)
         $('#passengerSummary').textContent = `${totalPassengers()} Yolcu`;
 
+        // Buton durumlarını (disabled) güncelle
         $$('.sr-step-btn').forEach(btn => {
             const type = btn.dataset.type;
             const action = btn.dataset.action;
             let disabled = false;
 
             if (action === 'dec') {
+                // Yetişkin en az 1; diğerleri en az 0
                 if (type === 'adult') disabled = counts.adult <= 1;
                 else disabled = counts[type] <= 0;
-            } else {
+            } else { // inc
                 if (totalPassengers() >= MAX_TOTAL) disabled = true;
+                // Bebek sayısı yetişkin sayısını geçemez
                 if (type === 'infant' && counts.infant >= counts.adult) disabled = true;
             }
             btn.disabled = disabled;
         });
 
+        // Uyarı notu
         if (counts.infant >= counts.adult && counts.infant > 0) {
             paxNote.textContent = 'Bebek sayısı yetişkin sayısını geçemez.';
         } else if (totalPassengers() >= MAX_TOTAL) {
@@ -137,12 +233,13 @@
 
             if (action === 'inc') {
                 if (totalPassengers() >= MAX_TOTAL) return;
-                if (type === 'infant' && counts.infant >= counts.adult) return;
+                if (type === 'infant' && counts.infant >= counts.adult) return; // bebek <= yetişkin
                 counts[type]++;
             } else {
-                if (type === 'adult' && counts.adult <= 1) return;
+                if (type === 'adult' && counts.adult <= 1) return;   // en az 1 yetişkin
                 if (counts[type] <= 0) return;
                 counts[type]--;
+                // Yetişkin azalınca bebek fazlaysa düzelt
                 if (type === 'adult' && counts.infant > counts.adult) counts.infant = counts.adult;
             }
             updatePassengerUI();
@@ -165,16 +262,18 @@
     });
 
     /* =========================================================
-       7. POPÜLER ROTA KARTLARINI OLUŞTUR
+       8. POPÜLER ROTA KARTLARINI OLUŞTUR
     ========================================================= */
     const routesRow = $('.sr-routes-row');
+    // İlk boş kolon placeholder'ı temizle
     routesRow.innerHTML = '';
 
     ROUTES.forEach(r => {
         const col = document.createElement('div');
         col.className = 'col-12 col-sm-6 col-lg-4';
         col.innerHTML = `
-            <div class="sr-route-card">
+            <div class="sr-route-card" data-from-city="${r.fromCity}" data-from-iata="${r.fromIata}"
+                 data-to-city="${r.toCity}" data-to-iata="${r.toIata}">
                 <div class="sr-route-media" style="background-image:url('${r.img}')">
                     <span class="sr-route-duration"><i class="bi bi-clock"></i>${r.dur}</span>
                 </div>
@@ -182,10 +281,12 @@
                     <div class="sr-route-path">
                         <div class="sr-route-point">
                             <div class="sr-route-city">${r.fromCity}</div>
+                            <div class="sr-route-iata">${r.fromIata}</div>
                         </div>
                         <i class="bi bi-airplane sr-route-arrow"></i>
                         <div class="sr-route-point">
                             <div class="sr-route-city">${r.toCity}</div>
+                            <div class="sr-route-iata">${r.toIata}</div>
                         </div>
                     </div>
                     <div class="sr-route-price">₺${r.price}'dan başlayan fiyatlarla</div>
@@ -196,18 +297,24 @@
             </div>`;
         routesRow.appendChild(col);
 
-        // Karta tıklayınca sadece şehir adlarını forma yaz
+        // Karta tıklayınca arama formunu otomatik doldur
         col.querySelector('.sr-route-btn').addEventListener('click', () => {
-            fromInput.value = r.fromCity;
-            toInput.value = r.toCity;
+            fromInput.value = `${r.fromCity}, Türkiye — ${r.fromIata}`;
+            fromInput.dataset.iata = r.fromIata;
+            fromInput.dataset.city = r.fromCity;
+            const toEntry = AIRPORTS.find(a => a.iata === r.toIata);
+            toInput.value = `${r.toCity}, ${toEntry ? toEntry.country : ''} — ${r.toIata}`;
+            toInput.dataset.iata = r.toIata;
+            toInput.dataset.city = r.toCity;
             clearError(fromInput); clearError(toInput);
+            // Arama paneline yumuşak kaydır
             $('#aramaPaneli').scrollIntoView({ behavior: 'smooth', block: 'center' });
             showToast(`${r.fromCity} → ${r.toCity} rotası forma eklendi.`, 'success');
         });
     });
 
     /* =========================================================
-       8. DOĞRULAMA YARDIMCILARI
+       9. DOĞRULAMA YARDIMCILARI
     ========================================================= */
     function setError(input, message) {
         input.classList.add('is-invalid');
@@ -224,18 +331,33 @@
         if (errEl) errEl.textContent = '';
     }
 
-    // Yazılan metni temizle: baş/son boşluk at, çoklu boşlukları teke indir
-    function cleanCity(val) {
-        return (val || '').trim().replace(/\s+/g, ' ');
+    // Bir IATA kodunu metinden çıkar (autocomplete seçilmemiş olsa bile)
+    function resolveIata(input) {
+        if (input.dataset.iata) return input.dataset.iata;
+        const val = input.value.trim().toLocaleLowerCase('tr');
+        if (!val) return '';
+        const match = AIRPORTS.find(a =>
+            val.includes(a.iata.toLowerCase()) ||
+            val.includes(a.city.toLocaleLowerCase('tr'))
+        );
+        return match ? match.iata : '';
     }
 
-    // Kutuya yazarken hatayı temizle
-    [fromInput, toInput].forEach(inp => {
-        inp.addEventListener('input', () => clearError(inp));
-    });
+    // Bir şehir adını metinden çıkar (autocomplete seçilmemiş olsa bile)
+    function resolveCity(input) {
+        if (input.dataset.city) return input.dataset.city;
+        // "Adana, Türkiye — COV" -> "Adana"
+        const raw = input.value.trim();
+        if (!raw) return '';
+        const first = raw.split(/[,—–-]/)[0].trim();
+        // IATA'dan da eşleştirmeyi dene
+        const iata = resolveIata(input);
+        const byIata = AIRPORTS.find(a => a.iata === iata);
+        return first || (byIata ? byIata.city : '');
+    }
 
     /* =========================================================
-       9. ARAMA FORMU GÖNDERİMİ
+       10. ARAMA FORMU GÖNDERİMİ
     ========================================================= */
     const form = $('#flightSearchForm');
     const searchBtn = $('#searchBtn');
@@ -246,20 +368,20 @@
         let valid = true;
         const tripType = $('input[name="tripType"]:checked').value;
 
-        const fromCity = cleanCity(fromInput.value);
-        const toCity = cleanCity(toInput.value);
-
-        // Kalkış boş mu
-        if (!fromCity) { setError(fromInput, 'Kalkış şehri yazın.'); valid = false; }
+        // Kalkış
+        const fromIata = resolveIata(fromInput);
+        if (!fromInput.value.trim()) { setError(fromInput, 'Kalkış noktası seçin.'); valid = false; }
+        else if (!fromIata) { setError(fromInput, 'Geçerli bir havalimanı seçin.'); valid = false; }
         else clearError(fromInput);
 
-        // Varış boş mu
-        if (!toCity) { setError(toInput, 'Varış şehri yazın.'); valid = false; }
+        // Varış
+        const toIata = resolveIata(toInput);
+        if (!toInput.value.trim()) { setError(toInput, 'Varış noktası seçin.'); valid = false; }
+        else if (!toIata) { setError(toInput, 'Geçerli bir havalimanı seçin.'); valid = false; }
         else clearError(toInput);
 
-        // Aynı şehir olamaz (büyük/küçük harf duyarsız)
-        if (fromCity && toCity &&
-            fromCity.toLocaleLowerCase('tr') === toCity.toLocaleLowerCase('tr')) {
+        // Aynı nokta olamaz
+        if (fromIata && toIata && fromIata === toIata) {
             setError(toInput, 'Kalkış ve varış aynı olamaz.'); valid = false;
         }
 
@@ -277,12 +399,18 @@
 
         if (!valid) { showToast('Lütfen eksik alanları kontrol et.', 'error'); return; }
 
-        // -------- Parametreleri topla --------
-        // Not: IATA çözümlemesi Search sayfasında backend'de yapılıyor.
-        // Burada sadece şehir adlarını taşıyoruz.
+        // Şehir adlarını çöz
+        const fromCity = resolveCity(fromInput);
+        const toCity = resolveCity(toInput);
+
+        // -------- Parametreleri topla (Search sayfasına aktarılacak) --------
         const params = new URLSearchParams({
+            from: fromInput.value.trim(),
+            to: toInput.value.trim(),
             fromCity: fromCity,
             toCity: toCity,
+            fromIata: fromIata,
+            toIata: toIata,
             depart: departDate.value,
             return: returnDate.value || '',
             adults: counts.adult,
@@ -304,7 +432,7 @@
     });
 
     /* =========================================================
-       10. BÜLTEN ABONELİĞİ
+       11. BÜLTEN ABONELİĞİ
     ========================================================= */
     const newsletterForm = $('#newsletterForm');
     const newsletterEmail = $('#newsletterEmail');
@@ -333,7 +461,7 @@
     });
 
     /* =========================================================
-       11. TOAST BİLDİRİMİ
+       12. TOAST BİLDİRİMİ
     ========================================================= */
     function showToast(message, type) {
         const toastEl = $('#srToast');
