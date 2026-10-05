@@ -8,8 +8,8 @@ namespace FlightBooking.Tools.WeatherTool
     {
         private readonly HttpClient _httpClient;
 
-        private const string RapidApiKey = "";
-        private const string RapidApiHost = "";
+        private const string RapidApiKey = "84262ba1d8mshde14ba692169d32p14788djsnbba8d7033649";
+        private const string RapidApiHost = "yahoo-weather5.p.rapidapi.com";
         private const string BaseUrl = "https://yahoo-weather5.p.rapidapi.com/weather";
 
         public WeatherTool(HttpClient httpClient)

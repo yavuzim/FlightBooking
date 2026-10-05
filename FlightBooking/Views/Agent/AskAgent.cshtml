@@ -996,6 +996,13 @@
                 margin: 10px 0;
             }
 
+            /* YENİ: hata balonu varyantı */
+            .msg-ai .msg-bubble.msg-error {
+                background: #fef2f2;
+                border-color: #fecaca;
+                color: #b91c1c;
+            }
+
         .msg-ai-meta {
             font-size: 10.5px;
             color: var(--slate-400);
@@ -1129,6 +1136,178 @@
             color: var(--slate-400);
             line-height: 1.5;
         }
+
+        /* ═══════════════════════════════════════════
+                   YENİ: HAVA DURUMU KARTI İÇERİK STİLLERİ
+                   (mevcut palet ve radius değişkenleri kullanıldı)
+                ═══════════════════════════════════════════ */
+        .weather-city {
+            font-family: var(--font-display);
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.25;
+        }
+
+        .weather-country {
+            font-size: 11px;
+            color: var(--slate-400);
+            margin-bottom: 10px;
+        }
+
+        .weather-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--slate-100);
+        }
+
+        .weather-main-icon {
+            font-size: 34px;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .weather-temp {
+            font-family: var(--font-display);
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--navy);
+            letter-spacing: -.02em;
+            line-height: 1;
+        }
+
+        .weather-condition {
+            font-size: 12px;
+            color: var(--slate-500);
+            margin-top: 3px;
+        }
+
+        .weather-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 10px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--slate-100);
+        }
+
+        .weather-detail {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11.5px;
+            color: var(--slate-600);
+            min-width: 0;
+        }
+
+            .weather-detail i {
+                color: var(--cyan);
+                font-size: 12px;
+                flex-shrink: 0;
+            }
+
+            .weather-detail span {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+        .weather-sun {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 11px 0 2px;
+        }
+
+        .weather-sun-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11.5px;
+            color: var(--slate-600);
+        }
+
+            .weather-sun-item i.bi-sunrise-fill {
+                color: var(--amber);
+            }
+
+            .weather-sun-item i.bi-sunset-fill {
+                color: #fb923c;
+            }
+
+        /* Günlük tahmin kartları — mobilde yatay kaydırılabilir */
+        .weather-forecast-wrap {
+            border-top: 1px solid var(--slate-100);
+            padding-top: 11px;
+            margin-top: 10px;
+        }
+
+        .weather-forecast-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .6px;
+            color: var(--slate-400);
+            margin-bottom: 8px;
+        }
+
+        .weather-forecast {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: thin;
+            -webkit-overflow-scrolling: touch;
+        }
+
+            .weather-forecast::-webkit-scrollbar {
+                height: 4px;
+            }
+
+            .weather-forecast::-webkit-scrollbar-thumb {
+                background: var(--slate-200);
+                border-radius: 99px;
+            }
+
+        .forecast-card {
+            flex: 1 0 56px;
+            min-width: 56px;
+            background: white;
+            border: 1px solid var(--slate-200);
+            border-radius: var(--radius-sm);
+            padding: 8px 4px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .forecast-day {
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 3px;
+        }
+
+        .forecast-icon {
+            font-size: 17px;
+            line-height: 1;
+            margin-bottom: 3px;
+        }
+
+        .forecast-temp {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--slate-600);
+            white-space: nowrap;
+        }
+
+        .forecast-cond {
+            font-size: 9px;
+            color: var(--slate-400);
+            line-height: 1.25;
+            margin-top: 2px;
+        }
+        /* ═══════ /YENİ HAVA DURUMU STİLLERİ ═══════ */
 
         /* ─── FOOTER ─── */
         .page-footer {
@@ -1264,6 +1443,11 @@
             .hero-title {
                 font-size: 26px;
             }
+            /* YENİ: mobilde tahmin kartları sabit genişlik + yatay kaydırma */
+            .forecast-card {
+                flex: 0 0 62px;
+                min-width: 62px;
+            }
         }
 
         @@media (max-width:480px) {
@@ -1274,6 +1458,10 @@
             .chip {
                 font-size: 12px;
                 padding: 5px 12px;
+            }
+            /* YENİ: dar ekranda detay grid'i tek sütun */
+            .weather-details {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -1348,6 +1536,10 @@
                               onkeydown="handleKeydown(event)"></textarea>
                     <div class="prompt-examples">
                         <span class="prompt-examples-label">Örnek:</span>
+                        <!-- DEĞİŞTİ: hava durumu örneği eklendi (Weather intent'i test etmek için) -->
+                        <span class="prompt-example" onclick="setPrompt('Trabzon\'da hava durumu nasıl?')">
+                            <i class="bi bi-lightning-fill"></i>Trabzon hava durumu
+                        </span>
                         <span class="prompt-example" onclick="setPrompt('Bursa\'da çocuklu aile için en iyi hamburgerci mekanları hangileri?')">
                             <i class="bi bi-lightning-fill"></i>Bursa'da çocuklu hamburgerci
                         </span>
@@ -1467,6 +1659,11 @@
                         <div class="convo-empty-title">Henüz bir konuşma yok</div>
                         <div class="convo-empty-sub">İlk seyahat sorunuzu yazarak başlayın.</div>
                         <div class="convo-empty-prompts">
+                            <!-- DEĞİŞTİ: hava durumu örnek promptu eklendi -->
+                            <div class="cep" onclick="setPrompt('Trabzon\'da hava durumu nasıl?')">
+                                <i class="bi bi-cloud-sun-fill"></i>
+                                Trabzon'da hava durumu nasıl?
+                            </div>
                             <div class="cep" onclick="setPrompt('Bursa\'da çocuklu aile için en iyi hamburgerci ve yemek mekanları hangileri?')">
                                 <i class="bi bi-geo-alt-fill"></i>
                                 Bursa'da çocuklu aile için hamburgerci öner
@@ -1479,10 +1676,6 @@
                                 <i class="bi bi-train-front-fill"></i>
                                 İstanbul'dan Milano'ya havalimanı ulaşımı öner
                             </div>
-                            <div class="cep" onclick="setPrompt('Kadıköy\'de hafta sonu aileye uygun yemek mekanları ve aktiviteler neler?')">
-                                <i class="bi bi-people-fill"></i>
-                                Kadıköy'de hafta sonu aileye uygun mekanlar bul
-                            </div>
                         </div>
                     </div>
 
@@ -1494,21 +1687,29 @@
 
             <!-- Sağ Panel -->
             <div class="right-panel">
-                <div class="glass-card slide-up" style="animation-delay:.1s;">
+
+                <!-- ═══ DEĞİŞTİ: HAVA DURUMU KARTI (dinamik) ═══ -->
+                <div class="glass-card slide-up" id="weatherCard" style="animation-delay:.1s;">
                     <div class="panel-head">
                         <div class="panel-head-ico" style="background:#ecfeff;color:#0891b2;"><i class="bi bi-cloud-sun-fill"></i></div>
                         <div>
                             <div class="panel-head-title">Hava Durumu</div>
-                            <div class="panel-head-sub">Gerçek zamanlı bilgi</div>
+                            <div class="panel-head-sub" id="weatherHeadSub">Gerçek zamanlı bilgi</div>
                         </div>
                     </div>
-                    <div class="panel-body panel-empty-body">
+
+                    <!-- Empty state (varsayılan görünüm) -->
+                    <div class="panel-body panel-empty-body" id="weatherEmpty">
                         <div class="panel-empty-ico">🌤️</div>
                         <div class="panel-empty-title">Henüz bir şehir seçilmedi</div>
                         <div class="panel-empty-desc">Bir destinasyon yazdığınızda hava durumu burada görünür.</div>
                     </div>
-                </div>
 
+                    <!-- Gerçek veri alanı — JS ile doldurulur -->
+                    <div class="panel-body" id="weatherContent" style="display:none;"></div>
+                </div>
+                <!-- ═══ /HAVA DURUMU KARTI ═══ -->
+                <!-- Aşağıdaki kartlar değişmedi: empty state olarak kalıyor -->
                 <div class="glass-card slide-up" style="animation-delay:.18s;">
                     <div class="panel-head">
                         <div class="panel-head-ico" style="background:var(--indigo-bg);color:var(--indigo);"><i class="bi bi-clock-fill"></i></div>
@@ -1589,6 +1790,12 @@
         const sendBtn     = document.getElementById('sendBtn');
         const messagesEl  = document.getElementById('messages');
         const emptyEl     = document.getElementById('emptyState');
+
+        /* YENİ: hava durumu kartı elemanları */
+        const weatherEmptyEl   = document.getElementById('weatherEmpty');
+        const weatherContentEl = document.getElementById('weatherContent');
+        const weatherHeadSubEl = document.getElementById('weatherHeadSub');
+
         let isLoading = false;
 
         /* Karakter sayacı */
@@ -1628,6 +1835,17 @@
             toastTimer = setTimeout(() => {
                 t.style.opacity = '0'; t.style.transform = 'translateY(8px)';
             }, 2800);
+        }
+
+        /* YENİ: XSS'e karşı basit HTML escape (hava durumu alanları için) */
+        function escapeHtml(value) {
+            if (value === null || value === undefined) return '';
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
         }
 
         /* ════════════════════════════════════════════
@@ -1682,7 +1900,7 @@
         }
 
         /* ════════════════════════════════════════════
-           KONUŞMA FONKSİYONLARI  (spec isimler)
+           KONUŞMA FONKSİYONLARI
         ════════════════════════════════════════════ */
         function addUserMessage(text) {
             const div = document.createElement('div');
@@ -1751,15 +1969,20 @@
             return result.join('');
         }
 
-        function addAIMessage(text, meta) {
+        /* DEĞİŞTİ: isError parametresi eklendi (hata balonu için) */
+        function addAIMessage(text, meta, isError) {
             const now = new Date().toLocaleTimeString('tr-TR', { hour:'2-digit', minute:'2-digit' });
             const div = document.createElement('div');
             div.className = 'msg-ai fade-in';
-            const modelInfo = meta ? ` · ${meta.model || 'gpt-4o'}` : '';
+            const modelInfo = meta && meta.model ? ` · ${meta.model}` : '';
+            const errClass  = isError ? ' msg-error' : '';
+            const bubbleHtml = isError
+                ? `<i class="bi bi-exclamation-triangle-fill me-1"></i>${escapeHtml(text)}`
+                : renderMarkdown(text);
             div.innerHTML = `
                 <div class="msg-avatar"><i class="bi bi-robot"></i></div>
                 <div>
-                    <div class="msg-bubble">${renderMarkdown(text)}</div>
+                    <div class="msg-bubble${errClass}">${bubbleHtml}</div>
                     <div class="msg-ai-meta">
                         <i class="bi bi-stars me-1"></i>YZ Seyahat Asistanı · ${now}${modelInfo}
                     </div>
@@ -1767,6 +1990,150 @@
             messagesEl.appendChild(div);
             messagesEl.scrollTop = messagesEl.scrollHeight;
         }
+
+        /* ════════════════════════════════════════════
+           YENİ: HAVA DURUMU FONKSİYONLARI
+        ════════════════════════════════════════════ */
+
+        /* condition metnine göre emoji seç */
+        function getWeatherIcon(condition) {
+            if (!condition) return '🌡️';
+            const c = String(condition).toLowerCase();
+
+            if (c.includes('thunder') || c.includes('storm')) return '⛈️';
+            if (c.includes('snow') || c.includes('sleet') || c.includes('flurr')) return '❄️';
+            if (c.includes('rain') || c.includes('shower') || c.includes('drizzle')) return '🌧️';
+            if (c.includes('partly cloudy') || c.includes('partly sunny')) return '🌤️';
+            if (c.includes('cloud') || c.includes('overcast')) return '☁️';
+            if (c.includes('sunny') || c.includes('clear') || c.includes('fair')) return '☀️';
+            return '🌡️';
+        }
+
+        /* "5:05 AM" → "05:05" biçimine çevir; parse edilemezse orijinali döndür */
+        function formatClock(value) {
+            if (!value) return '-';
+            const raw = String(value).trim();
+            const m = raw.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
+            if (!m) return raw;
+            let h = parseInt(m[1], 10);
+            const min = m[2];
+            const suffix = m[3] ? m[3].toUpperCase() : null;
+            if (suffix === 'PM' && h < 12) h += 12;
+            if (suffix === 'AM' && h === 12) h = 0;
+            return String(h).padStart(2, '0') + ':' + min;
+        }
+
+        /* Boş/undefined değerler için güvenli gösterim */
+        function val(v, suffix) {
+            if (v === null || v === undefined || v === '') return '-';
+            return escapeHtml(v) + (suffix || '');
+        }
+
+        /* Hava durumu kartını gerçek veriyle doldur */
+        function updateWeatherPanel(weather) {
+            if (!weather) return;
+
+            /* camelCase bekleniyor; PascalCase gelirse de çalışsın diye fallback */
+            const city        = weather.city        ?? weather.City;
+            const country     = weather.country     ?? weather.Country;
+            const temperature = weather.temperature ?? weather.Temperature;
+            const condition   = weather.condition   ?? weather.Condition;
+            const humidity    = weather.humidity    ?? weather.Humidity;
+            const windSpeed   = weather.windSpeed   ?? weather.WindSpeed;
+            const windDir     = weather.windDirection ?? weather.WindDirection;
+            const visibility  = weather.visibility  ?? weather.Visibility;
+            const pressure    = weather.pressure    ?? weather.Pressure;
+            const sunrise     = weather.sunrise     ?? weather.Sunrise;
+            const sunset      = weather.sunset      ?? weather.Sunset;
+            const forecasts   = weather.forecasts   ?? weather.Forecasts ?? [];
+
+            /* Ana blok */
+            let html = `
+                <div class="weather-city">${val(city)}</div>
+                <div class="weather-country">${val(country)}</div>
+
+                <div class="weather-main">
+                    <div class="weather-main-icon">${getWeatherIcon(condition)}</div>
+                    <div>
+                        <div class="weather-temp">${temperature ?? '-'}°C</div>
+                        <div class="weather-condition">${val(condition)}</div>
+                    </div>
+                </div>
+
+                <div class="weather-details">
+                    <div class="weather-detail" title="Nem">
+                        <i class="bi bi-droplet-fill"></i><span>Nem: %${val(humidity)}</span>
+                    </div>
+                    <div class="weather-detail" title="Rüzgar">
+                        <i class="bi bi-wind"></i><span>${val(windSpeed)} km/sa</span>
+                    </div>
+                    <div class="weather-detail" title="Rüzgar yönü">
+                        <i class="bi bi-compass-fill"></i><span>${val(windDir)}</span>
+                    </div>
+                    <div class="weather-detail" title="Görüş mesafesi">
+                        <i class="bi bi-eye-fill"></i><span>Görüş: ${val(visibility)} km</span>
+                    </div>
+                    <div class="weather-detail" title="Basınç">
+                        <i class="bi bi-speedometer2"></i><span>${val(pressure)} hPa</span>
+                    </div>
+                </div>
+
+                <div class="weather-sun">
+                    <div class="weather-sun-item">
+                        <i class="bi bi-sunrise-fill"></i>${formatClock(sunrise)}
+                    </div>
+                    <div class="weather-sun-item">
+                        <i class="bi bi-sunset-fill"></i>${formatClock(sunset)}
+                    </div>
+                </div>`;
+
+            /* Günlük tahminler — ilk 5 gün */
+            if (Array.isArray(forecasts) && forecasts.length > 0) {
+                const list = forecasts.slice(0, 5);
+                html += `
+                <div class="weather-forecast-wrap">
+                    <div class="weather-forecast-label">Günlük Tahmin</div>
+                    <div class="weather-forecast">`;
+                list.forEach(f => {
+                    const day  = f.day       ?? f.Day;
+                    const low  = f.low       ?? f.Low;
+                    const high = f.high      ?? f.High;
+                    const cond = f.condition ?? f.Condition;
+                    html += `
+                        <div class="forecast-card">
+                            <div class="forecast-day">${val(day)}</div>
+                            <div class="forecast-icon">${getWeatherIcon(cond)}</div>
+                            <div class="forecast-temp">${low ?? '-'}° / ${high ?? '-'}°</div>
+                            <div class="forecast-cond">${val(cond)}</div>
+                        </div>`;
+                });
+                html += `
+                    </div>
+                </div>`;
+            }
+
+            /* DOM'a yaz: empty state'i gizle, içeriği göster */
+            weatherContentEl.innerHTML = html;
+            weatherEmptyEl.style.display = 'none';
+            weatherContentEl.style.display = 'block';
+            weatherContentEl.classList.remove('fade-in');
+            void weatherContentEl.offsetWidth; /* animasyonu yeniden tetikle */
+            weatherContentEl.classList.add('fade-in');
+
+            if (weatherHeadSubEl) {
+                weatherHeadSubEl.textContent = 'Güncellendi · ' +
+                    new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+            }
+        }
+
+        /* Kartı ilk haline (empty state) döndür */
+        function resetWeatherPanel() {
+            weatherContentEl.innerHTML = '';
+            weatherContentEl.style.display = 'none';
+            weatherEmptyEl.style.display = 'flex';
+            if (weatherHeadSubEl) weatherHeadSubEl.textContent = 'Gerçek zamanlı bilgi';
+        }
+        /* ═══════ /YENİ HAVA DURUMU FONKSİYONLARI ═══════ */
 
         /* ════════════════════════════════════════════
            sendMessage()  —  gerçek API çağrısı
@@ -1783,6 +2150,9 @@
             isLoading = true;
             sendBtn.classList.add('loading');
             sendBtn.disabled = true;
+
+            /* NOT: Hava durumu kartına burada dokunulmuyor.
+               Eski veri varsa yeni cevap gelene kadar ekranda kalır. */
 
             /* Kullanıcı mesajını ekle */
             addUserMessage(text);
@@ -1805,24 +2175,40 @@
                     body: JSON.stringify({ prompt: text })
                 });
 
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-                const data = await response.json();
+                /* DEĞİŞTİ: JSON parse hatasına karşı korumalı okuma */
+                let data = null;
+                try {
+                    data = await response.json();
+                } catch (parseErr) {
+                    console.error('JSON parse hatası:', parseErr);
+                }
 
                 removeTypingIndicator();
+                completeAgentActivity();
 
-                if (data.isSuccess && data.response) {
-                    completeAgentActivity();
-                    addAIMessage(data.response, { model: data.model });
-                } else {
-                    completeAgentActivity();
-                    addAIMessage('Üzgünüm, bir hata oluştu. Lütfen tekrar deneyin.', null);
+                /* DEĞİŞTİ: spec'e uygun hata kontrolü */
+                if (!response.ok || !data || !data.isSuccess) {
+                    console.error('Agent API başarısız:', {
+                        status: response.status,
+                        statusText: response.statusText,
+                        payload: data
+                    });
+                    addAIMessage('Şu anda hava durumu bilgisi alınamadı. Lütfen tekrar deneyin.', null, true);
+                    return;
+                }
+
+                /* AI cevabı */
+                addAIMessage(data.response || 'Yanıt boş döndü.', { model: data.model });
+
+                /* YENİ: Weather intent ise sağ paneli güncelle */
+                if (data.intent === 'Weather' && data.weather) {
+                    updateWeatherPanel(data.weather);
                 }
 
             } catch (err) {
                 removeTypingIndicator();
                 completeAgentActivity();
-                addAIMessage(`Bağlantı hatası: ${err.message}. Lütfen internet bağlantınızı kontrol edin.`, null);
+                addAIMessage('Şu anda hava durumu bilgisi alınamadı. Lütfen tekrar deneyin.', null, true);
                 console.error('Agent API hatası:', err);
             } finally {
                 /* UI aç */
